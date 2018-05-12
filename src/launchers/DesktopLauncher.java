@@ -1,4 +1,4 @@
-package launch;
+package launchers;
 
 import com.badlogic.gdx.backends.lwjgl.*;
 import components.TheGame;

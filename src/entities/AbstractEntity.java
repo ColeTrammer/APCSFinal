@@ -1,23 +1,50 @@
-package logic;
+package entities;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class GameObject {
+public abstract class AbstractEntity implements Entity {
     private Rectangle rect;
-    
-    //public logic.GameObject() { this(0, 0, 0, 0); }
-     
-    public GameObject(float x, float y, float width, float height) {
+    private boolean expired;
+
+    //public entities.AbstractEntity() { this(0, 0, 0, 0); }
+
+    public AbstractEntity(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
+        expired = false;
     }
-    
-    public abstract void update(float delta);
-    public abstract void render(Object renderer_);
-    
+
+    @Override
+    public void update(float delta) {
+    }
+
+    @Override
+    public void render(Object renderer_) {
+        ShapeRenderer renderer = (ShapeRenderer) renderer_;
+        renderer.setColor(Color.WHITE);
+        renderer.rect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    @Override
     public boolean rendersWithShapeRenderer() {
-        return true; //default
+        return true;
     }
-    
+
+    @Override
+    public boolean overlapsWith(Entity other) {
+        if (other instanceof AbstractEntity) {
+            return rect.overlaps(((AbstractEntity) other).getRect());
+        } else {
+            return other.overlapsWith(this);
+        }
+    }
+
+    @Override
+    public boolean expired() {
+        return expired;
+    }
+
     public Rectangle getRect() { return rect; }
     public float getX() { return rect.getX(); }
     public float getY() { return rect.getY(); }
@@ -29,6 +56,7 @@ public abstract class GameObject {
     //public void setY(float y) { rect.setY(y); }
     //public void setWidth (float width)  { rect.setWidth (width);  }
     //public void setHeight(float height) { rect.setHeight(height); }
+    public void setExpired(boolean expired) { this.expired = expired; }
     
     public void addX(float x) { rect.setX(rect.getX() + x); }
     public void addY(float y) { rect.setY(rect.getY() + y); }

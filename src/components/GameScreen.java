@@ -11,16 +11,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import logic.Enemy;
-import logic.ObjectManager;
-import logic.Wall;
+import entities.Enemy;
+import entities.EntityManager;
+import entities.Wall;
 import utils.Constants;
 
 public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
     private TheGame game;
-    private ObjectManager manager;
+    private EntityManager manager;
     
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;
@@ -30,7 +30,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private SpriteBatch hudBatch;
     private BitmapFont font;
     
-    public GameScreen(TheGame game, ObjectManager manager) {
+    public GameScreen(TheGame game, EntityManager manager) {
         this.game = game;
         this.manager = manager;
         manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
@@ -58,6 +58,9 @@ public class GameScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         manager.update(delta);
+        if (manager.getPlayer().expired()) {
+            game.showEndScreen();
+        }
         
         Gdx.gl.glClearColor(Constants.GAME_BACKGROUND_COLOR.r, Constants.GAME_BACKGROUND_COLOR.g, Constants.GAME_BACKGROUND_COLOR.b, Constants.GAME_BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
