@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import utils.Constants;
 
+/**
+ * Screen that displays the menu of the game.
+ */
 public class MenuScreen extends InputAdapter implements Screen {
     //public static final String TAG = MenuScreen.class.getName();
     
@@ -49,6 +52,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         
         batch.begin();
 
+        // Renders the String MENU_MESSAGE in the center of the screen
         final GlyphLayout layout = new GlyphLayout(font, Constants.MENU_MESSAGE);
         font.draw(batch, Constants.MENU_MESSAGE, Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
         

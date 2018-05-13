@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import utils.Constants;
 
+/**
+ * Screen that is displayed when the game ends.
+ */
 public class EndScreen extends InputAdapter implements Screen {
     //public static final String TAG = EndScreen.class.getName();
 
@@ -47,6 +50,7 @@ public class EndScreen extends InputAdapter implements Screen {
 
         batch.begin();
 
+        // Renders the String GAME_OVER_MESSAGE in the center of the screen
         final GlyphLayout layout = new GlyphLayout(font, Constants.GAME_OVER_MESSAGE);
         font.draw(batch, Constants.GAME_OVER_MESSAGE, Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
 

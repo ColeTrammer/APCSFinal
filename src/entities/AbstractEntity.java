@@ -4,12 +4,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * The AbstractEntity class provides a standard implementation
+ * of the Entity interface, using a single Rectangle as its
+ * hit box, and rendering a white rectangle on the screen'
+ * in the render method.
+ */
 public abstract class AbstractEntity implements Entity {
     private Rectangle rect;
     private boolean expired;
 
     //public entities.AbstractEntity() { this(0, 0, 0, 0); }
 
+    /**
+     * Basic Constructor
+     * @param x x-coordinate of the entity's position.
+     * @param y y-coordinate of the entity's position.
+     * @param width width of the entity
+     * @param height height of the entity
+     */
     public AbstractEntity(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
         expired = false;
@@ -21,6 +34,7 @@ public abstract class AbstractEntity implements Entity {
 
     @Override
     public void render(Object renderer_) {
+        if (expired()) return;
         ShapeRenderer renderer = (ShapeRenderer) renderer_;
         renderer.setColor(Color.WHITE);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
@@ -32,11 +46,31 @@ public abstract class AbstractEntity implements Entity {
     }
 
     @Override
-    public boolean overlapsWith(Entity other) {
+    public void checkCollision(Entity other) {
+        /*
+        if the entity is of this class
+        then check if the rectangles overlap
+        else its on the other class to deal with it
+        For example, a hypothetical entity with multiple bounding
+        rectangles or a polygon would need to implement
+        the case where it collides with another one of its own
+        and the other when it collides with this simple rectangle only entity
+        */
         if (other instanceof AbstractEntity) {
-            return rect.overlaps(((AbstractEntity) other).getRect());
+            checkCollisionInternal((AbstractEntity) other);
         } else {
-            return other.overlapsWith(this);
+            other.checkCollision(this);
+        }
+    }
+
+    /**
+     * Calls Collisions.collided(other, this) if this
+     * rectangle overlaps with the other's rectangle.
+     * @param other The entity this one is being checked against.
+     */
+    private void checkCollisionInternal(AbstractEntity other) {
+        if (!this.expired && !other.expired && this.rect.overlaps(other.rect)) {
+            Collisions.collided(this, other);
         }
     }
 

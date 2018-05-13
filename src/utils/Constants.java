@@ -3,6 +3,10 @@ package utils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * This class contains all the constants used throughout the codebase
+ * to allow for easy modification of tunable effects, appearances, and interactions.
+ */
 public class Constants {
     public static int SCREEN_WIDTH  = 800;
     public static int SCREEN_HEIGHT = 600;

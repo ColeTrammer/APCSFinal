@@ -2,11 +2,34 @@ package entities;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Simple extension of the AbstractEntity class
+ * that enables entity movement by keeping track of the entity's velocity,
+ * and then using it to update it's position in
+ * the update method.
+ */
 public class MovingEntity extends AbstractEntity {
     private Vector2 velocity;
 
     //public MovingEntity() { this(0, 0, 0, 0, 0, 0); }
+    /**
+     * Basic Constructor (initialized entity's velocity to { 0, 0 })
+     * @param x x-coordinate of the entity's position.
+     * @param y y-coordinate of the entity's position.
+     * @param width width of the entity
+     * @param height height of the entity
+     */
     public MovingEntity(float x, float y, float width, float height) { this(x, y, width, height, 0, 0); }
+
+    /**
+     * Basic Constructor
+     * @param x x-coordinate of the entity's position.
+     * @param y y-coordinate of the entity's position.
+     * @param width width of the entity
+     * @param height height of the entity
+     * @param velX x-component of the entity's velocity
+     * @param velY y-component of the entity's velocity
+     */
     public MovingEntity(float x, float y, float width, float height, float velX, float velY) {
         super(x, y, width, height);
         velocity = new Vector2(velX, velY);
@@ -14,6 +37,7 @@ public class MovingEntity extends AbstractEntity {
 
     @Override
     public void update(float delta) {
+        if (expired()) return;
         addX(velocity.x * delta);
         addY(velocity.y * delta);
     }

@@ -16,6 +16,9 @@ import entities.EntityManager;
 import entities.Wall;
 import utils.Constants;
 
+/**
+ * Screen that displays the Game.
+ */
 public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
@@ -33,10 +36,13 @@ public class GameScreen extends InputAdapter implements Screen {
     public GameScreen(TheGame game, EntityManager manager) {
         this.game = game;
         this.manager = manager;
+
+        // adds Walls around the screen so entities are bounded by the screen.
         manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
+
         manager.add(new Enemy(50, 50, 50, 50));
     }
     
@@ -57,17 +63,19 @@ public class GameScreen extends InputAdapter implements Screen {
     
     @Override
     public void render(float delta) {
+        /* UPDATE */
         manager.update(delta);
         if (manager.isPlayerExpired()) {
             game.showEndScreen();
             return;
         }
-        
+
+        /* RENDER */
         Gdx.gl.glClearColor(Constants.GAME_BACKGROUND_COLOR.r, Constants.GAME_BACKGROUND_COLOR.g, Constants.GAME_BACKGROUND_COLOR.b, Constants.GAME_BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         gameViewport.apply(true);
-        
+
         renderer.setProjectionMatrix(gameViewport.getCamera().combined);
         batch.setProjectionMatrix(gameViewport.getCamera().combined);
         
