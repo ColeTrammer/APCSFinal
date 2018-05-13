@@ -47,8 +47,8 @@ public class EndScreen extends InputAdapter implements Screen {
 
         batch.begin();
 
-        final GlyphLayout layout = new GlyphLayout(font, "Menu");
-        font.draw(batch, "Menu", Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
+        final GlyphLayout layout = new GlyphLayout(font, Constants.GAME_OVER_MESSAGE);
+        font.draw(batch, Constants.GAME_OVER_MESSAGE, Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
 
         batch.end();
     }
@@ -81,6 +81,7 @@ public class EndScreen extends InputAdapter implements Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        game.reset();
         game.showGameScreen();
         return true;
     }

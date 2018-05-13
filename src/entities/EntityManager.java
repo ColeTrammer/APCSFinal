@@ -65,12 +65,12 @@ public class EntityManager {
         }
     }
 
-    public Player getPlayer() {
+    public boolean isPlayerExpired() {
         for (Entity e : entities) {
             if (e instanceof Player) {
-                return (Player) e;
+                return false;
             }
         }
-        return null;
+        return true;
     }
 }

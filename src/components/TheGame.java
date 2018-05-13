@@ -13,7 +13,11 @@ public class TheGame extends Game {
         manager = new EntityManager(new Player());
         showMenuScreen();
     }
-    
+
+    public void reset() {
+        manager = new EntityManager(new Player());
+    }
+
     public void showMenuScreen() {
         setScreen(new MenuScreen(this));
     }

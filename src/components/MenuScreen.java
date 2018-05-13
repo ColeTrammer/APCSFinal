@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import components.TheGame;
 import utils.Constants;
 
 public class MenuScreen extends InputAdapter implements Screen {
@@ -50,8 +49,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         
         batch.begin();
 
-        final GlyphLayout layout = new GlyphLayout(font, "Menu");
-        font.draw(batch, "Menu", Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
+        final GlyphLayout layout = new GlyphLayout(font, Constants.MENU_MESSAGE);
+        font.draw(batch, Constants.MENU_MESSAGE, Constants.MENU_CENTER.x, Constants.MENU_CENTER.y + layout.height / 2, 0, Align.center, false);
         
         batch.end();
     }

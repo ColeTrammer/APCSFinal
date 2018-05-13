@@ -9,11 +9,6 @@ public class Enemy extends AbstractEntity {
     }
 
     @Override
-    public void update(float delta) {
-
-    }
-
-    @Override
     public void render(Object renderer_) {
         ShapeRenderer renderer = (ShapeRenderer) renderer_;
         renderer.setColor(Color.RED);

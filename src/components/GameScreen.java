@@ -58,8 +58,9 @@ public class GameScreen extends InputAdapter implements Screen {
     @Override
     public void render(float delta) {
         manager.update(delta);
-        if (manager.getPlayer().expired()) {
+        if (manager.isPlayerExpired()) {
             game.showEndScreen();
+            return;
         }
         
         Gdx.gl.glClearColor(Constants.GAME_BACKGROUND_COLOR.r, Constants.GAME_BACKGROUND_COLOR.g, Constants.GAME_BACKGROUND_COLOR.b, Constants.GAME_BACKGROUND_COLOR.a);
