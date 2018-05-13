@@ -17,19 +17,19 @@ public abstract class AbstractEntity implements Entity {
     }
 
     @Override
-    public void addObserver(EntityObserver o) {
-        observers.add(o);
+    public void addObserver(EntityObserver observer) {
+        observers.add(observer);
     }
 
     @Override
-    public void removeObserver(EntityObserver o) {
-        observers.removeValue(o, true);
+    public void removeObserver(EntityObserver observer) {
+        observers.removeValue(observer, true);
     }
 
     @Override
     public void expire() {
-        for (EntityObserver o : observers) {
-            o.expire(this);
+        for (EntityObserver observer : observers) {
+            observer.expire(this);
         }
     }
 }

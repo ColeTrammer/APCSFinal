@@ -1,5 +1,6 @@
 package components;
 
+import entities.ArrayEntityManager;
 import entities.EntityManager;
 import entities.Player;
 import com.badlogic.gdx.Game;
@@ -14,7 +15,7 @@ public class TheGame extends Game {
     
     @Override
     public void create() {
-        manager = new EntityManager();
+        manager = new ArrayEntityManager();
         manager.add(new Player());
         // immediately show the menu screen.
         showMenuScreen();
@@ -24,7 +25,7 @@ public class TheGame extends Game {
      * Resets the game state.
      */
     public void reset() {
-        manager = new EntityManager();
+        manager.reset();
         manager.add(new Player());
     }
 

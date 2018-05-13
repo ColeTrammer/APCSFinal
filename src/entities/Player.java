@@ -46,8 +46,8 @@ public class Player extends MovableRectangleEntity {
     }
 
     @Override
-    public void render(Object renderer_) {
-        ShapeRenderer renderer = (ShapeRenderer) renderer_;
+    public void render(Object rendererTool) {
+        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.BLUE);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
     }

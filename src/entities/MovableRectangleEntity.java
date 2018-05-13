@@ -55,4 +55,8 @@ public abstract class MovableRectangleEntity extends RectangleEntity {
 
     public void subVelocityX(float x) { velocity.set(velocity.x - x, velocity.y); }
     public void subVelocityY(float y) { velocity.set(velocity.x, velocity.y - y); }
+
+    public void invertVelocityX() { velocity.set(-velocity.x, velocity.y); }
+    public void invertVelocityY() { velocity.set(velocity.x, -velocity.y); }
+    //public void invertVelocity() { velocity.set(-velocity.x, -velocity.y); }
 }

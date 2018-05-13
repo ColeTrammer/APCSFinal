@@ -18,9 +18,9 @@ public interface Entity {
      * Method's purpose is to draw the entity on the screen.
      * Meant to be called every frame, and allows
      * for entities to show be viewed by humans.
-     * @param renderer_ Object with which the entity will use to render itself.
+     * @param rendererTool Object with which the entity will use to render itself.
      */
-    void render(Object renderer_);
+    void render(Object rendererTool);
 
     /**
      * Method's purpose it to allow entities to either be drawn with a
@@ -43,19 +43,19 @@ public interface Entity {
     /**
      * Method's purpose is to allow an EntityObserver
      * to get notified when the entity expires.
-     * @param o EntityObserver to add to the list of observers
+     * @param observer EntityObserver to add to the list of observers
      *          to notify when the entity expires.
      */
-    void addObserver(EntityObserver o);
+    void addObserver(EntityObserver observer);
 
     /**
      * Method's purpose is to allow an EntityObserver
      * to cleanse itself from it's responsibilities to
      * the entity class by ignoring the Entity's expiration.
-     * @param o EntityObserver to remove from the list of observers
+     * @param observer EntityObserver to remove from the list of observers
      *          to notify when the entity expires.
      */
-    void removeObserver(EntityObserver o);
+    void removeObserver(EntityObserver observer);
 
     /**
      * Method's purpose is to allow the Entity

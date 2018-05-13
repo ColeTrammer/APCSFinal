@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import entities.Enemy;
 import entities.EntityManager;
+import entities.Laser;
 import entities.Wall;
 import utils.Constants;
 
@@ -43,7 +43,7 @@ public class GameScreen extends InputAdapter implements Screen {
         manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
 
-        manager.add(new Enemy(50, 50, 50, 50));
+        manager.add(new Laser(0, 0, 80, 20, Constants.PLAYER_SPEED, Constants.PLAYER_SPEED / 3 * 2));
     }
     
     @Override

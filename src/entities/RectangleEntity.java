@@ -31,8 +31,8 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     @Override
-    public void render(Object renderer_) {
-        ShapeRenderer renderer = (ShapeRenderer) renderer_;
+    public void render(Object rendererTool) {
+        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.WHITE);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
     }
