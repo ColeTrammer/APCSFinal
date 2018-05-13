@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 /**
  * Enemy class
  */
-public class Enemy extends AbstractEntity {
+public class Enemy extends RectangleEntity {
     /**
      * Basic Constructor
      * @param x x-coordinate of the entity's position.
@@ -20,7 +20,6 @@ public class Enemy extends AbstractEntity {
 
     @Override
     public void render(Object renderer_) {
-        if (expired()) return;
         ShapeRenderer renderer = (ShapeRenderer) renderer_;
         renderer.setColor(Color.RED);
         renderer.rect(getX(), getY(), getWidth(), getHeight());

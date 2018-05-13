@@ -5,7 +5,7 @@ package entities;
  * is completely static and unchanging, only interacting
  * with other entities when in a collision.
  */
-public class Wall extends AbstractEntity {
+public class Wall extends RectangleEntity {
     /**
      * Basic Constructor
      * @param x x-coordinate of the entity's position.

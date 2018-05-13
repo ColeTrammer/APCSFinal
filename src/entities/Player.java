@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import utils.Constants;
@@ -15,7 +14,7 @@ import utils.Constants;
  * it's motion is controlled by user input, and it has the
  * highest amount of unique interactions with other Entities.
  */
-public class Player extends MovingEntity {
+public class Player extends MovableRectangleEntity {
     /**
      * Basic Constructor
      */
@@ -25,8 +24,6 @@ public class Player extends MovingEntity {
 
     @Override
     public void update(float delta) {
-        if (expired()) return;
-
         // resets velocity to zero each frame.
         setVelocity(0, 0);
 
@@ -50,7 +47,6 @@ public class Player extends MovingEntity {
 
     @Override
     public void render(Object renderer_) {
-        if (expired()) return;
         ShapeRenderer renderer = (ShapeRenderer) renderer_;
         renderer.setColor(Color.BLUE);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
@@ -63,6 +59,6 @@ public class Player extends MovingEntity {
      * could be used instead.
      */
     public void damage() {
-        setExpired(true);
+        expire();
     }
 }

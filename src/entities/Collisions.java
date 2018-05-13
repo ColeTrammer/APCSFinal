@@ -23,13 +23,13 @@ public class Collisions {
      */
     public static void collided(Entity o1, Entity o2) {
         /*
-        Adjusts a MovingEntity's position to be right next to the Wall
+        Adjusts a MovableRectangleEntity's position to be right next to the Wall
         if it collides with one.
         */
-        if (o1 instanceof MovingEntity && o2 instanceof Wall ||
-                o2 instanceof MovingEntity && o1 instanceof Wall) {
-            MovingEntity movingEntity = (MovingEntity) (o1 instanceof MovingEntity ? o1 : o2);
-            Wall wall = (Wall) (o1 instanceof MovingEntity ? o2 : o1);
+        if (o1 instanceof MovableRectangleEntity && o2 instanceof Wall ||
+                o2 instanceof MovableRectangleEntity && o1 instanceof Wall) {
+            MovableRectangleEntity movingEntity = (MovableRectangleEntity) (o1 instanceof MovableRectangleEntity ? o1 : o2);
+            Wall wall = (Wall) (o1 instanceof MovableRectangleEntity ? o2 : o1);
             Vector2 velocity  = movingEntity.getVelocity();
             float distanceY = Float.MAX_VALUE;
             float distanceX = Float.MAX_VALUE;

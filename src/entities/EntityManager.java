@@ -11,22 +11,19 @@ import com.badlogic.gdx.utils.Array;
  * to be rendered and updated through a single method call,
  * and for entities to be added explicitly to the list.
  */
-public class EntityManager {
+public class EntityManager implements EntityObserver {
     private Array<Entity> entities;
 
     /**
-     * Constructs the EntityManager with the player included.
-     * @param player The Player Entity in the current world.
+     * Constructs the EntityManager to be empty.
      */
-    public EntityManager(Player player) {
+    public EntityManager() {
         entities = new Array<>();
-        entities.add(player);
     }
 
     /**
      * Calls the update method of each and every entity,
-     * checks for collisions between any two entities,
-     * and removes any expired entities from it's storage.
+     * and checks for collisions between any two entities.
      * @param delta time step from when this was last called.
      */
     public void update(float delta) {
@@ -39,13 +36,6 @@ public class EntityManager {
         for (int i = 0; i < entities.size - 1; i++) {
             for (int j = 1; j < entities.size; j++) {
                 entities.get(i).checkCollision(entities.get(j));
-            }
-        }
-
-        // removes any expired entities from storage.
-        for (int i = entities.size - 1; i >= 0; i--) {
-            if (entities.get(i).expired()) {
-                entities.removeIndex(i);
             }
         }
     }
@@ -95,6 +85,8 @@ public class EntityManager {
     }
     
     public void add(Entity e) {
+        // subscribes to the entity to know when it expires
+        e.addObserver(this);
         /*
         keeps entities separated by rendering tool
         by adding entities that require the ShapeRenderer
@@ -112,11 +104,30 @@ public class EntityManager {
      * @return true if the player is expired, false otherwise.
      */
     public boolean isPlayerExpired() {
+        /*
+        Once a Player is expired, it is removed
+        from the list of entities. Therefore, if
+        there is no Players in the list, the Player
+        was expired.
+        */
         for (Entity e : entities) {
             if (e instanceof Player) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Expires the entity that requests it
+     * by first removing it's own observation of
+     * the Entity, and then removing the entity
+     * itself from the list of entities.
+     * @param entity The entity to expire.
+     */
+    @Override
+    public void expire(Entity entity) {
+        entity.removeObserver(this);
+        entities.removeValue(entity, true);
     }
 }

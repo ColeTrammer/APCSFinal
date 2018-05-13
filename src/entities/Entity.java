@@ -41,13 +41,29 @@ public interface Entity {
     void checkCollision(Entity other);
 
     /**
-     * Method's purpose is to an entity to determine it's own
-     * existence. When it deliberated to return true, the entity
-     * is requesting to be deleted. Once this is set to true,
-     * methods in this interface should no longer be called.
-     * (If they are, they should do nothing).
-     * @return true if the entity is expired
-     * false if it is not
+     * Method's purpose is to allow an EntityObserver
+     * to get notified when the entity expires.
+     * @param o EntityObserver to add to the list of observers
+     *          to notify when the entity expires.
      */
-    boolean expired();
+    void addObserver(EntityObserver o);
+
+    /**
+     * Method's purpose is to allow an EntityObserver
+     * to cleanse itself from it's responsibilities to
+     * the entity class by ignoring the Entity's expiration.
+     * @param o EntityObserver to remove from the list of observers
+     *          to notify when the entity expires.
+     */
+    void removeObserver(EntityObserver o);
+
+    /**
+     * Method's purpose is to allow the Entity
+     * to tell all of it's observers that it has
+     * expired, and thus all references of the
+     * Entity should be removed, and the other
+     * methods of this interface should not
+     * be called.
+     */
+    void expire();
 }

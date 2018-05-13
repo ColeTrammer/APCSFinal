@@ -14,7 +14,8 @@ public class TheGame extends Game {
     
     @Override
     public void create() {
-        manager = new EntityManager(new Player());
+        manager = new EntityManager();
+        manager.add(new Player());
         // immediately show the menu screen.
         showMenuScreen();
     }
@@ -23,7 +24,8 @@ public class TheGame extends Game {
      * Resets the game state.
      */
     public void reset() {
-        manager = new EntityManager(new Player());
+        manager = new EntityManager();
+        manager.add(new Player());
     }
 
     /**
