@@ -33,6 +33,7 @@ public class TheGame extends Game {
     public void reset() {
         manager.reset();
         manager.add(new Player());
+        gameScreen = new GameScreen(this, manager);
     }
 
     /**

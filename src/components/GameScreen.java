@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import entities.EntityManager;
@@ -25,7 +24,7 @@ public class GameScreen extends InputAdapter implements Screen {
     
     private TheGame game;
     private EntityManager manager;
-    
+
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;
     private SpriteBatch batch;
@@ -34,13 +33,9 @@ public class GameScreen extends InputAdapter implements Screen {
     private SpriteBatch hudBatch;
     private BitmapFont font;
 
-    private long prevTime;
-    private boolean switchedContexts;
-
     public GameScreen(TheGame game, EntityManager manager) {
         this.game = game;
         this.manager = manager;
-        this.switchedContexts = false;
 
         // adds Walls around the screen so entities are bounded by the screen.
         manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
@@ -64,14 +59,19 @@ public class GameScreen extends InputAdapter implements Screen {
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         
         Gdx.input.setInputProcessor(this);
-
     }
     
     @Override
     public void render(float delta) {
-        if (switchedContexts) {
-            delta -= (TimeUtils.nanoTime() - prevTime) / 1000000000f;
-            switchedContexts = false;
+        /*
+        Delta becoming to large is currently very problematic,
+        as it causes the collision detection algorithm to break down.
+        Also, it currently only happens when the user drags the screen
+        around. Which should pause the game, but does not. Therefore,
+        ignoring render calls when the delta is too large is advisable.
+        */
+        if (delta > Constants.MAX_DELTA) {
+            return;
         }
         /* UPDATE */
         manager.update(delta);
@@ -88,14 +88,14 @@ public class GameScreen extends InputAdapter implements Screen {
 
         renderer.setProjectionMatrix(gameViewport.getCamera().combined);
         batch.setProjectionMatrix(gameViewport.getCamera().combined);
-        
+
         manager.render(renderer, batch);
-        
+
         hudViewport.apply(true);
-        
+
         hudBatch.setProjectionMatrix(hudViewport.getCamera().combined);
         hudBatch.begin();
-        
+
         hudBatch.end();
     }
     
@@ -108,7 +108,7 @@ public class GameScreen extends InputAdapter implements Screen {
     
     @Override
     public void pause() {
-        
+        game.showMenuScreen();
     }
     
     @Override
@@ -131,8 +131,6 @@ public class GameScreen extends InputAdapter implements Screen {
     
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        prevTime = TimeUtils.nanoTime();
-        switchedContexts = true;
         game.showMenuScreen();
         return true;
     }

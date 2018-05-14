@@ -38,7 +38,7 @@ public class Collisions {
                 o2 instanceof Player && o1 instanceof Laser) {
             Player player = (Player) (o1 instanceof  Player ? o1 : o2);
             //Laser laser = (Laser) (o1 instanceof Player ? o2  : o1);
-            damagePlayer(player/*, laser*/);
+            //damagePlayer(player/*, laser*/);
         }
     }
 
