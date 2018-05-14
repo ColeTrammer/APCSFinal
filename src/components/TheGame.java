@@ -12,11 +12,17 @@ import com.badlogic.gdx.Game;
  */
 public class TheGame extends Game {
     private EntityManager manager;
-    
+    private MenuScreen menuScreen;
+    private GameScreen gameScreen;
+    private EndScreen endScreen;
+
     @Override
     public void create() {
         manager = new ArrayEntityManager();
         manager.add(new Player());
+        menuScreen = new MenuScreen(this);
+        gameScreen = new GameScreen(this, manager);
+        endScreen = new EndScreen(this);
         // immediately show the menu screen.
         showMenuScreen();
     }
@@ -33,20 +39,20 @@ public class TheGame extends Game {
      * Shows the MenuScreen
      */
     public void showMenuScreen() {
-        setScreen(new MenuScreen(this));
+        setScreen(menuScreen);
     }
 
     /**
      * Shows the GameScreen
      */
     public void showGameScreen() {
-        setScreen(new GameScreen(this, manager));
+        setScreen(gameScreen);
     }
 
     /**
      * Shows the EndScreen
      */
     public void showEndScreen () {
-        setScreen(new EndScreen (this));
+        setScreen(endScreen);
     }
 }

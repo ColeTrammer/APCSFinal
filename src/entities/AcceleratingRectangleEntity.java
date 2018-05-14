@@ -3,7 +3,9 @@ package entities;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- *
+ * Represents an entity with an acceleration.
+ * The acceleration is by default added to the
+ * velocity every frame in the update method.
  */
 public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity {
     private Vector2 acceleration;

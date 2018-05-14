@@ -14,16 +14,23 @@ import com.badlogic.gdx.utils.Array;
  */
 public class ArrayEntityManager implements EntityManager {
     private Array<Entity> entities;
+    private Array<Entity> staging;
 
     /**
      * Constructs the ArrayEntityManager to be empty.
      */
     public ArrayEntityManager() {
         entities = new Array<>();
+        staging = new Array<>();
     }
 
     @Override
     public void update(float delta) {
+        // adds all entities in staging to main list.
+        for (Entity entity : staging) {
+            add(entity);
+        }
+        staging.clear();
         /*
         Must iterate backward through the away
         because entities can be removed from the list
@@ -145,5 +152,17 @@ public class ArrayEntityManager implements EntityManager {
     public void expire(Entity entity) {
         entity.removeObserver(this);
         entities.removeValue(entity, true);
+    }
+
+    /**
+     * Sets the entity to be spawned by adding
+     * it to staging. Needs to be a separate array
+     * so that adding spawning entities cannot
+     * interfere with the update loop.
+     * @param entity The entity to be spawned.
+     */
+    @Override
+    public void spawn(Entity entity) {
+        staging.add(entity);
     }
 }

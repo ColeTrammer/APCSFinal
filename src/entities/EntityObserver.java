@@ -13,4 +13,12 @@ public interface EntityObserver {
      * @param entity The entity to expire.
      */
     void expire(Entity entity);
+
+    /**
+     * This method will be called by the entity
+     * to notify the observer that the entity
+     * has spawned another entity.
+     * @param entity The entity to be spawned.
+     */
+    void spawn(Entity entity);
 }

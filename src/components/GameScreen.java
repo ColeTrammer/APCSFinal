@@ -13,11 +13,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import entities.EntityManager;
-import entities.Laser;
+import entities.SpawnTest;
 import entities.Wall;
 import utils.Constants;
-
-import java.util.Random;
 
 /**
  * Screen that displays the Game.
@@ -37,20 +35,21 @@ public class GameScreen extends InputAdapter implements Screen {
     private BitmapFont font;
 
     private long prevTime;
-    private Random random;
+    private boolean switchedContexts;
 
     public GameScreen(TheGame game, EntityManager manager) {
         this.game = game;
         this.manager = manager;
-        this.prevTime = TimeUtils.millis();
-        this.random = new Random();
+        this.switchedContexts = false;
 
         // adds Walls around the screen so entities are bounded by the screen.
         manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
-    }
+
+        manager.add(new SpawnTest());
+   }
     
     @Override
     public void show() {
@@ -65,23 +64,20 @@ public class GameScreen extends InputAdapter implements Screen {
         font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
         
         Gdx.input.setInputProcessor(this);
+
     }
     
     @Override
     public void render(float delta) {
+        if (switchedContexts) {
+            delta -= (TimeUtils.nanoTime() - prevTime) / 1000000000f;
+            switchedContexts = false;
+        }
         /* UPDATE */
         manager.update(delta);
         if (manager.isPlayerExpired()) {
             game.showEndScreen();
             return;
-        }
-
-        if (TimeUtils.timeSinceMillis(prevTime) >= Constants.LASER_SPAWN_INTERVAL) {
-            manager.add(new Laser(Constants.LASER_POSITION_OFFSET, random.nextFloat() * (Constants.WORLD_HEIGHT - Constants.LASER_THICKNESS), Constants.LASER_LENGTH, Constants.LASER_THICKNESS, Constants.LASER_SPEED, 0));
-            //manager.add(new Laser(Constants.WORLD_WIDTH - Constants.LASER_POSITION_OFFSET, random.nextFloat() * (Constants.WORLD_HEIGHT - Constants.LASER_THICKNESS), Constants.LASER_LENGTH, Constants.LASER_THICKNESS, -Constants.LASER_SPEED, 0));
-            //manager.add(new Laser(random.nextFloat() * (Constants.WORLD_WIDTH - Constants.LASER_THICKNESS), Constants.LASER_POSITION_OFFSET, Constants.LASER_THICKNESS, Constants.LASER_LENGTH, 0, Constants.LASER_SPEED));
-            //manager.add(new Laser(random.nextFloat() * (Constants.WORLD_WIDTH - Constants.LASER_THICKNESS), Constants.WORLD_HEIGHT - Constants.LASER_POSITION_OFFSET, Constants.LASER_THICKNESS, Constants.LASER_LENGTH, 0, -Constants.LASER_SPEED));
-            prevTime = TimeUtils.millis();
         }
 
         /* RENDER */
@@ -135,6 +131,8 @@ public class GameScreen extends InputAdapter implements Screen {
     
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        prevTime = TimeUtils.nanoTime();
+        switchedContexts = true;
         game.showMenuScreen();
         return true;
     }

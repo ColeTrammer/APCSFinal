@@ -36,12 +36,16 @@ public class Constants {
 
     public static final float WALL_THICKNESS = 20f;
 
+    /*
     public static final float LASER_POSITION_OFFSET = 0.01f;
     public static final float LASER_SPEED           = PLAYER_SPEED * 2f / 3f;
     public static final float LASER_THICKNESS       = 5f;
     public static final float LASER_LENGTH          = 30f;
     public static final float LASER_SPAWN_INTERVAL  = 100f; // in milliseconds
+    */
 
     public static final String MENU_MESSAGE      = "Click to play!";
     public static final String GAME_OVER_MESSAGE = "You died! Click to play again!";
+
+    private Constants() {}
 }

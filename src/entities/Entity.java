@@ -66,4 +66,13 @@ public interface Entity {
      * be called.
      */
     void expire();
+
+    /**
+     * Method's purpose is to allow the Entity
+     * to tell all of it's observers that it
+     * has spawned a new Entity and to add
+     * this new Entity to it's list of entities.
+     * @param entity The entity to be spawned.
+     */
+    void spawn(Entity entity);
 }

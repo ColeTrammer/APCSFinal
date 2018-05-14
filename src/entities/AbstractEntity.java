@@ -32,4 +32,11 @@ public abstract class AbstractEntity implements Entity {
             observer.expire(this);
         }
     }
+
+    @Override
+    public void spawn(Entity entity) {
+        for (EntityObserver observer : observers) {
+            observer.spawn(entity);
+        }
+    }
 }
