@@ -24,14 +24,28 @@ public class ArrayEntityManager implements EntityManager {
 
     @Override
     public void update(float delta) {
+        /*
+        Must iterate backward through the away
+        because entities can be removed from the list
+        after update or collision by expiring.
+        */
         // Calls the update method of each and every entity.
-        for (Entity entity : entities) {
-            entity.update(delta);
+        for (int i = entities.size - 1; i >= 0; i--) {
+            entities.get(i).update(delta);
         }
 
         // checks for collisions between any two entities.
-        for (int i = 0; i < entities.size - 1; i++) {
-            for (int j = 1; j < entities.size; j++) {
+        for (int i = entities.size - 1; i >= 1; i--) {
+            /*
+            Because the entity at position i can be removed
+            by checkCollision, it must be stored so that this
+            can be detected.
+            */
+            Entity current = entities.get(i);
+            for (int j = i - 1; j >= 0; j--) {
+                if (i >= entities.size || entities.get(i) != current) {
+                    break;
+                }
                 entities.get(i).checkCollision(entities.get(j));
             }
         }
@@ -46,7 +60,6 @@ public class ArrayEntityManager implements EntityManager {
         entities that require the same type of rendering tool
         always are next to each other in entities.
         */
-
         // begin by rendering entities that require the ShapeRenderer.
         renderer.begin(ShapeType.Filled);
         for (Entity entity : entities) {

@@ -10,8 +10,8 @@ public class Wall extends RectangleEntity {
      * Basic Constructor
      * @param x x-coordinate of the entity's position.
      * @param y y-coordinate of the entity's position.
-     * @param width width of the entity
-     * @param height height of the entity
+     * @param width width of the entity.
+     * @param height height of the entity.
      */
     public Wall(float x, float y, float width, float height) {
         super(x, y, width, height);

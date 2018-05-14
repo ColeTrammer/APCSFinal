@@ -14,18 +14,18 @@ import utils.Constants;
  * it's motion is controlled by user input, and it has the
  * highest amount of unique interactions with other Entities.
  */
-public class Player extends MovableRectangleEntity {
+public class Player extends AcceleratingRectangleEntity {
     /**
      * Basic Constructor
      */
     public Player() {
-        super(Constants.WORLD_CENTER.x, Constants.WORLD_CENTER.y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+        super(Constants.WORLD_CENTER.x, 0, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, 0, 0, 0, -Constants.GRAVITY);
     }
 
     @Override
     public void update(float delta) {
-        // resets velocity to zero each frame.
-        setVelocity(0, 0);
+        // resets x-velocity to zero each frame.
+        setVelocityX(0);
 
         // changes velocity based on keyboard input.
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
@@ -34,14 +34,11 @@ public class Player extends MovableRectangleEntity {
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             addVelocityX(Constants.PLAYER_SPEED);
         }
-        if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-            subVelocityY(Constants.PLAYER_SPEED);
-        }
-        if (Gdx.input.isKeyPressed(Keys.UP)) {
-            addVelocityY(Constants.PLAYER_SPEED);
+        if (Gdx.input.isKeyPressed(Keys.SPACE) && getVelocityY() == 0) {
+            setVelocityY(Constants.PLAYER_JUMP_SPEED);
         }
 
-        // applies the velocity to position.
+        // applies the acceleration to the velocity to the position.
         super.update(delta);
     }
 

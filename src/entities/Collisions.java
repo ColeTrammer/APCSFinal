@@ -28,7 +28,7 @@ public class Collisions {
             Wall wall = (Wall) (o1 instanceof MovableRectangleEntity ? o2 : o1);
 
             if (movableRectangleEntity instanceof Laser) {
-                reflect(movableRectangleEntity, wall);
+                movableRectangleEntity.expire();
             } else {
                 moveOutOf(movableRectangleEntity, wall);
             }
@@ -96,8 +96,10 @@ public class Collisions {
         */
         if (Math.abs(distanceToMove.x) <= Math.abs(distanceToMove.y)) {
             movableRectangleEntity.subX(distanceToMove.x);
+            movableRectangleEntity.setVelocityX(0);
         } else {
             movableRectangleEntity.subY(distanceToMove.y);
+            movableRectangleEntity.setVelocityY(0);
         }
     }
 

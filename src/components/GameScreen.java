@@ -9,12 +9,15 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import entities.EntityManager;
 import entities.Laser;
 import entities.Wall;
 import utils.Constants;
+
+import java.util.Random;
 
 /**
  * Screen that displays the Game.
@@ -32,18 +35,21 @@ public class GameScreen extends InputAdapter implements Screen {
     private ScreenViewport hudViewport;
     private SpriteBatch hudBatch;
     private BitmapFont font;
-    
+
+    private long prevTime;
+    private Random random;
+
     public GameScreen(TheGame game, EntityManager manager) {
         this.game = game;
         this.manager = manager;
+        this.prevTime = TimeUtils.millis();
+        this.random = new Random();
 
         // adds Walls around the screen so entities are bounded by the screen.
         manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
         manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
-
-        manager.add(new Laser(0, 0, 80, 20, Constants.PLAYER_SPEED, Constants.PLAYER_SPEED / 3 * 2));
     }
     
     @Override
@@ -68,6 +74,14 @@ public class GameScreen extends InputAdapter implements Screen {
         if (manager.isPlayerExpired()) {
             game.showEndScreen();
             return;
+        }
+
+        if (TimeUtils.timeSinceMillis(prevTime) >= Constants.LASER_SPAWN_INTERVAL) {
+            manager.add(new Laser(Constants.LASER_POSITION_OFFSET, random.nextFloat() * (Constants.WORLD_HEIGHT - Constants.LASER_THICKNESS), Constants.LASER_LENGTH, Constants.LASER_THICKNESS, Constants.LASER_SPEED, 0));
+            //manager.add(new Laser(Constants.WORLD_WIDTH - Constants.LASER_POSITION_OFFSET, random.nextFloat() * (Constants.WORLD_HEIGHT - Constants.LASER_THICKNESS), Constants.LASER_LENGTH, Constants.LASER_THICKNESS, -Constants.LASER_SPEED, 0));
+            //manager.add(new Laser(random.nextFloat() * (Constants.WORLD_WIDTH - Constants.LASER_THICKNESS), Constants.LASER_POSITION_OFFSET, Constants.LASER_THICKNESS, Constants.LASER_LENGTH, 0, Constants.LASER_SPEED));
+            //manager.add(new Laser(random.nextFloat() * (Constants.WORLD_WIDTH - Constants.LASER_THICKNESS), Constants.WORLD_HEIGHT - Constants.LASER_POSITION_OFFSET, Constants.LASER_THICKNESS, Constants.LASER_LENGTH, 0, -Constants.LASER_SPEED));
+            prevTime = TimeUtils.millis();
         }
 
         /* RENDER */
