@@ -1,8 +1,10 @@
-package entities;
+package engine.entities.templates;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import engine.utils.Collisions;
+import engine.entities.Entity;
 
 /**
  * The RectangleEntity class provides a standard implementation
@@ -12,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
  * in the render method.
  */
 public abstract class RectangleEntity extends AbstractEntity {
-    private Rectangle rect;
+    private final Rectangle rect;
 
     /**
      * Basic Constructor
@@ -40,8 +42,8 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     @Override
-    public boolean rendersWithShapeRenderer() {
-        return true;
+    public RenderTool getRenderTool() {
+        return RenderTool.SHAPE_RENDERER;
     }
 
     @Override
@@ -73,7 +75,7 @@ public abstract class RectangleEntity extends AbstractEntity {
         }
     }
 
-    public Rectangle getRect() { return rect; }
+    //public Rectangle getRect() { return rect; }
     public float getX() { return rect.getX(); }
     public float getY() { return rect.getY(); }
     public float getWidth()  { return rect.getWidth();  }

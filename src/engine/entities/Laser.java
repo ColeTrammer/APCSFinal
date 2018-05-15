@@ -1,7 +1,8 @@
-package entities;
+package engine.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import engine.entities.templates.MovableRectangleEntity;
 
 /**
  * The laser class represents a laser that damages the player

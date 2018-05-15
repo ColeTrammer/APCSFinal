@@ -1,6 +1,8 @@
-package entities;
+package engine.entities.templates;
 
 import com.badlogic.gdx.utils.Array;
+import engine.entities.Entity;
+import engine.utils.EntityObserver;
 
 /**
  * The AbstractEntity class provides a standard implementation
@@ -10,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
  * all entities to expire, and nothing else.
  */
 public abstract class AbstractEntity implements Entity {
-    private Array<EntityObserver> observers;
+    private final Array<EntityObserver> observers;
 
     public AbstractEntity() {
         observers = new Array<>();

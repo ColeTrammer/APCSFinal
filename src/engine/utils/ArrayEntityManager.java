@@ -1,9 +1,11 @@
-package entities;
+package engine.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
+import engine.entities.Entity;
+import engine.entities.Player;
 
 /**
  * Simplest implementation of EntityManager. Utilizes
@@ -13,8 +15,8 @@ import com.badlogic.gdx.utils.Array;
  * but using arrays is a simple approach.
  */
 public class ArrayEntityManager implements EntityManager {
-    private Array<Entity> entities;
-    private Array<Entity> staging;
+    private final Array<Entity> entities;
+    private final Array<Entity> staging;
 
     /**
      * Constructs the ArrayEntityManager to be empty.
@@ -60,7 +62,7 @@ public class ArrayEntityManager implements EntityManager {
 
     @Override
     public void render(ShapeRenderer renderer, SpriteBatch batch) {
-        boolean usesShapeRenderer = true;
+        Entity.RenderTool renderTool = Entity.RenderTool.SHAPE_RENDERER;
         boolean switchOccurred = false;
         /*
         NOTE: entities are always separated such that all
@@ -74,16 +76,16 @@ public class ArrayEntityManager implements EntityManager {
             if the entities no longer require the ShapeRenderer
             then update local vars and begin the batch.
             */
-            if (usesShapeRenderer != entity.rendersWithShapeRenderer()) {
+            if (renderTool != entity.getRenderTool()) {
                 switchOccurred = true;
-                usesShapeRenderer = !usesShapeRenderer;
+                renderTool = Entity.RenderTool.SPRITE_BATCH;
                 renderer.end();
                 batch.begin();
             }
             // render the entity based on whether or not it needs the ShapeRenderer
-            if (usesShapeRenderer) {
+            if (renderTool == Entity.RenderTool.SHAPE_RENDERER) {
                 entity.render(renderer);
-            } else {
+            } else  {
                 entity.render(batch);
             }
         }
@@ -104,7 +106,7 @@ public class ArrayEntityManager implements EntityManager {
         by adding entities that require the ShapeRenderer
         to the front, and the other entities to the back.
         */
-        if (entity.rendersWithShapeRenderer()) {
+        if (entity.getRenderTool() == Entity.RenderTool.SHAPE_RENDERER) {
             entities.insert(0, entity);
         } else {
             entities.add(entity);

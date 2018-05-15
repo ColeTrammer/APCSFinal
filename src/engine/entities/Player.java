@@ -1,4 +1,4 @@
-package entities;
+package engine.entities;
 
 import com.badlogic.gdx.Gdx;
 
@@ -7,7 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import utils.Constants;
+import engine.entities.templates.AcceleratingRectangleEntity;
 
 /**
  * Entity that represents the player of the game. As such,
@@ -15,11 +15,16 @@ import utils.Constants;
  * highest amount of unique interactions with other Entities.
  */
 public class Player extends AcceleratingRectangleEntity {
+    private float xSpeed;
+    private float ySpeed;
+
     /**
      * Basic Constructor
      */
-    public Player() {
-        super(Constants.WORLD_CENTER.x, 0, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, 0, 0, 0, -Constants.GRAVITY);
+    public Player(float x, float y, float width, float height, float xSpeed, float jumpHeight, float gravity) {
+        super(x, y, width, height, 0, 0, 0, -gravity);
+        this.xSpeed = xSpeed;
+        this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
     }
 
     @Override
@@ -29,13 +34,13 @@ public class Player extends AcceleratingRectangleEntity {
 
         // changes velocity based on keyboard input.
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-            subVelocityX(Constants.PLAYER_SPEED);
+            subVelocityX(xSpeed);
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            addVelocityX(Constants.PLAYER_SPEED);
+            addVelocityX(xSpeed);
         }
         if (Gdx.input.isKeyPressed(Keys.SPACE) && getVelocityY() == 0) {
-            setVelocityY(Constants.PLAYER_JUMP_SPEED);
+            setVelocityY(ySpeed);
         }
 
         // applies the acceleration to the velocity to the position.

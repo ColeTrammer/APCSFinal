@@ -1,4 +1,6 @@
-package entities;
+package engine.entities;
+
+import engine.utils.EntityObserver;
 
 /**
  * The Entity interface is simply polymorphic mechanism
@@ -25,10 +27,18 @@ public interface Entity {
     /**
      * Method's purpose it to allow entities to either be drawn with a
      * ShapeRenderer or SpriteBatch. Must be respected when calling render.
-     * @return true if the Entity must be rendered with a ShapeRenderer
-     * false if the Entity must be rendered with a SpriteBatch
+     * @return SHAPE_RENDERER if the Entity must be rendered with a ShapeRenderer
+     * SPRITE_BATCH if the Entity must be rendered with a SpriteBatch
      */
-    boolean rendersWithShapeRenderer();
+    RenderTool getRenderTool();
+
+    /**
+     * Enum that represents the different render tools entity's can use to render
+     * themselves.
+     */
+    enum RenderTool {
+        SHAPE_RENDERER, SPRITE_BATCH
+    }
 
     /**
      * Method's purpose is to be able to tell when to entities collide,

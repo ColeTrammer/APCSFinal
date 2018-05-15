@@ -1,4 +1,4 @@
-package components;
+package components.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputAdapter;
@@ -11,10 +11,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import entities.EntityManager;
-import entities.SpawnTest;
-import entities.Wall;
-import utils.Constants;
+import components.Constants;
+import components.TheGame;
+import engine.utils.EntityManager;
+import engine.entities.SpawnTest;
+import engine.entities.Wall;
 
 /**
  * Screen that displays the Game.
@@ -22,8 +23,8 @@ import utils.Constants;
 public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
-    private TheGame game;
-    private EntityManager manager;
+    private final TheGame game;
+    private final EntityManager manager;
 
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;

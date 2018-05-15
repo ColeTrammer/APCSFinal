@@ -1,4 +1,4 @@
-package components;
+package components.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import utils.Constants;
+import components.Constants;
+import components.TheGame;
 
 /**
  * Screen that is displayed when the game ends.
@@ -18,7 +19,7 @@ import utils.Constants;
 public class EndScreen extends InputAdapter implements Screen {
     //public static final String TAG = EndScreen.class.getName();
 
-    private TheGame game;
+    private final TheGame game;
 
     private FitViewport viewport;
     private SpriteBatch batch;

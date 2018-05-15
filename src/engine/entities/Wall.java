@@ -1,4 +1,6 @@
-package entities;
+package engine.entities;
+
+import engine.entities.templates.RectangleEntity;
 
 /**
  * An entity that other entities cannot move through. It

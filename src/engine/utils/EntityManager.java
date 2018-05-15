@@ -1,7 +1,8 @@
-package entities;
+package engine.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import engine.entities.Entity;
 
 /**
  * Interface used to keep track of all the entities currently

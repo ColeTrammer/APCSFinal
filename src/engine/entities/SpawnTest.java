@@ -1,4 +1,6 @@
-package entities;
+package engine.entities;
+
+import engine.entities.templates.AbstractEntity;
 
 public class SpawnTest extends AbstractEntity {
     private float elapsedTime;
@@ -21,7 +23,7 @@ public class SpawnTest extends AbstractEntity {
     public void render(Object renderTool) {}
 
     @Override
-    public boolean rendersWithShapeRenderer() { return true; }
+    public RenderTool getRenderTool() { return RenderTool.SPRITE_BATCH; }
 
     @Override
     public void checkCollision(Entity other) {}

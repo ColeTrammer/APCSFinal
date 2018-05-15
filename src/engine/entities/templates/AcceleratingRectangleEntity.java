@@ -1,4 +1,4 @@
-package entities;
+package engine.entities.templates;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  * velocity every frame in the update method.
  */
 public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity {
-    private Vector2 acceleration;
+    private final Vector2 acceleration;
 
     /**
      * Basic Constructor

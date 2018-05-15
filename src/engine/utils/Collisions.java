@@ -1,6 +1,12 @@
-package entities;
+package engine.utils;
 
 import com.badlogic.gdx.math.Vector2;
+import engine.entities.Entity;
+import engine.entities.Laser;
+import engine.entities.Player;
+import engine.entities.Wall;
+import engine.entities.templates.MovableRectangleEntity;
+import engine.entities.templates.RectangleEntity;
 
 /**
  * A static class with methods that processes collisions that occur
@@ -38,7 +44,7 @@ public class Collisions {
                 o2 instanceof Player && o1 instanceof Laser) {
             Player player = (Player) (o1 instanceof  Player ? o1 : o2);
             //Laser laser = (Laser) (o1 instanceof Player ? o2  : o1);
-            //damagePlayer(player/*, laser*/);
+            damagePlayer(player/*, laser*/);
         }
     }
 
@@ -103,30 +109,30 @@ public class Collisions {
         }
     }
 
-    /**
-     * Reflects the movableRectangleEntity by moving it's position to
-     * be on the edge of the rectangleEntity it collides with, and inverting
-     * it's velocity appropriately such that it bounces off the rectangleEntity
-     * seamlessly.
-     * @param movableRectangleEntity the MovableRectangleEntity to reflect off of the rectangleEntity
-     * @param rectangleEntity the RectangleEntity being reflected off.
-     */
-    private static void reflect(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
-        Vector2 distanceToMove = distanceToMoveOutOf(movableRectangleEntity, rectangleEntity);
-
-        /*
-        Uses information about the shortest distance to travel to
-        fix the movableRectangleEntity to adjust it's position
-        and velocity correctly.
-        */
-        if (Math.abs(distanceToMove.x) <= Math.abs(distanceToMove.y)) {
-            movableRectangleEntity.invertVelocityX();
-            movableRectangleEntity.subX(distanceToMove.x);
-        } else {
-            movableRectangleEntity.invertVelocityY();
-            movableRectangleEntity.subY(distanceToMove.y);
-        }
-    }
+//    /**
+//     * Reflects the movableRectangleEntity by moving it's position to
+//     * be on the edge of the rectangleEntity it collides with, and inverting
+//     * it's velocity appropriately such that it bounces off the rectangleEntity
+//     * seamlessly.
+//     * @param movableRectangleEntity the MovableRectangleEntity to reflect off of the rectangleEntity
+//     * @param rectangleEntity the RectangleEntity being reflected off.
+//    */
+//    private static void reflect(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
+//        Vector2 distanceToMove = distanceToMoveOutOf(movableRectangleEntity, rectangleEntity);
+//
+//        /*
+//        Uses information about the shortest distance to travel to
+//        fix the movableRectangleEntity to adjust it's position
+//        and velocity correctly.
+//        */
+//        if (Math.abs(distanceToMove.x) <= Math.abs(distanceToMove.y)) {
+//            movableRectangleEntity.invertVelocityX();
+//            movableRectangleEntity.subX(distanceToMove.x);
+//        } else {
+//            movableRectangleEntity.invertVelocityY();
+//            movableRectangleEntity.subY(distanceToMove.y);
+//        }
+//    }
 
     /**
      * Damages the player.

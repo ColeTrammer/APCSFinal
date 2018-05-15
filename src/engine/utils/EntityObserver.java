@@ -1,4 +1,6 @@
-package entities;
+package engine.utils;
+
+import engine.entities.Entity;
 
 /**
  * An interface that describes the behavior necessary

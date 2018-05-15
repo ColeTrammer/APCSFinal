@@ -1,4 +1,4 @@
-package utils;
+package components;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -33,7 +33,6 @@ public class Constants {
     public static final float PLAYER_HEIGHT      = 36f;
     public static final float PLAYER_SPEED       = 5 * FPS;
     public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 3f;
-    public static final float PLAYER_JUMP_SPEED  = (float) Math.sqrt(2 * GRAVITY * PLAYER_JUMP_HEIGHT);
 
     public static final float WALL_THICKNESS = 20f;
 

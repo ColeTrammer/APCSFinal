@@ -1,4 +1,4 @@
-package entities;
+package engine.entities.templates;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
  * the update method.
  */
 public abstract class MovableRectangleEntity extends RectangleEntity {
-    private Vector2 velocity;
+    private final Vector2 velocity;
 
     /**
      * Basic Constructor
@@ -49,7 +49,7 @@ public abstract class MovableRectangleEntity extends RectangleEntity {
     public void subVelocityX(float x) { velocity.set(velocity.x - x, velocity.y); }
     //public void subVelocityY(float y) { velocity.set(velocity.x, velocity.y - y); }
 
-    public void invertVelocityX() { velocity.set(-velocity.x, velocity.y); }
-    public void invertVelocityY() { velocity.set(velocity.x, -velocity.y); }
+    //public void invertVelocityX() { velocity.set(-velocity.x, velocity.y); }
+    //public void invertVelocityY() { velocity.set(velocity.x, -velocity.y); }
     //public void invertVelocity() { velocity.set(-velocity.x, -velocity.y); }
 }
