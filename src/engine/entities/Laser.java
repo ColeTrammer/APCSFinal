@@ -2,7 +2,9 @@ package engine.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import engine.entities.templates.MovableRectangleEntity;
+import engine.utils.Direction;
 
 /**
  * The laser class represents a laser that damages the player
@@ -13,7 +15,7 @@ import engine.entities.templates.MovableRectangleEntity;
  */
 public class Laser extends MovableRectangleEntity {
     private float targetLength;
-    private ExpandDirection expandDirection;
+    private Direction expandDirection;
 
     /**
      * Constructs a laser that expands in the direction that
@@ -26,7 +28,9 @@ public class Laser extends MovableRectangleEntity {
      * @param velY   y-component of the entity's velocity. Must be non-zero if height > width.
      */
     public Laser(float x, float y, float width, float height, float velX, float velY) {
-        this(x, y, width, height, velX, velY, width >= height ? ExpandDirection.X : ExpandDirection.Y);
+        this(x, y, width, height, velX, velY, width >= height ?
+                                                    velX > 0 ? Direction.RIGHT : Direction.LEFT :
+                                                    velY > 0 ? Direction.UP    : Direction.DOWN);
     }
 
     /**
@@ -45,55 +49,65 @@ public class Laser extends MovableRectangleEntity {
      * @param velY   y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
-    public Laser(float x, float y, float width, float height, float velX, float velY, ExpandDirection expandDirection) {
+    public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
         super(x, y, width, height, velX, velY);
         this.expandDirection = expandDirection;
-        if (expandDirection == ExpandDirection.X && velX == 0 || expandDirection == ExpandDirection.Y && velY == 0) {
+        if (expandDirection.isHorizontal() && velX == 0 || expandDirection.isVertical() && velY == 0) {
             throw new IllegalArgumentException(String.format("A laser cannot expand in the %s direction and have 0 %s velocity.", expandDirection.name(), expandDirection.name()));
         }
-        if (expandDirection == ExpandDirection.X) {
+        if (expandDirection.isHorizontal()) {
             setWidth(0);
             targetLength = width;
-        } else if (expandDirection == ExpandDirection.Y) {
+        } else if (expandDirection.isVertical()) {
             setHeight(0);
             targetLength = height;
         }
     }
 
-    /**
-     * Specifies the directions that a laser can expand in.
-     * Does not expand if the direction is NONE.
-     */
-    public enum ExpandDirection {
-        X, Y, NONE
-    }
-
     @Override
     public void update(float delta) {
-        if (expandDirection == ExpandDirection.X) {
-            if (getWidth() < targetLength) {
-                if (getVelocityX() > 0) {
-                    addWidth(getVelocityX() * delta);
-                } else {
-                    addWidth(-getVelocityX() * delta);
-                    addX(getVelocityX() * delta);
-                }
-            } else {
-                expandDirection = ExpandDirection.NONE;
+        if (expandDirection != Direction.NONE) {
+            expand(delta);
+        }
+        // not else because expand can change the direction to NONE once it finishes.
+        if (expandDirection == Direction.NONE) {
+            if (getWidth() < 0 || getHeight() < 0) {
+                expire();
             }
-        } else if (expandDirection == ExpandDirection.Y) {
-            if (getHeight() < targetLength) {
-                if (getVelocityY() > 0) {
-                    addHeight(getVelocityY() * delta);
-                } else {
-                    addHeight(-getVelocityY() * delta);
-                    addY(getVelocityY() * delta);
-                }
-            } else {
-                expandDirection = ExpandDirection.NONE;
-            }
-        } else {
             super.update(delta);
+        }
+    }
+
+    /**
+     * Expands the laser in the direction of expansion
+     * in accordance with the velocity in that direction. Once
+     * expansion is no longer needed, updates the direction to
+     * NONE.
+     * @param delta time step from when this was last called.
+     */
+    private void expand(float delta) {
+        if (expandDirection.isHorizontal()) {
+            if (getWidth() < targetLength) {
+                if (expandDirection == Direction.RIGHT) {
+                    addWidth(Math.abs(getVelocityX()) * delta);
+                } else {
+                    addWidth(-Math.abs(getVelocityX()) * delta);
+                    addX(Math.abs(getVelocityX()) * delta);
+                }
+            } else {
+                expandDirection = Direction.NONE;
+            }
+        } else if (expandDirection.isVertical()) {
+            if (getHeight() < targetLength) {
+                if (expandDirection == Direction.UP) {
+                    addHeight(Math.abs(getVelocityY()) * delta);
+                } else {
+                    addHeight(-Math.abs(getVelocityY()) * delta);
+                    addY(Math.abs(getVelocityY()) * delta);
+                }
+            } else {
+                expandDirection = Direction.NONE;
+            }
         }
     }
 
@@ -102,5 +116,15 @@ public class Laser extends MovableRectangleEntity {
         ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.RED);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    @Override
+    public void moveOutOf(Vector2 displacement) {
+        if (getVelocityX() != 0) {
+            addWidth(displacement.x);
+        }
+        if (getVelocityY() != 0) {
+            addHeight(displacement.y);
+        }
     }
 }

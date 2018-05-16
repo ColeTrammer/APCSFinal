@@ -3,10 +3,10 @@ package components;
 import components.screens.EndScreen;
 import components.screens.GameScreen;
 import components.screens.MenuScreen;
-import engine.utils.ArrayEntityManager;
 import engine.utils.EntityManager;
 import engine.entities.Player;
 import com.badlogic.gdx.Game;
+import engine.utils.ListEntityManager;
 
 /**
  * Class that represents the Game itself. Keeps track of
@@ -21,8 +21,8 @@ public class TheGame extends Game {
 
     @Override
     public void create() {
-        manager = new ArrayEntityManager();
-        manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_CENTER.y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
+        manager = new ListEntityManager();
+        manager.add(new Player(Constants.WORLD_CENTER.x, 0, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this, manager);
         endScreen = new EndScreen(this);
@@ -36,7 +36,7 @@ public class TheGame extends Game {
      */
     public void reset() {
         manager.reset();
-        manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_CENTER.y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
+        manager.add(new Player(Constants.WORLD_CENTER.x, 0, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
         gameScreen = new GameScreen(this, manager);
     }
 

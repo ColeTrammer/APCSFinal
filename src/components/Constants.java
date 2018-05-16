@@ -7,11 +7,11 @@ import com.badlogic.gdx.math.Vector2;
  * This class contains all the constants used throughout the codebase
  * to allow for easy modification of tunable effects, appearances, and interactions.
  */
-public class Constants {
+public final class Constants {
     public static final int   SCREEN_WIDTH  = 1200;
     public static final int   SCREEN_HEIGHT = 800;
     public static final int   FPS           = 60;
-    public static final float MAX_DELTA     = 1f / FPS * 2;
+    public static final float MAX_DELTA     = 0.2f;
     
     public static final float   MENU_WORLD_WIDTH  = SCREEN_WIDTH;
     public static final float   MENU_WORLD_HEIGHT = SCREEN_HEIGHT;

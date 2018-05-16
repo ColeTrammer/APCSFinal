@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import components.Constants;
 import components.TheGame;
+import engine.entities.OneWayWall;
+import engine.utils.Direction;
 import engine.utils.EntityManager;
 import engine.entities.SpawnTest;
 import engine.entities.Wall;
@@ -45,6 +47,9 @@ public class GameScreen extends InputAdapter implements Screen {
         manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
 
         manager.add(new SpawnTest());
+        manager.add(new OneWayWall(150, 100, 200, 20, Direction.UP));
+        manager.add(new OneWayWall(250, 250, 200, 20, Direction.UP));
+        manager.add(new OneWayWall(450, 400, 200, 20, Direction.UP));
    }
     
     @Override

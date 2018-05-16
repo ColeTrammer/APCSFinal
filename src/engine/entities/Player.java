@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import engine.entities.templates.AcceleratingRectangleEntity;
 
 /**
@@ -19,11 +20,21 @@ public class Player extends AcceleratingRectangleEntity {
     private float ySpeed;
 
     /**
-     * Basic Constructor
+     * Constructs the Player with the given initial position,
+     * dimensions, speed of motion, jump height, and force of
+     * gravity.
+     * @param x x-coordinate of the entity's position.
+     * @param y y-coordinate of the entity's position.
+     * @param width width of the entity.
+     * @param height height of the entity.
+     * @param xSpeed Speed of the player's horizontal motion.
+     * @param jumpHeight Max height of the player's jump.
+     * @param gravity Strength of gravity acting on the player.
      */
     public Player(float x, float y, float width, float height, float xSpeed, float jumpHeight, float gravity) {
         super(x, y, width, height, 0, 0, 0, -gravity);
         this.xSpeed = xSpeed;
+        // basic kinematics equation (v^2 = v_0^2 + 2 * a * x) with v_0 = 0
         this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
     }
 
@@ -52,6 +63,14 @@ public class Player extends AcceleratingRectangleEntity {
         ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.BLUE);
         renderer.rect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    @Override
+    public void moveOutOf(Vector2 displacement) {
+        super.moveOutOf(displacement);
+        if (displacement.y > 0) {
+            setVelocityY(0);
+        }
     }
 
     /**

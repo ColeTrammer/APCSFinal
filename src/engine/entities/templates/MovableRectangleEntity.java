@@ -1,6 +1,7 @@
 package engine.entities.templates;
 
 import com.badlogic.gdx.math.Vector2;
+import engine.entities.behaviors.Movable;
 
 /**
  * Simple extension of the AbstractEntity class
@@ -8,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
  * and then using it to update it's position in
  * the update method.
  */
-public abstract class MovableRectangleEntity extends RectangleEntity {
+public abstract class MovableRectangleEntity extends RectangleEntity implements Movable {
     private final Vector2 velocity;
 
     /**
@@ -29,6 +30,12 @@ public abstract class MovableRectangleEntity extends RectangleEntity {
     public void update(float delta) {
         addX(velocity.x * delta);
         addY(velocity.y * delta);
+    }
+
+    @Override
+    public void moveOutOf(Vector2 displacement) {
+        addX(displacement.x);
+        addY(displacement.y);
     }
 
     public Vector2 getVelocity() { return velocity; }

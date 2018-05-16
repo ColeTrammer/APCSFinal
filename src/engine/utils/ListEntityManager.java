@@ -3,27 +3,29 @@ package engine.utils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Array;
 import engine.entities.Entity;
 import engine.entities.Player;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Simplest implementation of EntityManager. Utilizes
- * the data structure of an Array. Because the
+ * the data structure of an List. Because the
  * entities must remain sorted based off how they are
  * rendered, it is possible another data type is more efficient,
- * but using arrays is a simple approach.
+ * but using lists is a simple approach.
  */
-public class ArrayEntityManager implements EntityManager {
-    private final Array<Entity> entities;
-    private final Array<Entity> staging;
+public class ListEntityManager implements EntityManager {
+    private final List<Entity> entities;
+    private final List<Entity> staging;
 
     /**
      * Constructs the ArrayEntityManager to be empty.
      */
-    public ArrayEntityManager() {
-        entities = new Array<>();
-        staging = new Array<>();
+    public ListEntityManager() {
+        entities = new ArrayList<>();
+        staging = new ArrayList<>();
     }
 
     @Override
@@ -33,19 +35,19 @@ public class ArrayEntityManager implements EntityManager {
             add(entity);
         }
         staging.clear();
-        System.out.printf("Num entities: %d%n", entities.size);
+        System.out.printf("Num entities: %d%n", entities.size());
         /*
         Must iterate backward through the away
         because entities can be removed from the list
         after update or collision by expiring.
         */
         // Calls the update method of each and every entity.
-        for (int i = entities.size - 1; i >= 0; i--) {
+        for (int i = entities.size() - 1; i >= 0; i--) {
             entities.get(i).update(delta);
         }
 
         // checks for collisions between any two entities.
-        for (int i = entities.size - 1; i >= 1; i--) {
+        for (int i = entities.size() - 1; i >= 1; i--) {
             /*
             Because the entity at position i can be removed
             by checkCollision, it must be stored so that this
@@ -53,7 +55,7 @@ public class ArrayEntityManager implements EntityManager {
             */
             Entity current = entities.get(i);
             for (int j = i - 1; j >= 0; j--) {
-                if (i >= entities.size || entities.get(i) != current) {
+                if (i >= entities.size() || entities.get(i) != current) {
                     break;
                 }
                 entities.get(i).checkCollision(entities.get(j));
@@ -108,7 +110,7 @@ public class ArrayEntityManager implements EntityManager {
         to the front, and the other entities to the back.
         */
         if (entity.getRenderTool() == Entity.RenderTool.SHAPE_RENDERER) {
-            entities.insert(0, entity);
+            entities.add(0, entity);
         } else {
             entities.add(entity);
         }
@@ -138,9 +140,9 @@ public class ArrayEntityManager implements EntityManager {
         observers and deletes it's own
         reference to every entity.
         */
-        for (int i = entities.size - 1; i >= 0; i--) {
+        for (int i = entities.size() - 1; i >= 0; i--) {
             entities.get(i).removeObserver(this);
-            entities.removeIndex(i);
+            entities.remove(i);
         }
     }
 
@@ -154,7 +156,7 @@ public class ArrayEntityManager implements EntityManager {
     @Override
     public void expire(Entity entity) {
         entity.removeObserver(this);
-        entities.removeValue(entity, true);
+        entities.remove(entity);
     }
 
     /**

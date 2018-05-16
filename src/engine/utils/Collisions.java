@@ -4,7 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import engine.entities.Entity;
 import engine.entities.Laser;
 import engine.entities.Player;
-import engine.entities.Wall;
+import engine.entities.behaviors.Impassable;
+import engine.entities.behaviors.Movable;
 import engine.entities.templates.MovableRectangleEntity;
 import engine.entities.templates.RectangleEntity;
 
@@ -28,23 +29,18 @@ public class Collisions {
      * @param o2 The second object in the collision.
      */
     public static void collided(Entity o1, Entity o2) {
-        if (o1 instanceof MovableRectangleEntity && o2 instanceof Wall ||
-                o2 instanceof MovableRectangleEntity && o1 instanceof Wall) {
-            MovableRectangleEntity movableRectangleEntity = (MovableRectangleEntity) (o1 instanceof MovableRectangleEntity ? o1 : o2);
-            Wall wall = (Wall) (o1 instanceof MovableRectangleEntity ? o2 : o1);
-
-            if (movableRectangleEntity instanceof Laser) {
-                movableRectangleEntity.expire();
-            } else {
-                moveOutOf(movableRectangleEntity, wall);
-            }
+        if (o1 instanceof Movable && o2 instanceof Impassable ||
+                o2 instanceof Movable && o1 instanceof Impassable) {
+            Movable movable = (Movable) (o1 instanceof Movable ? o1 : o2);
+            Impassable impassable = (Impassable) (o1 instanceof Impassable ? o1 : o2);
+            impassable.expel(movable);
         }
 
         if (o1 instanceof Player && o2 instanceof Laser ||
                 o2 instanceof Player && o1 instanceof Laser) {
             Player player = (Player) (o1 instanceof  Player ? o1 : o2);
             //Laser laser = (Laser) (o1 instanceof Player ? o2  : o1);
-            damagePlayer(player/*, laser*/);
+            //damagePlayer(player/*, laser*/);
         }
     }
 
@@ -87,25 +83,23 @@ public class Collisions {
     }
 
     /**
-     * Moves the movableRectangleEntity such that it
+     * Moves the overlapping entity such that it
      * will now sit right next to the other rectangleEntity,
      * such that there is no distance between the two.
-     * @param movableRectangleEntity MovableRectangleEntity that needs to move.
-     * @param rectangleEntity RectangleEntity that is being moved out of.
+     * @param overlapping MovableRectangleEntity that needs to move.
+     * @param impassable RectangleEntity that is being moved out of.
      */
-    private static void moveOutOf(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
-        Vector2 distanceToMove = distanceToMoveOutOf(movableRectangleEntity, rectangleEntity);
+    public static Vector2 expelDistance(MovableRectangleEntity overlapping, RectangleEntity impassable) {
+        Vector2 distanceToMove = distanceToMoveOutOf(overlapping, impassable);
 
         /*
         finds the smallest distance the entity must move to no longer overlap
         the wall, and then shifts the entity over that distance.
         */
         if (Math.abs(distanceToMove.x) <= Math.abs(distanceToMove.y)) {
-            movableRectangleEntity.subX(distanceToMove.x);
-            movableRectangleEntity.setVelocityX(0);
+            return new Vector2(-distanceToMove.x, 0);
         } else {
-            movableRectangleEntity.subY(distanceToMove.y);
-            movableRectangleEntity.setVelocityY(0);
+            return new Vector2(0, -distanceToMove.y);
         }
     }
 
@@ -117,7 +111,7 @@ public class Collisions {
 //     * @param movableRectangleEntity the MovableRectangleEntity to reflect off of the rectangleEntity
 //     * @param rectangleEntity the RectangleEntity being reflected off.
 //    */
-//    private static void reflect(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
+//    public static void reflect(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
 //        Vector2 distanceToMove = distanceToMoveOutOf(movableRectangleEntity, rectangleEntity);
 //
 //        /*
