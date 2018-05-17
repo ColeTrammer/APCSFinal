@@ -20,7 +20,7 @@ public class SpawnTest extends AbstractEntity {
     @Override
     public void update(float delta) {
         elapsedTime += delta;
-        if (elapsedTime > 0.01f) {
+        if (elapsedTime > 0.5f) {
             spawn(new Laser(0, ((float) Math.random()) * (Constants.WORLD_HEIGHT - 20), 40, 10, 500, 0));
             elapsedTime = 0;
         }
