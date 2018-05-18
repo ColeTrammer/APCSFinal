@@ -12,12 +12,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import components.Constants;
+import components.Level;
 import components.TheGame;
-import engine.entities.OneWayWall;
-import engine.utils.Direction;
 import engine.utils.EntityManager;
-import engine.entities.SpawnTest;
-import engine.entities.Wall;
 
 /**
  * Screen that displays the Game.
@@ -26,7 +23,7 @@ public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
     private final TheGame game;
-    private final EntityManager manager;
+    private Level level;
 
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;
@@ -36,20 +33,9 @@ public class GameScreen extends InputAdapter implements Screen {
     private SpriteBatch hudBatch;
     private BitmapFont font;
 
-    public GameScreen(TheGame game, EntityManager manager) {
+    public GameScreen(TheGame game) {
         this.game = game;
-        this.manager = manager;
-
-        // adds Walls around the screen so entities are bounded by the screen.
-        manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
-
-        manager.add(new SpawnTest());
-        manager.add(new OneWayWall(150, 100, 200, 20, Direction.UP));
-        manager.add(new OneWayWall(250, 250, 200, 20, Direction.UP));
-        manager.add(new OneWayWall(450, 400, 200, 20, Direction.UP));
+        this.level = new Level();
    }
     
     @Override
@@ -80,8 +66,8 @@ public class GameScreen extends InputAdapter implements Screen {
             return;
         }
         /* UPDATE */
-        manager.update(delta);
-        if (manager.isPlayerExpired()) {
+        level.update(delta);
+        if (level.isPlayerExpired()) {
             game.showEndScreen();
             return;
         }
@@ -95,7 +81,7 @@ public class GameScreen extends InputAdapter implements Screen {
         renderer.setProjectionMatrix(gameViewport.getCamera().combined);
         batch.setProjectionMatrix(gameViewport.getCamera().combined);
 
-        manager.render(renderer, batch);
+        level.render(renderer, batch);
 
         hudViewport.apply(true);
 

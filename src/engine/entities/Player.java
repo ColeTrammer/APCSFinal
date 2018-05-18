@@ -50,6 +50,12 @@ public class Player extends AcceleratingRectangleEntity {
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             addVelocityX(xSpeed);
         }
+        /*
+        This method of determining jump-ability is flawed. The player has 0 y-velocity
+        at the height of its jump. However, floating point math means that it is unlikely
+        that it will actually equal zero due to acceleration. Therefore, it will stay in
+        as a FEATURE.
+        */
         if (Gdx.input.isKeyPressed(Keys.SPACE) && getVelocityY() == 0) {
             setVelocityY(ySpeed);
         }
