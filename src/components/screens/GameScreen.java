@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import components.Constants;
 import components.Level;
 import components.TheGame;
-import engine.utils.EntityManager;
 
 /**
  * Screen that displays the Game.
@@ -23,7 +22,7 @@ public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
     private final TheGame game;
-    private Level level;
+    private final Level level;
 
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;

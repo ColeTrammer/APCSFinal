@@ -14,7 +14,7 @@ import engine.utils.EntityObserver;
 public abstract class AbstractEntity implements Entity {
     private final Array<EntityObserver> observers;
 
-    public AbstractEntity() {
+    protected AbstractEntity() {
         observers = new Array<>();
     }
 

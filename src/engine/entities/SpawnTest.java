@@ -7,6 +7,7 @@ import engine.entities.templates.AbstractEntity;
  * A class simply used to test the spawn functionality
  * of the entity manager.
  */
+@SuppressWarnings("unused")
 public class SpawnTest extends AbstractEntity {
     private float elapsedTime;
 

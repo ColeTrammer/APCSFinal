@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * rendered, it is possible another data type is more efficient,
  * but using lists is a simple approach.
  */
+@SuppressWarnings("unused")
 public class ListEntityManager implements EntityManager {
     private final List<Entity> entities;
     private final List<Entity> staging;
@@ -35,7 +36,6 @@ public class ListEntityManager implements EntityManager {
             add(entity);
         }
         staging.clear();
-        System.out.printf("Num entities: %d%n", entities.size());
         /*
         Must iterate backward through the away
         because entities can be removed from the list
@@ -130,20 +130,6 @@ public class ListEntityManager implements EntityManager {
             }
         }
         return true;
-    }
-
-    @Override
-    public void reset() {
-        /*
-        iterates through the list
-        and then removes itself from the
-        observers and deletes it's own
-        reference to every entity.
-        */
-        for (int i = entities.size() - 1; i >= 0; i--) {
-            entities.get(i).removeObserver(this);
-            entities.remove(i);
-        }
     }
 
     /**

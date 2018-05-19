@@ -2,8 +2,8 @@ package engine.utils;
 
 import com.badlogic.gdx.math.Vector2;
 import engine.entities.Entity;
-import engine.entities.Laser;
-import engine.entities.Player;
+import engine.entities.behaviors.Afflictable;
+import engine.entities.behaviors.Afflicter;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.templates.MovableRectangleEntity;
@@ -20,7 +20,7 @@ import engine.entities.templates.RectangleEntity;
  * would determine which entity was responsible for handling the collision.
  * Instead, all collision logic is handled by this class.
  */
-public class Collisions {
+public final class Collisions {
     /**
      * Handles the collision between any two entities.
      * Must be called if two entities overlap.
@@ -36,11 +36,11 @@ public class Collisions {
             impassable.expel(movable);
         }
 
-        if (o1 instanceof Player && o2 instanceof Laser ||
-                o2 instanceof Player && o1 instanceof Laser) {
-            Player player = (Player) (o1 instanceof  Player ? o1 : o2);
-            //Laser laser = (Laser) (o1 instanceof Player ? o2  : o1);
-            damagePlayer(player/*, laser*/);
+        if (o1 instanceof Afflictable && o2 instanceof Afflicter ||
+                o2 instanceof Afflictable && o1 instanceof Afflicter) {
+            Afflictable afflictable = (Afflictable) (o1 instanceof Afflictable ? o1 : o2);
+            Afflicter afflicter = (Afflicter) (o1 instanceof Afflicter ? o1 : o2);
+            afflicter.giveDamage(afflictable);
         }
     }
 
@@ -103,35 +103,5 @@ public class Collisions {
         }
     }
 
-//    /**
-//     * Reflects the movableRectangleEntity by moving it's position to
-//     * be on the edge of the rectangleEntity it collides with, and inverting
-//     * it's velocity appropriately such that it bounces off the rectangleEntity
-//     * seamlessly.
-//     * @param movableRectangleEntity the MovableRectangleEntity to reflect off of the rectangleEntity
-//     * @param rectangleEntity the RectangleEntity being reflected off.
-//    */
-//    public static void reflect(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
-//        Vector2 distanceToMove = distanceToMoveOutOf(movableRectangleEntity, rectangleEntity);
-//
-//        /*
-//        Uses information about the shortest distance to travel to
-//        fix the movableRectangleEntity to adjust it's position
-//        and velocity correctly.
-//        */
-//        if (Math.abs(distanceToMove.x) <= Math.abs(distanceToMove.y)) {
-//            movableRectangleEntity.invertVelocityX();
-//            movableRectangleEntity.subX(distanceToMove.x);
-//        } else {
-//            movableRectangleEntity.invertVelocityY();
-//            movableRectangleEntity.subY(distanceToMove.y);
-//        }
-//    }
-
-    /**
-     * Damages the player.
-     * @param player Player in collision.
-     * //@param laser Laser in collision.
-     */
-    private static void damagePlayer(Player player/*, Laser laser*/) { player.damage(); }
+    private Collisions() {}
 }

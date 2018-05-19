@@ -3,6 +3,8 @@ package engine.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import engine.entities.behaviors.Afflictable;
+import engine.entities.behaviors.Afflicter;
 import engine.entities.templates.MovableRectangleEntity;
 import engine.utils.Direction;
 
@@ -13,7 +15,7 @@ import engine.utils.Direction;
  * can expand it's dimensions over time to give the illusion
  * of coming from outside of the screen.
  */
-public class Laser extends MovableRectangleEntity {
+public class Laser extends MovableRectangleEntity implements Afflicter {
     private float targetLength;
     private Direction expandDirection;
 
@@ -49,7 +51,7 @@ public class Laser extends MovableRectangleEntity {
      * @param velY   y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
-    public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
+    private Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
         super(x, y, width, height, velX, velY);
         this.expandDirection = expandDirection;
         if (expandDirection.isHorizontal() && velX == 0 || expandDirection.isVertical() && velY == 0) {
@@ -115,7 +117,7 @@ public class Laser extends MovableRectangleEntity {
     public void render(Object rendererTool) {
         ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.RED);
-        renderer.rect(getX(), getY(), getWidth(), getHeight());
+        super.render(renderer);
     }
 
     @Override
@@ -126,5 +128,10 @@ public class Laser extends MovableRectangleEntity {
         if (getVelocityY() != 0) {
             addHeight(displacement.y);
         }
+    }
+
+    @Override
+    public void giveDamage(Afflictable afflictable) {
+        afflictable.receiveDamage();
     }
 }

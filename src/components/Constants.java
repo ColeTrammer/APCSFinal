@@ -8,10 +8,11 @@ import com.badlogic.gdx.math.Vector2;
  * to allow for easy modification of tunable effects, appearances, and interactions.
  */
 public final class Constants {
-    public static final int   SCREEN_WIDTH  = 1200;
-    public static final int   SCREEN_HEIGHT = 800;
-    public static final int   FPS           = 60;
-    public static final float MAX_DELTA     = 0.2f;
+    public static final int     SCREEN_WIDTH  = 1200;
+    public static final int     SCREEN_HEIGHT = 800;
+    public static final boolean RESIZABLE     = false;
+    public static final int     FPS           = 60;
+    public static final float   MAX_DELTA     = 0.2f;
     
     public static final float   MENU_WORLD_WIDTH  = SCREEN_WIDTH;
     public static final float   MENU_WORLD_HEIGHT = SCREEN_HEIGHT;
@@ -32,7 +33,7 @@ public final class Constants {
     public static final float PLAYER_WIDTH       = 36f;
     public static final float PLAYER_HEIGHT      = 36f;
     public static final float PLAYER_SPEED       = 5 * FPS;
-    public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 3f;
+    public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 5f;
 
     public static final float WALL_THICKNESS = 20f;
 
@@ -46,6 +47,7 @@ public final class Constants {
 
     public static final String MENU_MESSAGE      = "Click to play!";
     public static final String GAME_OVER_MESSAGE = "You died! Click to play again!";
+    public static final String GAME_TITLE        = "Game";
 
     private Constants() {}
 }

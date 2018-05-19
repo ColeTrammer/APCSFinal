@@ -39,10 +39,4 @@ public interface EntityManager extends EntityObserver {
      * @return true if the player is expired, false otherwise.
      */
     boolean isPlayerExpired();
-
-    /**
-     * Resets the manager to a default state
-     * where it tracks zero entities.
-     */
-    void reset();
 }

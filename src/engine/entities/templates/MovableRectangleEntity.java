@@ -21,7 +21,7 @@ public abstract class MovableRectangleEntity extends RectangleEntity implements 
      * @param velX x-component of the entity's velocity.
      * @param velY y-component of the entity's velocity.
      */
-    public MovableRectangleEntity(float x, float y, float width, float height, float velX, float velY) {
+    protected MovableRectangleEntity(float x, float y, float width, float height, float velX, float velY) {
         super(x, y, width, height);
         velocity = new Vector2(velX, velY);
     }
@@ -38,22 +38,26 @@ public abstract class MovableRectangleEntity extends RectangleEntity implements 
         addY(displacement.y);
     }
 
-    public Vector2 getVelocity() { return velocity; }
-    public float getVelocityX() { return velocity.x; }
-    public float getVelocityY() { return velocity.y; }
+    @Override
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
+    protected float getVelocityX() { return velocity.x; }
+    protected float getVelocityY() { return velocity.y; }
 
     //public void setVelocity(Vector2 velocity) { this.velocity = velocity; }
     //public void setVelocity(float x, float y) { velocity.set(x, y); }
-    public void setVelocityX(float x) { velocity.set(x, velocity.y); }
-    public void setVelocityY(float y) { velocity.set(velocity.x, y); }
+    protected void setVelocityX(float x) { velocity.set(x, velocity.y); }
+    protected void setVelocityY(float y) { velocity.set(velocity.x, y); }
 
     //public void addVelocity(Vector2 vec) { velocity.set(velocity.x + vec.x, velocity.y + vec.y); }
-    public void addVelocity(float x, float y) { velocity.set(velocity.x + x, velocity.y + y); }
-    public void addVelocityX(float x) { velocity.set(velocity.x + x, velocity.y); }
+    protected void addVelocity(float x, float y) { velocity.set(velocity.x + x, velocity.y + y); }
+    protected void addVelocityX(float x) { velocity.set(velocity.x + x, velocity.y); }
     //public void addVelocityY(float y) { velocity.set(velocity.x, velocity.y + y); }
 
     //public void subVelocity(Vector2 velocity) { this.velocity = this.velocity.sub(velocity); }
-    public void subVelocityX(float x) { velocity.set(velocity.x - x, velocity.y); }
+    protected void subVelocityX(float x) { velocity.set(velocity.x - x, velocity.y); }
     //public void subVelocityY(float y) { velocity.set(velocity.x, velocity.y - y); }
 
     //public void invertVelocityX() { velocity.set(-velocity.x, velocity.y); }

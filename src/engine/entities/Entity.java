@@ -75,6 +75,7 @@ public interface Entity {
      * methods of this interface should not
      * be called.
      */
+    @SuppressWarnings("unused")
     void expire();
 
     /**
@@ -84,5 +85,6 @@ public interface Entity {
      * this new Entity to it's list of entities.
      * @param entity The entity to be spawned.
      */
+    @SuppressWarnings("unused")
     void spawn(Entity entity);
 }

@@ -21,7 +21,7 @@ public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity
      * @param accX x-component of the entity's acceleration.
      * @param accY y-component of the entity's acceleration.
      */
-    public AcceleratingRectangleEntity(float x, float y, float width, float height, float velX, float velY, float accX, float accY) {
+    protected AcceleratingRectangleEntity(float x, float y, float width, float height, float velX, float velY, float accX, float accY) {
         super(x, y, width, height, velX, velY);
         acceleration = new Vector2(accX, accY);
     }

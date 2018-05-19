@@ -1,5 +1,7 @@
 package engine.entities;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.templates.MovableRectangleEntity;
@@ -21,6 +23,13 @@ public class Wall extends RectangleEntity implements Impassable {
      */
     public Wall(float x, float y, float width, float height) {
         super(x, y, width, height);
+    }
+
+    @Override
+    public void render(Object renderTool) {
+        ShapeRenderer renderer = (ShapeRenderer) renderTool;
+        renderer.setColor(Color.WHITE);
+        super.render(renderer);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import engine.entities.behaviors.Afflictable;
 import engine.entities.templates.AcceleratingRectangleEntity;
 
 /**
@@ -15,9 +16,9 @@ import engine.entities.templates.AcceleratingRectangleEntity;
  * it's motion is controlled by user input, and it has the
  * highest amount of unique interactions with other Entities.
  */
-public class Player extends AcceleratingRectangleEntity {
-    private float xSpeed;
-    private float ySpeed;
+public class Player extends AcceleratingRectangleEntity implements Afflictable {
+    private final float xSpeed;
+    private final float ySpeed;
 
     /**
      * Constructs the Player with the given initial position,
@@ -68,7 +69,7 @@ public class Player extends AcceleratingRectangleEntity {
     public void render(Object rendererTool) {
         ShapeRenderer renderer = (ShapeRenderer) rendererTool;
         renderer.setColor(Color.BLUE);
-        renderer.rect(getX(), getY(), getWidth(), getHeight());
+        super.render(renderer);
     }
 
     @Override
@@ -79,13 +80,8 @@ public class Player extends AcceleratingRectangleEntity {
         }
     }
 
-    /**
-     * Allows for objects the Player collides with to
-     * affect the player's life. Currently, it will
-     * always kill the player, but a health system
-     * could be used instead.
-     */
-    public void damage() {
+    @Override
+    public void receiveDamage() {
         expire();
     }
 }
