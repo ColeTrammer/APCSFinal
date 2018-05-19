@@ -26,7 +26,7 @@ public final class Constants {
     public static final float HUD_FONT_REFERENCE_SCREEN_SIZE = 600f;
     
     public static final Color MENU_BACKGROUND_COLOR = new Color(0, 0, 0, 1);
-    public static final Color GAME_BACKGROUND_COLOR = new Color(0, 0, 0, 1);
+    public static final Color GAME_BACKGROUND_COLOR = new Color(1, 1, 1, 1);
 
     public static final float GRAVITY = 0.5f * FPS * FPS;
 
