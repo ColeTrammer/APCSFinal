@@ -23,7 +23,7 @@ public final class Constants {
     public static final float   WORLD_HEIGHT = SCREEN_HEIGHT;
     public static final Vector2 WORLD_CENTER = new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
     
-    public static final float HUD_FONT_REFERENCE_SCREEN_SIZE = 600f;
+    public static final float HUD_FONT_REFERENCE_SCREEN_SIZE = Math.min(SCREEN_WIDTH, SCREEN_HEIGHT);
     
     public static final Color MENU_BACKGROUND_COLOR = new Color(0, 0, 0, 1);
     public static final Color GAME_BACKGROUND_COLOR = new Color(1, 1, 1, 1);
@@ -35,7 +35,7 @@ public final class Constants {
     public static final float PLAYER_SPEED       = 5 * FPS;
     public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 5f;
 
-    public static final float WALL_THICKNESS = 20f;
+    public static final float BORDER_WALL_THICKNESS = 20f;
 
     /*
     public static final float LASER_POSITION_OFFSET = 0.01f;

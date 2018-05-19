@@ -6,7 +6,7 @@ import engine.utils.Direction;
 /**
  * Wall that only allows motion in a singular direction.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("unused")
 public class OneWayWall extends Wall {
     private final Direction allow;
 

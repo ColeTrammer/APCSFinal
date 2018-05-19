@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.entities.Laser;
 import engine.entities.Player;
-import engine.entities.Pulse;
 import engine.entities.Wall;
 import engine.utils.ArrayEntityManager;
-import engine.utils.Direction;
 import engine.utils.EntityManager;
 
 import java.util.Random;
@@ -20,28 +18,28 @@ public class Level {
     private static final float LASER_WIDTH = 50f;
     private static final float LASER_HEIGHT = 5;
     private static final float FRACTION_OPEN = 1 / 3f;
-    private static final float SPAWN_DELAY = 30;
+    private static final float SPAWN_DELAY = 0.6f;
 
     private final EntityManager manager;
-    private float elapsedTime;
     private final Random random;
+    private float elapsedTime;
 
     /**
      * Will be changed soon...
      */
     public Level() {
         manager = new ArrayEntityManager();
-        elapsedTime = SPAWN_DELAY;
         random = new Random();
+        elapsedTime = SPAWN_DELAY;
 
         // add Player
         manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_HEIGHT * FRACTION_OPEN, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
 
         // adds Walls around the screen so entities are bounded by the screen.
-        manager.add(new Wall(-Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WALL_THICKNESS, -Constants.WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.WALL_THICKNESS));
-        manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.WALL_THICKNESS, Constants.WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.WALL_THICKNESS));
+        manager.add(new Wall(-Constants.BORDER_WALL_THICKNESS, -Constants.BORDER_WALL_THICKNESS, Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.BORDER_WALL_THICKNESS));
+        manager.add(new Wall(Constants.BORDER_WALL_THICKNESS, -Constants.BORDER_WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.BORDER_WALL_THICKNESS));
+        manager.add(new Wall(Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.BORDER_WALL_THICKNESS));
+        manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.BORDER_WALL_THICKNESS, Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.BORDER_WALL_THICKNESS));
 
         manager.add(new Wall(0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
         manager.add(new Wall(0, Constants.WORLD_HEIGHT * (1 - FRACTION_OPEN), Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
@@ -55,7 +53,7 @@ public class Level {
         elapsedTime += delta;
         if (elapsedTime > SPAWN_DELAY) {
             manager.add(new Laser(0, Constants.WORLD_HEIGHT * (random.nextFloat() * ((Constants.WORLD_HEIGHT * FRACTION_OPEN - LASER_HEIGHT) / Constants.WORLD_HEIGHT) + FRACTION_OPEN), LASER_WIDTH, LASER_HEIGHT, Constants.PLAYER_SPEED, 0));
-            manager.add(new Pulse(0, Constants.WORLD_HEIGHT * FRACTION_OPEN + (Constants.PLAYER_HEIGHT / 2), Constants.WORLD_WIDTH, LASER_HEIGHT * 2, 1f, 0.2f, Direction.RIGHT));
+            //manager.add(new Pulse(0, Constants.WORLD_HEIGHT * FRACTION_OPEN + (Constants.PLAYER_HEIGHT / 2), Constants.WORLD_WIDTH, LASER_HEIGHT * 2, 0.2f, 0.2f, Direction.RIGHT));
             elapsedTime = 0;
         }
         manager.update(delta);

@@ -28,7 +28,7 @@ public class Wall extends RectangleEntity implements Impassable {
     @Override
     public void render(Object renderTool) {
         ShapeRenderer renderer = (ShapeRenderer) renderTool;
-        renderer.setColor(Color.WHITE);
+        renderer.setColor(Color.BLACK);
         super.render(renderer);
     }
 

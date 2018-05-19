@@ -15,8 +15,8 @@ public class Pulse extends RectangleEntity implements Afflicter {
     private final float targetDimension;
     private final float delay;
     private final float duration;
-    private float elapsedTime;
     private final Direction direction;
+    private float elapsedTime;
     private boolean canGiveDamage;
 
     /**
@@ -34,8 +34,8 @@ public class Pulse extends RectangleEntity implements Afflicter {
         super(x, y, width, height);
         this.delay = delay;
         this.duration = duration;
-        this.elapsedTime = 0;
         this.direction = direction;
+        this.elapsedTime = 0;
         this.canGiveDamage = false;
         if (direction.isVertical()) {
             setWidth(0);
@@ -71,9 +71,9 @@ public class Pulse extends RectangleEntity implements Afflicter {
     public void render(Object renderTool) {
         ShapeRenderer renderer = (ShapeRenderer) renderTool;
         if (canGiveDamage) {
-            renderer.setColor(Color.RED);
+            renderer.setColor(Color.BLACK);
         } else {
-            renderer.setColor(new Color(elapsedTime / delay, 0, 1 - (elapsedTime / delay), 1));
+            renderer.setColor(1 - elapsedTime / delay, 1 - elapsedTime / delay, 1 - elapsedTime / delay, 1);
         }
         super.render(renderer);
     }

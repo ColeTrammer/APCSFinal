@@ -45,10 +45,10 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
         setVelocityX(0);
 
         // changes velocity based on keyboard input.
-        if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Keys.LEFT)  || Gdx.input.isKeyPressed(Keys.A)) {
             subVelocityX(xSpeed);
         }
-        if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D)) {
             addVelocityX(xSpeed);
         }
         /*
