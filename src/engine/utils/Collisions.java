@@ -25,22 +25,22 @@ public final class Collisions {
      * Handles the collision between any two entities.
      * Must be called if two entities overlap.
      * The order of the parameters is irrelevant.
-     * @param o1 The first object in the collision.
-     * @param o2 The second object in the collision.
+     * @param e1 The first object in the collision.
+     * @param e2 The second object in the collision.
      */
-    public static void collided(Entity o1, Entity o2) {
-        if (o1 instanceof Movable && o2 instanceof Impassable ||
-                o2 instanceof Movable && o1 instanceof Impassable) {
-            Movable movable = (Movable) (o1 instanceof Movable ? o1 : o2);
-            Impassable impassable = (Impassable) (o1 instanceof Impassable ? o1 : o2);
+    public static void collided(Entity e1, Entity e2) {
+        if (e1 instanceof Movable && e2 instanceof Impassable ||
+                e2 instanceof Movable && e1 instanceof Impassable) {
+            Movable movable = (Movable) (e1 instanceof Movable ? e1 : e2);
+            Impassable impassable = (Impassable) (e1 instanceof Impassable ? e1 : e2);
             impassable.expel(movable);
         }
 
-        if (o1 instanceof Afflictable && o2 instanceof Afflicter ||
-                o2 instanceof Afflictable && o1 instanceof Afflicter) {
-            Afflictable afflictable = (Afflictable) (o1 instanceof Afflictable ? o1 : o2);
-            Afflicter afflicter = (Afflicter) (o1 instanceof Afflicter ? o1 : o2);
-            //afflicter.giveDamage(afflictable);
+        if (e1 instanceof Afflictable && e2 instanceof Afflicter ||
+                e2 instanceof Afflictable && e1 instanceof Afflicter) {
+            Afflictable afflictable = (Afflictable) (e1 instanceof Afflictable ? e1 : e2);
+            Afflicter afflicter = (Afflicter) (e1 instanceof Afflicter ? e1 : e2);
+            afflicter.giveDamage(afflictable);
         }
     }
 
