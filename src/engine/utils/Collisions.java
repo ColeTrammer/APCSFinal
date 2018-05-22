@@ -40,7 +40,7 @@ public final class Collisions {
                 o2 instanceof Afflictable && o1 instanceof Afflicter) {
             Afflictable afflictable = (Afflictable) (o1 instanceof Afflictable ? o1 : o2);
             Afflicter afflicter = (Afflicter) (o1 instanceof Afflicter ? o1 : o2);
-            afflicter.giveDamage(afflictable);
+            //afflicter.giveDamage(afflictable);
         }
     }
 

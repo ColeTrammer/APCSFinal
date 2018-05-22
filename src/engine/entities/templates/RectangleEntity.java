@@ -90,8 +90,8 @@ public abstract class RectangleEntity extends AbstractEntity {
     protected void addWidth(float width)  { rect.setWidth (rect.getWidth()  + width);  }
     protected void addHeight(float height) { rect.setHeight(rect.getHeight() + height); }
 
-    //public void subX(float x) { rect.setX(rect.getX() - x); }
-    //public void subY(float y) { rect.setY(rect.getY() - y); }
-    protected void subWidth(float width)  { rect.setWidth (rect.getWidth()  - width);  }
-    protected void subHeight(float height) { rect.setHeight(rect.getHeight() - height); }
+    protected void subX(float x) { rect.setX(rect.getX() - x); }
+    protected void subY(float y) { rect.setY(rect.getY() - y); }
+    //protected void subWidth(float width)  { rect.setWidth (rect.getWidth()  - width);  }
+    //protected void subHeight(float height) { rect.setHeight(rect.getHeight() - height); }
 }

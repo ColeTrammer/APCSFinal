@@ -1,6 +1,5 @@
 package engine.entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.Afflicter;
@@ -12,6 +11,8 @@ import engine.utils.Direction;
  * on the screen and the afflicts the player when active.
  */
 public class Pulse extends RectangleEntity implements Afflicter {
+    private static final float minDimension = 2f;
+
     private final float targetDimension;
     private final float delay;
     private final float duration;
@@ -38,10 +39,10 @@ public class Pulse extends RectangleEntity implements Afflicter {
         this.elapsedTime = 0;
         this.canGiveDamage = false;
         if (direction.isVertical()) {
-            setWidth(0);
+            setWidth(minDimension);
             targetDimension = width;
         } else if (direction.isHorizontal()) {
-            setHeight(0);
+            setHeight(minDimension);
             targetDimension = height;
         } else {
             targetDimension = 0;
@@ -52,13 +53,13 @@ public class Pulse extends RectangleEntity implements Afflicter {
     public void update(float delta) {
         elapsedTime += delta;
         if (elapsedTime < delay) {
-            float increment = (delta / delay) * (targetDimension / 2);
+            float increment = (delta / delay) * ((targetDimension - minDimension) / 2);
             if (direction.isVertical()) {
-                subWidth(increment * 2);
-                addX(increment);
+                addWidth(increment * 2);
+                subX(increment);
             } else if (direction.isHorizontal()) {
-                subHeight(increment * 2);
-                addY(increment);
+                addHeight(increment * 2);
+                subY(increment);
             }
         } else if (elapsedTime < delay + duration) {
             canGiveDamage = true;
@@ -70,11 +71,8 @@ public class Pulse extends RectangleEntity implements Afflicter {
     @Override
     public void render(Object renderTool) {
         ShapeRenderer renderer = (ShapeRenderer) renderTool;
-        if (canGiveDamage) {
-            renderer.setColor(Color.BLACK);
-        } else {
-            renderer.setColor(1 - elapsedTime / delay, 1 - elapsedTime / delay, 1 - elapsedTime / delay, 1);
-        }
+        float relativeTime = Math.min(elapsedTime, delay);
+        renderer.setColor(relativeTime / delay, 1 - relativeTime / delay, relativeTime / delay, 1);
         super.render(renderer);
     }
 

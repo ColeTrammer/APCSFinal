@@ -5,9 +5,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.entities.Laser;
 import engine.entities.Player;
+import engine.entities.Pulse;
 import engine.entities.Wall;
 import engine.utils.ArrayEntityManager;
+import engine.utils.Direction;
 import engine.utils.EntityManager;
+import engine.utils.Timer;
 
 import java.util.Random;
 
@@ -18,11 +21,10 @@ public class Level {
     private static final float LASER_WIDTH = 50f;
     private static final float LASER_HEIGHT = 5;
     private static final float FRACTION_OPEN = 1 / 3f;
-    private static final float SPAWN_DELAY = 0.6f;
 
     private final EntityManager manager;
     private final Random random;
-    private float elapsedTime;
+    private final Timer timer;
 
     /**
      * Will be changed soon...
@@ -30,7 +32,7 @@ public class Level {
     public Level() {
         manager = new ArrayEntityManager();
         random = new Random();
-        elapsedTime = SPAWN_DELAY;
+        timer = new Timer();
 
         // add Player
         manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_HEIGHT * FRACTION_OPEN, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
@@ -43,6 +45,16 @@ public class Level {
 
         manager.add(new Wall(0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
         manager.add(new Wall(0, Constants.WORLD_HEIGHT * (1 - FRACTION_OPEN), Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
+
+        timer.addAction(0.3f, 15f, 1f,
+            () -> manager.add(
+                new Pulse(0, Constants.WORLD_HEIGHT * FRACTION_OPEN + (Constants.PLAYER_HEIGHT / 2), Constants.WORLD_WIDTH, LASER_HEIGHT * 2, 0.5f, 0.2f, Direction.RIGHT))
+        );
+
+        timer.addAction(0f, 15f, 0.6f,
+            () -> manager.add(
+                new Laser(0, Constants.WORLD_HEIGHT * (random.nextFloat() * ((Constants.WORLD_HEIGHT * FRACTION_OPEN - LASER_HEIGHT) / Constants.WORLD_HEIGHT) + FRACTION_OPEN), LASER_WIDTH, LASER_HEIGHT, Constants.PLAYER_SPEED, 0))
+        );
     }
 
     /**
@@ -50,12 +62,7 @@ public class Level {
      * @param delta time step from when this was last called.
      */
     public void update(float delta) {
-        elapsedTime += delta;
-        if (elapsedTime > SPAWN_DELAY) {
-            manager.add(new Laser(0, Constants.WORLD_HEIGHT * (random.nextFloat() * ((Constants.WORLD_HEIGHT * FRACTION_OPEN - LASER_HEIGHT) / Constants.WORLD_HEIGHT) + FRACTION_OPEN), LASER_WIDTH, LASER_HEIGHT, Constants.PLAYER_SPEED, 0));
-            //manager.add(new Pulse(0, Constants.WORLD_HEIGHT * FRACTION_OPEN + (Constants.PLAYER_HEIGHT / 2), Constants.WORLD_WIDTH, LASER_HEIGHT * 2, 0.2f, 0.2f, Direction.RIGHT));
-            elapsedTime = 0;
-        }
+        timer.tick(delta);
         manager.update(delta);
     }
 
