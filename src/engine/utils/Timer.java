@@ -58,7 +58,7 @@ public class Timer {
     private class TimerObject {
         private       int      count;
         private final float    startTime;
-        private final int      maxOccurrences;
+        private final float    endTime;
         private final float    repeatDelay;
         private final Runnable action;
         private       Timer    timer;
@@ -73,7 +73,7 @@ public class Timer {
         public TimerObject(float startTime, float endTime, float repeatDelay, Runnable action) {
             this.count = 0;
             this.startTime = startTime;
-            this.maxOccurrences = (int) Math.ceil((endTime - startTime) / repeatDelay);
+            this.endTime = endTime;
             this.repeatDelay = repeatDelay;
             this.action = action;
         }
@@ -93,13 +93,14 @@ public class Timer {
          * @param elapsedTime The amount of time that has elapsed since this Object was created.
          */
         public void apply(float elapsedTime) {
+            if (elapsedTime > endTime) {
+                timer.removeObject(this);
+                return;
+            }
             float relativeTime = elapsedTime - startTime;
             if (relativeTime >= 0 && (repeatDelay == 0 || relativeTime / repeatDelay >= count)) {
                 action.run();
                 count++;
-                if (count >= maxOccurrences) {
-                    timer.removeObject(this);
-                }
             }
         }
     }
