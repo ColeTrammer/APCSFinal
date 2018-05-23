@@ -34,7 +34,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     public GameScreen(TheGame game) {
         this.game = game;
-        this.level = new Level();
+        this.level = new Level("levels/l1.txt");
    }
     
     @Override
