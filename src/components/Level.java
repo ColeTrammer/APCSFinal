@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.entities.Entity;
 import engine.utils.ArrayEntityManager;
+import engine.utils.Direction;
 import engine.utils.EntityManager;
 import engine.utils.Timer;
 
@@ -38,27 +39,6 @@ public class Level {
         timer = new Timer();
 
         readLevel(path);
-//        // add Player
-//        manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_HEIGHT * FRACTION_OPEN, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
-//
-//        // adds Walls around the screen so entities are bounded by the screen.
-//        manager.add(new Wall(-Constants.BORDER_WALL_THICKNESS, -Constants.BORDER_WALL_THICKNESS, Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.BORDER_WALL_THICKNESS));
-//        manager.add(new Wall(Constants.BORDER_WALL_THICKNESS, -Constants.BORDER_WALL_THICKNESS, Constants.WORLD_WIDTH, Constants.BORDER_WALL_THICKNESS));
-//        manager.add(new Wall(Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT, Constants.WORLD_WIDTH, Constants.BORDER_WALL_THICKNESS));
-//        manager.add(new Wall(Constants.WORLD_WIDTH, -Constants.BORDER_WALL_THICKNESS, Constants.BORDER_WALL_THICKNESS, Constants.WORLD_HEIGHT + 2 * Constants.BORDER_WALL_THICKNESS));
-//
-//        manager.add(new Wall(0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
-//        manager.add(new Wall(0, Constants.WORLD_HEIGHT * (1 - FRACTION_OPEN), Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT * FRACTION_OPEN));
-//
-//        timer.addAction(0.3f, 15f, 1f,
-//            () -> manager.add(
-//                new Pulse(0, Constants.WORLD_HEIGHT * FRACTION_OPEN + (Constants.PLAYER_HEIGHT / 2), Constants.WORLD_WIDTH, LASER_HEIGHT * 2, 0.5f, 0.2f, Direction.RIGHT))
-//        );
-//
-//        timer.addAction(0f, 15f, 0.6f,
-//            () -> manager.add(
-//                new Laser(0, Constants.WORLD_HEIGHT * (random.nextFloat() * ((Constants.WORLD_HEIGHT * FRACTION_OPEN - LASER_HEIGHT) / Constants.WORLD_HEIGHT) + FRACTION_OPEN), LASER_WIDTH, LASER_HEIGHT, Constants.PLAYER_SPEED, 0))
-//        );
     }
 
     private void readLevel(String path) {
@@ -99,6 +79,34 @@ public class Level {
                 if (line.startsWith("-")) {
                     readLevel(String.format("levels/%s", line.substring(1)));
                 }
+                if (line.startsWith("~")) {
+                    String[] timerArgs = line.split(" ");
+                    float startTime = Float.parseFloat(timerArgs[1]);
+                    float endTime = Float.parseFloat(timerArgs[3]);
+                    float repeatDelay = Float.parseFloat(timerArgs[5]);
+                    final String command = line.substring(line.indexOf(">") + 1);
+                    timer.addAction(startTime, endTime, repeatDelay, () -> {
+                        String[] argStrings = command.substring(command.indexOf(" ") + 1).split(" +");
+                        Object[] args = Arrays.stream(argStrings).map((str) -> {
+                            if (str.startsWith("[[")) {
+                                return Direction.valueOf(str.substring(2, str.length() - 2));
+                            } else {
+                                return Float.parseFloat(str);
+                            }
+                        }).toArray(Object[]::new);
+                        Class[] paramsTypes = Collections.nCopies(args.length, float.class).toArray(new Class[args.length]);
+                        try {
+                            Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
+                            manager.add(type.getConstructor(paramsTypes).newInstance(args));
+                        } catch (ClassNotFoundException e) {
+                            Gdx.app.error("Invalid entity", path, e);
+                            System.exit(1);
+                        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                            Gdx.app.error("Invalid entity parameters", path, e);
+                            System.exit(1);
+                        }
+                    });
+                }
                 line = reader.readLine();
             }
 
@@ -109,16 +117,15 @@ public class Level {
         } catch (IOException e) {
             Gdx.app.error("IO Problem", path, e);
             System.exit(1);
-        } catch (IllegalAccessException e) {
-            Gdx.app.error("Constants Broken", path, e);
-            System.exit(1);
         } catch (ScriptException | ClassCastException e) {
             Gdx.app.error("Invalid expression", path, e);
             System.exit(1);
         } catch (ClassNotFoundException e) {
             Gdx.app.error("Invalid entity", path, e);
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+            System.exit(1);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             Gdx.app.error("Invalid entity parameters", path, e);
+            System.exit(1);
         }
     }
 
