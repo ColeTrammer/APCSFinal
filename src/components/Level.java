@@ -10,13 +10,19 @@ import engine.utils.Timer;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a Level...
@@ -38,15 +44,49 @@ public class Level {
             ScriptEngineManager mgr = new ScriptEngineManager();
             ScriptEngine engine = mgr.getEngineByName("JavaScript");
             HashMap<String, Float> vars = new HashMap<>();
+            Field[] constants = Constants.class.getDeclaredFields();
+            for (Field f : constants) {
+                if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
+                    vars.put(f.getName(), f.getFloat(null));
+                }
+            }
             String line = reader.readLine();
             while (line != null) {
-                Gdx.app.debug("Line", line);
-                List<String> expressions = new ArrayList<>();
-                while (line.contains("{{")) {
-                    expressions.add(line.substring(line.indexOf("{{") + 2, line.indexOf("}}")));
-                    line = line.substring(line.indexOf("{{") + 2);
+                //Gdx.app.debug("Line", line);
+                StringBuilder varReplaced = new StringBuilder();
+                String temp = line;
+                while (temp.contains("$")) {
+                    varReplaced.append(temp, 0, temp.indexOf("$"));
+                    temp = temp.substring(temp.indexOf("$") + 1);
+                    int i;
+                    for (i = 0; i < temp.length(); i++) {
+                        if (temp.substring(i, i + 1).matches("\\W")) {
+                            break;
+                        }
+                    }
+                    String name = temp.substring(0, i);
+                    varReplaced.append(String.format("%f", vars.get(name)));
+                    temp = temp.substring(i);
                 }
-                Gdx.app.debug("Expressions", expressions.toString());
+                varReplaced.append(line);
+                line = varReplaced.toString();
+                List<Float> expressions = new ArrayList<>();
+                while (line.contains("{{")) {
+                    Gdx.app.debug("line", line);
+                    Gdx.app.debug("Exp", line.substring(line.indexOf("{{") + 2, line.indexOf("}}")));
+                    expressions.add((float)((double)((Double) engine.eval(line.substring(line.indexOf("{{") + 2, line.indexOf("}}"))))));
+                    line = line.substring(line.indexOf("}}") + 2);
+                }
+                //Gdx.app.debug("Expressions", expressions.toString());
+                if (line.startsWith("!")) {
+                    int i;
+                    for (i = 0; i < temp.length(); i++) {
+                        if (temp.substring(i, i + 1).matches("\\W")) {
+                            break;
+                        }
+                    }
+                    //String name = line.substring(1, i);
+                }
                 line = reader.readLine();
             }
 
@@ -56,6 +96,13 @@ public class Level {
             System.exit(1);
         } catch (IOException e) {
             Gdx.app.error("IO Problem", path, e);
+            System.exit(1);
+        } catch (IllegalAccessException e) {
+            Gdx.app.error("Constants Broken", path, e);
+            System.exit(1);
+        } catch (ScriptException | ClassCastException e) {
+            Gdx.app.error("Invalid expression", path, e);
+            System.exit(1);
         }
 //        // add Player
 //        manager.add(new Player(Constants.WORLD_CENTER.x, Constants.WORLD_HEIGHT * FRACTION_OPEN, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_SPEED, Constants.PLAYER_JUMP_HEIGHT, Constants.GRAVITY));
