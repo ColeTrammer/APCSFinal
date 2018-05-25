@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -69,12 +67,22 @@ public class Level {
                     vars.put(name, Float.parseFloat(line.substring(i + 1)));
                 }
                 if (line.startsWith("+")) {
-                    line = line.substring(1);
-                    String[] argStrings = line.substring(line.indexOf(" ") + 1).split(" +");
-                    Float[] args = Arrays.stream(argStrings).mapToDouble(Double::parseDouble).mapToObj(d -> (float) d).toArray(Float[]::new);
-                    Class[] paramsTypes = Collections.nCopies(args.length, float.class).toArray(new Class[args.length]);
-                    Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", line.substring(0, line.indexOf(" ")))).asSubclass(Entity.class);
-                    manager.add(type.getConstructor(paramsTypes).newInstance((Object[]) args));
+                    String command = line.substring(1);
+                    String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
+                    Class[] paramsTypes = new Class[argStrings.length];
+                    Object[] args = new Object[argStrings.length];
+                    for (int i = 0; i < argStrings.length; i++) {
+                        String str = argStrings[i];
+                        if (str.startsWith("[[")) {
+                            paramsTypes[i] = Direction.class;
+                            args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
+                        } else {
+                            paramsTypes[i] = float.class;
+                            args[i] = Float.parseFloat(str);
+                        }
+                    }
+                    Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
+                    manager.add(type.getConstructor(paramsTypes).newInstance(args));
                 }
                 if (line.startsWith("-")) {
                     readLevel(String.format("levels/%s", line.substring(1)));
@@ -86,18 +94,29 @@ public class Level {
                     float repeatDelay = Float.parseFloat(timerArgs[5]);
                     final String command = line.substring(line.indexOf(">") + 1);
                     timer.addAction(startTime, endTime, repeatDelay, () -> {
-                        String[] argStrings = command.substring(command.indexOf(" ") + 1).split(" +");
-                        Object[] args = Arrays.stream(argStrings).map((str) -> {
-                            if (str.startsWith("[[")) {
-                                return Direction.valueOf(str.substring(2, str.length() - 2));
-                            } else {
-                                return Float.parseFloat(str);
-                            }
-                        }).toArray(Object[]::new);
-                        Class[] paramsTypes = Collections.nCopies(args.length, float.class).toArray(new Class[args.length]);
                         try {
+                            String argsString = command.substring(command.indexOf(" ") + 1);
+                            String[] argStrings = argsString.split(", *");
+                            Class[] paramsTypes = new Class[argStrings.length];
+                            Object[] args = new Object[argStrings.length];
+                            for (int i = 0; i < argStrings.length; i++) {
+                                String str = argStrings[i];
+                                if (str.startsWith("{")) {
+                                    str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
+                                }
+                                if (str.startsWith("[[")) {
+                                    paramsTypes[i] = Direction.class;
+                                    args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
+                                } else {
+                                    paramsTypes[i] = float.class;
+                                    args[i] = Float.parseFloat(str);
+                                }
+                            }
                             Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
                             manager.add(type.getConstructor(paramsTypes).newInstance(args));
+                        } catch (ScriptException | ClassCastException e) {
+                            Gdx.app.error("Invalid expression", path, e);
+                            System.exit(1);
                         } catch (ClassNotFoundException e) {
                             Gdx.app.error("Invalid entity", path, e);
                             System.exit(1);
