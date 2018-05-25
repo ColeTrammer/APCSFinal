@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import engine.entities.Entity;
 import engine.entities.Player;
 
+import java.util.Iterator;
+
 /**
  * Simplest implementation of EntityManager. Utilizes
  * the data structure of an Array. Because the
@@ -153,5 +155,16 @@ public class ArrayEntityManager implements EntityManager {
     @Override
     public void spawn(Entity entity) {
         staging.add(entity);
+    }
+
+    @Override
+    public Iterator<Entity> getByType(Class<? extends Entity> cls) {
+        Array<Entity> byTypes = new Array<>();
+        for (Entity e : entities) {
+            if (cls.isInstance(e)) {
+                byTypes.add(e);
+            }
+        }
+        return byTypes.iterator();
     }
 }

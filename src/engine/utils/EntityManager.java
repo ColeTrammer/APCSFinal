@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.Entity;
 
+import java.util.Iterator;
+
 /**
  * Interface used to keep track of all the entities currently
  * part of the game. As such, it allows for all entities
@@ -39,4 +41,11 @@ public interface EntityManager extends EntityObserver {
      * @return true if the player is expired, false otherwise.
      */
     boolean isPlayerExpired();
+
+    /**
+     * Finds entities by class.
+     * @param cls type of Entity to find
+     * @return the Entities with type cls
+     */
+    Iterator<Entity> getByType(Class<? extends Entity> cls);
 }

@@ -1,6 +1,5 @@
 package engine.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -52,7 +51,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * @param velY   y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
-    private Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
+    public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
         super(x, y, width, height, velX, velY);
         this.expandDirection = expandDirection;
         if (expandDirection.isHorizontal() && velX == 0 || expandDirection.isVertical() && velY == 0) {
@@ -65,8 +64,6 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
             setHeight(0);
             targetLength = height;
         }
-        Gdx.app.debug("Direction", expandDirection.toString());
-        Gdx.app.debug("Length", String.format("%f", targetLength));
     }
 
     @Override
@@ -81,7 +78,6 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
             }
             super.update(delta);
         }
-        Gdx.app.debug("X", String.format("%f", getX()));
     }
 
     /**
@@ -95,10 +91,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
         if (expandDirection.isHorizontal()) {
             if (getWidth() < targetLength) {
                 if (expandDirection == Direction.RIGHT) {
-                    Gdx.app.debug("Width", String.format("%f", getWidth()));
                     addWidth(Math.abs(getVelocityX()) * delta);
                 } else {
-                    Gdx.app.debug("Width", String.format("%f", getWidth()));
                     addWidth(Math.abs(getVelocityX()) * delta);
                     subX(Math.abs(getVelocityX()) * delta);
             }

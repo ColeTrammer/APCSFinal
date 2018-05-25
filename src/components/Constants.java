@@ -13,7 +13,9 @@ public final class Constants {
     public static final boolean RESIZABLE     = false;
     public static final int     FPS           = 60;
     public static final float   MAX_DELTA     = 0.2f;
-    
+
+    public static final int     NUM_LEVELS    = 2;
+
     public static final float   MENU_WORLD_WIDTH  = SCREEN_WIDTH;
     public static final float   MENU_WORLD_HEIGHT = SCREEN_HEIGHT;
     public static final Vector2 MENU_CENTER       = new Vector2(MENU_WORLD_WIDTH / 2, MENU_WORLD_HEIGHT / 2);
@@ -31,7 +33,7 @@ public final class Constants {
 
     public static final float PLAYER_WIDTH       = 36f;
     public static final float PLAYER_HEIGHT      = 36f;
-    public static final float PLAYER_SPEED       = 5 * FPS;
+    public static final float PLAYER_SPEED       = 6 * FPS;
     public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 5f;
 
     public static final float BORDER_WALL_THICKNESS = 20f;
