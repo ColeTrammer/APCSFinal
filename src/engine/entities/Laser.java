@@ -93,9 +93,9 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
                 if (expandDirection == Direction.RIGHT) {
                     addWidth(Math.abs(getVelocityX()) * delta);
                 } else {
-                    addWidth(-Math.abs(getVelocityX()) * delta);
-                    addX(Math.abs(getVelocityX()) * delta);
-                }
+                    addWidth(Math.abs(getVelocityX()) * delta);
+                    subX(Math.abs(getVelocityX()) * delta);
+            }
             } else {
                 expandDirection = Direction.NONE;
             }
@@ -104,8 +104,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
                 if (expandDirection == Direction.UP) {
                     addHeight(Math.abs(getVelocityY()) * delta);
                 } else {
-                    addHeight(-Math.abs(getVelocityY()) * delta);
-                    addY(Math.abs(getVelocityY()) * delta);
+                    addHeight(Math.abs(getVelocityY()) * delta);
+                    subY(Math.abs(getVelocityY()) * delta);
                 }
             } else {
                 expandDirection = Direction.NONE;
@@ -122,11 +122,17 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
 
     @Override
     public void moveOutOf(Vector2 displacement) {
-        if (getVelocityX() != 0) {
-            addWidth(displacement.x);
+        if (getVelocityX() > 0) {
+            subWidth(Math.abs(displacement.x));
+        } else if (getVelocityX() < 0) {
+            subWidth(Math.abs(displacement.x));
+            super.moveOutOf(displacement);
         }
-        if (getVelocityY() != 0) {
-            addHeight(displacement.y);
+        if (getVelocityY() > 0) {
+            subHeight(Math.abs(displacement.y));
+        } else if (getVelocityY() < 0) {
+            subHeight(Math.abs(displacement.y));
+            super.moveOutOf(displacement);
         }
     }
 
