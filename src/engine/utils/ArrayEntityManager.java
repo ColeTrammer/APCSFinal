@@ -1,12 +1,13 @@
 package engine.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import engine.entities.Entity;
 import engine.entities.Player;
+
+import java.util.Iterator;
 
 /**
  * Simplest implementation of EntityManager. Utilizes
@@ -34,7 +35,7 @@ public class ArrayEntityManager implements EntityManager {
             add(entity);
         }
         staging.clear();
-        //Gdx.app.debug("Num entities", String.format("%d", entities.size));
+        // Gdx.app.debug("Num entities", String.format("%d", entities.size));
         /*
         Must iterate backward through the away
         because entities can be removed from the list
@@ -154,5 +155,16 @@ public class ArrayEntityManager implements EntityManager {
     @Override
     public void spawn(Entity entity) {
         staging.add(entity);
+    }
+
+    @Override
+    public Iterator<Entity> getByType(Class<? extends Entity> cls) {
+        Array<Entity> byTypes = new Array<>();
+        for (Entity e : entities) {
+            if (cls.isInstance(e)) {
+                byTypes.add(e);
+            }
+        }
+        return byTypes.iterator();
     }
 }

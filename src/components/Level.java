@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.entities.Entity;
+import engine.entities.Player;
 import engine.utils.ArrayEntityManager;
 import engine.utils.Direction;
 import engine.utils.EntityManager;
@@ -21,6 +22,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.function.Predicate;
 
 /**
  * Represents a Level...
@@ -28,6 +31,8 @@ import java.util.HashMap;
 public class Level {
     private final EntityManager manager;
     private final Timer timer;
+    private float elapsedTime;
+    private Predicate<Float> isLevelOver;
 
     /**
      * Will be changed soon...
@@ -35,6 +40,7 @@ public class Level {
     public Level(String path) {
         manager = new ArrayEntityManager();
         timer = new Timer();
+        elapsedTime = 0;
 
         readLevel(path);
     }
@@ -58,6 +64,22 @@ public class Level {
                 }
                 if (line.startsWith("~")) {
                     addTimer(line.substring(1));
+                }
+                if (line.startsWith("*")) {
+                    line = line.substring(1);
+                    if (line.startsWith("END ")) {
+                        final String command = line.substring(5, line.length() - 1);
+                        isLevelOver = (elapsedTime) -> {
+                            boolean over = false;
+                            try {
+                                over = Boolean.parseBoolean(evalExpression(command, "__elapsedTime", elapsedTime));
+                            } catch (ScriptException | ClassCastException e) {
+                                Gdx.app.error("Invalid expression", path, e);
+                                System.exit(1);
+                            }
+                            return over;
+                        };
+                    }
                 }
                 line = reader.readLine();
             }
@@ -153,10 +175,19 @@ public class Level {
         manager.add(type.getConstructor(paramsTypes).newInstance(args));
     }
 
-    private float evalExpression(String str) throws ScriptException {
+    private String evalExpression(String str) throws ScriptException {
+        return evalExpression(str, null, null);
+    }
+
+    private String evalExpression(String str, String varName, Float value) throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        return Float.parseFloat(engine.eval(str).toString());
+        ScriptEngine js = mgr.getEngineByName("JavaScript");
+        if (varName != null && value != null) {
+            js.put(varName, value);
+        }
+        Iterator<Entity> players = manager.getByType(Player.class);
+        players.forEachRemaining((e) -> js.put("__playerY", ((Player) e).getY()));
+        return js.eval(str).toString();
     }
 
     private void addTimer(String command) {
@@ -185,6 +216,7 @@ public class Level {
      * @param delta time step from when this was last called.
      */
     public void update(float delta) {
+        elapsedTime += delta;
         timer.tick(delta);
         manager.update(delta);
     }
@@ -202,7 +234,13 @@ public class Level {
      * Determines whether the player is expired.
      * @return true if player is expired. False otherwise.
      */
-    public boolean isPlayerExpired() {
-        return manager.isPlayerExpired();
+    public LevelState getLevelState() {
+        return manager.isPlayerExpired() ? LevelState.LOST :
+                isLevelOver.test(elapsedTime) ? LevelState.WON :
+                LevelState.ONGOING;
+    }
+
+    public enum LevelState {
+        ONGOING, WON, LOST
     }
 }

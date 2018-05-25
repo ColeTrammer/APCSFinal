@@ -22,7 +22,7 @@ public class GameScreen extends InputAdapter implements Screen {
     //public static final String TAG = GameScreen.class.getName();
     
     private final TheGame game;
-    private final Level level;
+    private Level level;
 
     private ExtendViewport gameViewport;
     private ShapeRenderer renderer;
@@ -32,9 +32,11 @@ public class GameScreen extends InputAdapter implements Screen {
     private SpriteBatch hudBatch;
     private BitmapFont font;
 
+    private int levelIndex;
+
     public GameScreen(TheGame game) {
         this.game = game;
-        this.level = new Level("levels/l1.txt");
+        this.level = new Level(String.format("levels/l%d.txt", ++levelIndex));
    }
     
     @Override
@@ -66,9 +68,14 @@ public class GameScreen extends InputAdapter implements Screen {
         }
         /* UPDATE */
         level.update(delta);
-        if (level.isPlayerExpired()) {
+        if (level.getLevelState() == Level.LevelState.LOST) {
             game.showEndScreen();
             return;
+        } else if (level.getLevelState() == Level.LevelState.WON) {
+            levelIndex++;
+            if (levelIndex <= Constants.NUM_LEVELS) {
+                level = new Level(String.format("levels/l%d.txt", levelIndex));
+            }
         }
 
         /* RENDER */
@@ -86,6 +93,10 @@ public class GameScreen extends InputAdapter implements Screen {
 
         hudBatch.setProjectionMatrix(hudViewport.getCamera().combined);
         hudBatch.begin();
+
+        if (levelIndex > Constants.NUM_LEVELS) {
+            font.draw(hudBatch, "You Won!", 20, Constants.WORLD_HEIGHT - 30);
+        }
 
         hudBatch.end();
     }

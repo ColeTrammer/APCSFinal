@@ -31,8 +31,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      */
     public Laser(float x, float y, float width, float height, float velX, float velY) {
         this(x, y, width, height, velX, velY, width >= height ?
-                                                    velX > 0 ? Direction.RIGHT : Direction.LEFT :
-                                                    velY > 0 ? Direction.UP    : Direction.DOWN);
+                (velX > 0 ? Direction.RIGHT : Direction.LEFT) :
+                (velY > 0 ? Direction.UP    : Direction.DOWN));
     }
 
     /**
@@ -51,7 +51,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * @param velY   y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
-    private Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
+    public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
         super(x, y, width, height, velX, velY);
         this.expandDirection = expandDirection;
         if (expandDirection.isHorizontal() && velX == 0 || expandDirection.isVertical() && velY == 0) {
