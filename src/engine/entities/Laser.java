@@ -1,5 +1,6 @@
 package engine.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -31,8 +32,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      */
     public Laser(float x, float y, float width, float height, float velX, float velY) {
         this(x, y, width, height, velX, velY, width >= height ?
-                                                    velX > 0 ? Direction.RIGHT : Direction.LEFT :
-                                                    velY > 0 ? Direction.UP    : Direction.DOWN);
+                (velX > 0 ? Direction.RIGHT : Direction.LEFT) :
+                (velY > 0 ? Direction.UP    : Direction.DOWN));
     }
 
     /**
@@ -64,6 +65,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
             setHeight(0);
             targetLength = height;
         }
+        Gdx.app.debug("Direction", expandDirection.toString());
+        Gdx.app.debug("Length", String.format("%f", targetLength));
     }
 
     @Override
@@ -78,6 +81,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
             }
             super.update(delta);
         }
+        Gdx.app.debug("X", String.format("%f", getX()));
     }
 
     /**
@@ -91,8 +95,10 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
         if (expandDirection.isHorizontal()) {
             if (getWidth() < targetLength) {
                 if (expandDirection == Direction.RIGHT) {
+                    Gdx.app.debug("Width", String.format("%f", getWidth()));
                     addWidth(Math.abs(getVelocityX()) * delta);
                 } else {
+                    Gdx.app.debug("Width", String.format("%f", getWidth()));
                     addWidth(Math.abs(getVelocityX()) * delta);
                     subX(Math.abs(getVelocityX()) * delta);
             }

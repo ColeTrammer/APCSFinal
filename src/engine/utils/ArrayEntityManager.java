@@ -1,6 +1,5 @@
 package engine.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -34,7 +33,7 @@ public class ArrayEntityManager implements EntityManager {
             add(entity);
         }
         staging.clear();
-        Gdx.app.debug("Num entities", String.format("%d", entities.size));
+        // Gdx.app.debug("Num entities", String.format("%d", entities.size));
         /*
         Must iterate backward through the away
         because entities can be removed from the list

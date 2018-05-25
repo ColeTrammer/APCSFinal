@@ -73,6 +73,9 @@ public class Level {
                     Object[] args = new Object[argStrings.length];
                     for (int i = 0; i < argStrings.length; i++) {
                         String str = argStrings[i];
+                        if (str.startsWith("{")) {
+                            str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
+                        }
                         if (str.startsWith("[[")) {
                             paramsTypes[i] = Direction.class;
                             args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
