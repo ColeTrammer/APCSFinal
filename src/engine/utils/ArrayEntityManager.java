@@ -34,7 +34,7 @@ public class ArrayEntityManager implements EntityManager {
             add(entity);
         }
         staging.clear();
-        Gdx.app.debug("Num entities", String.format("%d", entities.size));
+        //Gdx.app.debug("Num entities", String.format("%d", entities.size));
         /*
         Must iterate backward through the away
         because entities can be removed from the list

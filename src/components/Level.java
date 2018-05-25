@@ -42,89 +42,22 @@ public class Level {
     private void readLevel(String path) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
-            HashMap<String, Float> vars = new HashMap<>();
-            Field[] constants = Constants.class.getDeclaredFields();
-            for (Field f : constants) {
-                if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
-                    vars.put(f.getName(), f.getFloat(null));
-                }
-            }
+            HashMap<String, Float> vars = initVars();
             String line = reader.readLine();
             while (line != null) {
-                Gdx.app.debug("Line", line);
                 line = replaceVars(line, vars);
                 line = replaceExpressions(line);
-                Gdx.app.debug("Processed", line);
                 if (line.startsWith("!")) {
-                    line = line.replaceAll(" ", "");
-                    int i;
-                    for (i = 1; i < line.length(); i++) {
-                        if (line.charAt(i) == '=') {
-                            break;
-                        }
-                    }
-                    String name = line.substring(1, i);
-                    vars.put(name, Float.parseFloat(line.substring(i + 1)));
+                    addVar(line, vars);
                 }
                 if (line.startsWith("+")) {
-                    String command = line.substring(1);
-                    String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
-                    Class[] paramsTypes = new Class[argStrings.length];
-                    Object[] args = new Object[argStrings.length];
-                    for (int i = 0; i < argStrings.length; i++) {
-                        String str = argStrings[i];
-                        if (str.startsWith("[[")) {
-                            paramsTypes[i] = Direction.class;
-                            args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
-                        } else {
-                            paramsTypes[i] = float.class;
-                            args[i] = Float.parseFloat(str);
-                        }
-                    }
-                    Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
-                    manager.add(type.getConstructor(paramsTypes).newInstance(args));
+                    addEntity(line.substring(1));
                 }
                 if (line.startsWith("-")) {
                     readLevel(String.format("levels/%s", line.substring(1)));
                 }
                 if (line.startsWith("~")) {
-                    String[] timerArgs = line.split(" ");
-                    float startTime = Float.parseFloat(timerArgs[1]);
-                    float endTime = Float.parseFloat(timerArgs[3]);
-                    float repeatDelay = Float.parseFloat(timerArgs[5]);
-                    final String command = line.substring(line.indexOf(">") + 1);
-                    timer.addAction(startTime, endTime, repeatDelay, () -> {
-                        try {
-                            String argsString = command.substring(command.indexOf(" ") + 1);
-                            String[] argStrings = argsString.split(", *");
-                            Class[] paramsTypes = new Class[argStrings.length];
-                            Object[] args = new Object[argStrings.length];
-                            for (int i = 0; i < argStrings.length; i++) {
-                                String str = argStrings[i];
-                                if (str.startsWith("{")) {
-                                    str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
-                                }
-                                if (str.startsWith("[[")) {
-                                    paramsTypes[i] = Direction.class;
-                                    args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
-                                } else {
-                                    paramsTypes[i] = float.class;
-                                    args[i] = Float.parseFloat(str);
-                                }
-                            }
-                            Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
-                            manager.add(type.getConstructor(paramsTypes).newInstance(args));
-                        } catch (ScriptException | ClassCastException e) {
-                            Gdx.app.error("Invalid expression", path, e);
-                            System.exit(1);
-                        } catch (ClassNotFoundException e) {
-                            Gdx.app.error("Invalid entity", path, e);
-                            System.exit(1);
-                        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                            Gdx.app.error("Invalid entity parameters", path, e);
-                            System.exit(1);
-                        }
-                    });
+                    addTimer(line.substring(1));
                 }
                 line = reader.readLine();
             }
@@ -146,6 +79,17 @@ public class Level {
             Gdx.app.error("Invalid entity parameters", path, e);
             System.exit(1);
         }
+    }
+
+    private HashMap<String, Float> initVars() throws IllegalAccessException {
+        HashMap<String, Float> vars = new HashMap<>();
+        Field[] constants = Constants.class.getDeclaredFields();
+        for (Field f : constants) {
+            if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
+                vars.put(f.getName(), f.getFloat(null));
+            }
+        }
+        return vars;
     }
 
     private String replaceVars(String str, HashMap<String, Float> vars) {
@@ -176,10 +120,64 @@ public class Level {
         return expReplaced.append(str).toString();
     }
 
+    private void addVar(String line, HashMap<String, Float> vars) {
+        line = line.replaceAll(" ", "");
+        int i;
+        for (i = 1; i < line.length(); i++) {
+            if (line.charAt(i) == '=') {
+                break;
+            }
+        }
+        String name = line.substring(1, i);
+        vars.put(name, Float.parseFloat(line.substring(i + 1)));
+    }
+
+    private void addEntity(String command) throws ScriptException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
+        Class[] paramsTypes = new Class[argStrings.length];
+        Object[] args = new Object[argStrings.length];
+        for (int i = 0; i < argStrings.length; i++) {
+            String str = argStrings[i];
+            if (str.startsWith("{")) {
+                str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
+            }
+            if (str.startsWith("[[")) {
+                paramsTypes[i] = Direction.class;
+                args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
+            } else {
+                paramsTypes[i] = float.class;
+                args[i] = Float.parseFloat(str);
+            }
+        }
+        Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
+        manager.add(type.getConstructor(paramsTypes).newInstance(args));
+    }
+
     private float evalExpression(String str) throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         return Float.parseFloat(engine.eval(str).toString());
+    }
+
+    private void addTimer(String command) {
+        String[] timerArgs = command.split(" ");
+        float startTime = Float.parseFloat(timerArgs[1]);
+        float endTime = Float.parseFloat(timerArgs[3]);
+        float repeatDelay = Float.parseFloat(timerArgs[5]);
+        timer.addAction(startTime, endTime, repeatDelay, () -> {
+            try {
+                addEntity(command.substring(command.indexOf(">") + 1));
+            } catch (ScriptException | ClassCastException e) {
+                Gdx.app.error("Invalid expression", command, e);
+                System.exit(1);
+            } catch (ClassNotFoundException e) {
+                Gdx.app.error("Invalid entity", command, e);
+                System.exit(1);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                Gdx.app.error("Invalid entity parameters", command, e);
+                System.exit(1);
+            }
+        });
     }
 
     /**
