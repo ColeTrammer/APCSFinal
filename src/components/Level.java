@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -48,27 +49,33 @@ public class Level {
     private void readLevel(String path) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
-            HashMap<String, Float> vars = initVars();
+            Map<String, Float> vars = initVars();
+            StringBuilder file = new StringBuilder();
             String line = reader.readLine();
             while (line != null) {
-                line = replaceVars(line, vars);
-                line = replaceExpressions(line);
-                if (line.startsWith("!")) {
-                    addVar(line, vars);
+                file.append(line);
+                line = reader.readLine();
+            }
+            reader.close();
+            for (String statement : file.toString().replaceAll("/\\*.*?\\*/", "").split(";\\w*")) {
+                statement = replaceVars(statement, vars);
+                statement = replaceExpressions(statement, "{{", "}}");
+                if (statement.startsWith("!")) {
+                    addVar(statement, vars);
                 }
-                if (line.startsWith("+")) {
-                    addEntity(line.substring(1));
+                if (statement.startsWith("+")) {
+                    addEntity(statement.substring(1));
                 }
-                if (line.startsWith("-")) {
-                    readLevel(String.format("levels/%s", line.substring(1)));
+                if (statement.startsWith("-")) {
+                    readLevel(String.format("levels/%s", statement.substring(1)));
                 }
-                if (line.startsWith("~")) {
-                    addTimer(line.substring(1));
+                if (statement.startsWith("~")) {
+                    addTimer(statement.substring(1));
                 }
-                if (line.startsWith("*")) {
-                    line = line.substring(1);
-                    if (line.startsWith("END ")) {
-                        final String command = line.substring(5, line.length() - 1);
+                if (statement.startsWith("*")) {
+                    statement = statement.substring(1);
+                    if (statement.startsWith("END ")) {
+                        final String command = statement.substring(5, statement.length() - 1);
                         isLevelOver = (elapsedTime) -> {
                             boolean over = false;
                             try {
@@ -81,10 +88,7 @@ public class Level {
                         };
                     }
                 }
-                line = reader.readLine();
             }
-
-            reader.close();
         } catch (FileNotFoundException e) {
             Gdx.app.error("File Not Found", path, e);
             System.exit(1);
@@ -103,8 +107,8 @@ public class Level {
         }
     }
 
-    private HashMap<String, Float> initVars() throws IllegalAccessException {
-        HashMap<String, Float> vars = new HashMap<>();
+    private Map<String, Float> initVars() throws IllegalAccessException {
+        Map<String, Float> vars = new HashMap<>();
         Field[] constants = Constants.class.getDeclaredFields();
         for (Field f : constants) {
             if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
@@ -114,7 +118,7 @@ public class Level {
         return vars;
     }
 
-    private String replaceVars(String str, HashMap<String, Float> vars) {
+    private String replaceVars(String str, Map<String, Float> vars) {
         StringBuilder varReplaced = new StringBuilder();
         while (str.contains("$")) {
             varReplaced.append(str, 0, str.indexOf("$"));
@@ -132,17 +136,17 @@ public class Level {
         return varReplaced.append(str).toString();
     }
 
-    private String replaceExpressions(String str) throws ScriptException {
+    private String replaceExpressions(String str, String startDelimiter, String endDelimiter) throws ScriptException {
         StringBuilder expReplaced = new StringBuilder();
-        while (str.contains("{{")) {
-            expReplaced.append(str, 0, str.indexOf("{{"));
-            expReplaced.append(evalExpression(str.substring(str.indexOf("{{") + 2, str.indexOf("}}"))));
-            str = str.substring(str.indexOf("}}") + 2);
+        while (str.contains(startDelimiter)) {
+            expReplaced.append(str, 0, str.indexOf(startDelimiter));
+            expReplaced.append(evalExpression(str.substring(str.indexOf(startDelimiter) + startDelimiter.length(), str.indexOf(endDelimiter))));
+            str = str.substring(str.indexOf(endDelimiter) + endDelimiter.length());
         }
         return expReplaced.append(str).toString();
     }
 
-    private void addVar(String line, HashMap<String, Float> vars) {
+    private void addVar(String line, Map<String, Float> vars) {
         line = line.replaceAll(" ", "");
         int i;
         for (i = 1; i < line.length(); i++) {
@@ -155,14 +159,13 @@ public class Level {
     }
 
     private void addEntity(String command) throws ScriptException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        command = replaceExpressions(command, "{", "}");
+        Gdx.app.debug("Command", command);
         String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
         Class[] paramsTypes = new Class[argStrings.length];
         Object[] args = new Object[argStrings.length];
         for (int i = 0; i < argStrings.length; i++) {
             String str = argStrings[i];
-            if (str.startsWith("{")) {
-                str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
-            }
             if (str.startsWith("[[")) {
                 paramsTypes[i] = Direction.class;
                 args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
