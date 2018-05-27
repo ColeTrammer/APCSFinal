@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -46,98 +47,33 @@ public class Level {
     private void readLevel(String path) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
-            HashMap<String, Float> vars = new HashMap<>();
-            Field[] constants = Constants.class.getDeclaredFields();
-            for (Field f : constants) {
-                if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
-                    vars.put(f.getName(), f.getFloat(null));
-                }
-            }
+            Map<String, Float> vars = initVars();
+            StringBuilder file = new StringBuilder();
             String line = reader.readLine();
             while (line != null) {
-                Gdx.app.debug("Line", line);
-                line = replaceVars(line, vars);
-                line = replaceExpressions(line);
-                Gdx.app.debug("Processed", line);
-                if (line.startsWith("!")) {
-                    line = line.replaceAll(" ", "");
-                    int i;
-                    for (i = 1; i < line.length(); i++) {
-                        if (line.charAt(i) == '=') {
-                            break;
-                        }
-                    }
-                    String name = line.substring(1, i);
-                    vars.put(name, Float.parseFloat(line.substring(i + 1)));
+                file.append(line);
+                line = reader.readLine();
+            }
+            reader.close();
+            for (String statement : file.toString().replaceAll("/\\*.*?\\*/", "").split(";\\w*")) {
+                statement = replaceVars(statement, vars);
+                statement = replaceExpressions(statement, "{{", "}}");
+                if (statement.startsWith("!")) {
+                    addVar(statement, vars);
                 }
-                if (line.startsWith("+")) {
-                    line = line.substring(1);
-                    String argsString = line.substring(line.indexOf(" ") + 1);
-                    String[] argStrings = argsString.split(", *");
-                    Class[] paramsTypes = new Class[argStrings.length];
-                    Object[] args = new Object[argStrings.length];
-                    for (int i = 0; i < argStrings.length; i++) {
-                        String str = argStrings[i];
-                        if (str.startsWith("{")) {
-                            str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
-                        }
-                        if (str.startsWith("[[")) {
-                            paramsTypes[i] = Direction.class;
-                            args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
-                        } else {
-                            paramsTypes[i] = float.class;
-                            args[i] = Float.parseFloat(str);
-                        }
-                    }
-                    Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", line.substring(0, line.indexOf(" ")))).asSubclass(Entity.class);
-                    manager.add(type.getConstructor(paramsTypes).newInstance(args));
+                if (statement.startsWith("+")) {
+                    addEntity(statement.substring(1));
                 }
-                if (line.startsWith("-")) {
-                    readLevel(String.format("levels/%s", line.substring(1)));
+                if (statement.startsWith("-")) {
+                    readLevel(String.format("levels/%s", statement.substring(1)));
                 }
-                if (line.startsWith("~")) {
-                    String[] timerArgs = line.split(" ");
-                    float startTime = Float.parseFloat(timerArgs[1]);
-                    float endTime = Float.parseFloat(timerArgs[3]);
-                    float repeatDelay = Float.parseFloat(timerArgs[5]);
-                    final String command = line.substring(line.indexOf(">") + 1);
-                    timer.addAction(startTime, endTime, repeatDelay, () -> {
-                        try {
-                            String argsString = command.substring(command.indexOf(" ") + 1);
-                            String[] argStrings = argsString.split(", *");
-                            Class[] paramsTypes = new Class[argStrings.length];
-                            Object[] args = new Object[argStrings.length];
-                            for (int i = 0; i < argStrings.length; i++) {
-                                String str = argStrings[i];
-                                if (str.startsWith("{")) {
-                                    str = String.format("%s", evalExpression(str.substring(1, str.length() - 1)));
-                                }
-                                if (str.startsWith("[[")) {
-                                    paramsTypes[i] = Direction.class;
-                                    args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
-                                } else {
-                                    paramsTypes[i] = float.class;
-                                    args[i] = Float.parseFloat(str);
-                                }
-                            }
-                            Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
-                            manager.add(type.getConstructor(paramsTypes).newInstance(args));
-                        } catch (ScriptException | ClassCastException e) {
-                            Gdx.app.error("Invalid expression", path, e);
-                            System.exit(1);
-                        } catch (ClassNotFoundException e) {
-                            Gdx.app.error("Invalid entity", path, e);
-                            System.exit(1);
-                        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                            Gdx.app.error("Invalid entity parameters", path, e);
-                            System.exit(1);
-                        }
-                    });
+                if (statement.startsWith("~")) {
+                    addTimer(statement.substring(1));
                 }
-                if (line.startsWith("*")) {
-                    line = line.substring(1);
-                    if (line.startsWith("END ")) {
-                        final String command = line.substring(5, line.length() - 1);
+                if (statement.startsWith("*")) {
+                    statement = statement.substring(1);
+                    if (statement.startsWith("END ")) {
+                        final String command = statement.substring(5, statement.length() - 1);
                         isLevelOver = (elapsedTime) -> {
                             boolean over = false;
                             try {
@@ -150,10 +86,7 @@ public class Level {
                         };
                     }
                 }
-                line = reader.readLine();
             }
-
-            reader.close();
         } catch (FileNotFoundException e) {
             Gdx.app.error("File Not Found", path, e);
             System.exit(1);
@@ -172,7 +105,18 @@ public class Level {
         }
     }
 
-    private String replaceVars(String str, HashMap<String, Float> vars) {
+    private Map<String, Float> initVars() throws IllegalAccessException {
+        Map<String, Float> vars = new HashMap<>();
+        Field[] constants = Constants.class.getDeclaredFields();
+        for (Field f : constants) {
+            if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
+                vars.put(f.getName(), f.getFloat(null));
+            }
+        }
+        return vars;
+    }
+
+    private String replaceVars(String str, Map<String, Float> vars) {
         StringBuilder varReplaced = new StringBuilder();
         while (str.contains("$")) {
             varReplaced.append(str, 0, str.indexOf("$"));
@@ -190,14 +134,46 @@ public class Level {
         return varReplaced.append(str).toString();
     }
 
-    private String replaceExpressions(String str) throws ScriptException {
+    private String replaceExpressions(String str, String startDelimiter, String endDelimiter) throws ScriptException {
         StringBuilder expReplaced = new StringBuilder();
-        while (str.contains("{{")) {
-            expReplaced.append(str, 0, str.indexOf("{{"));
-            expReplaced.append(evalExpression(str.substring(str.indexOf("{{") + 2, str.indexOf("}}"))));
-            str = str.substring(str.indexOf("}}") + 2);
+        while (str.contains(startDelimiter)) {
+            expReplaced.append(str, 0, str.indexOf(startDelimiter));
+            expReplaced.append(evalExpression(str.substring(str.indexOf(startDelimiter) + startDelimiter.length(), str.indexOf(endDelimiter))));
+            str = str.substring(str.indexOf(endDelimiter) + endDelimiter.length());
         }
         return expReplaced.append(str).toString();
+    }
+
+    private void addVar(String line, Map<String, Float> vars) {
+        line = line.replaceAll(" ", "");
+        int i;
+        for (i = 1; i < line.length(); i++) {
+            if (line.charAt(i) == '=') {
+                break;
+            }
+        }
+        String name = line.substring(1, i);
+        vars.put(name, Float.parseFloat(line.substring(i + 1)));
+    }
+
+    private void addEntity(String command) throws ScriptException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        command = replaceExpressions(command, "{", "}");
+        Gdx.app.debug("Command", command);
+        String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
+        Class[] paramsTypes = new Class[argStrings.length];
+        Object[] args = new Object[argStrings.length];
+        for (int i = 0; i < argStrings.length; i++) {
+            String str = argStrings[i];
+            if (str.startsWith("[[")) {
+                paramsTypes[i] = Direction.class;
+                args[i] = Direction.valueOf(str.substring(2, str.length() - 2));
+            } else {
+                paramsTypes[i] = float.class;
+                args[i] = Float.parseFloat(str);
+            }
+        }
+        Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
+        manager.add(type.getConstructor(paramsTypes).newInstance(args));
     }
 
     private String evalExpression(String str) throws ScriptException {
@@ -211,6 +187,27 @@ public class Level {
             js.put(varName, value);
         }
         return js.eval(str).toString();
+    }
+
+    private void addTimer(String command) {
+        String[] timerArgs = command.split(" ");
+        float startTime = Float.parseFloat(timerArgs[1]);
+        float endTime = Float.parseFloat(timerArgs[3]);
+        float repeatDelay = Float.parseFloat(timerArgs[5]);
+        timer.addAction(startTime, endTime, repeatDelay, () -> {
+            try {
+                addEntity(command.substring(command.indexOf(">") + 1));
+            } catch (ScriptException | ClassCastException e) {
+                Gdx.app.error("Invalid expression", command, e);
+                System.exit(1);
+            } catch (ClassNotFoundException e) {
+                Gdx.app.error("Invalid entity", command, e);
+                System.exit(1);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                Gdx.app.error("Invalid entity parameters", command, e);
+                System.exit(1);
+            }
+        });
     }
 
     /**
