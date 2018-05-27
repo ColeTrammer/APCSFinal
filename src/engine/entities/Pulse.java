@@ -10,6 +10,7 @@ import engine.utils.Direction;
  * Represents a pulse that has a delayed appearance
  * on the screen and the afflicts the player when active.
  */
+@SuppressWarnings("unused")
 public class Pulse extends RectangleEntity implements Afflicter {
     private static final float minDimension = 2f;
 

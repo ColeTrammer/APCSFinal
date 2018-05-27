@@ -21,6 +21,7 @@ public class Wall extends RectangleEntity implements Impassable {
      * @param width width of the entity.
      * @param height height of the entity.
      */
+    @SuppressWarnings("WeakerAccess")
     public Wall(float x, float y, float width, float height) {
         super(x, y, width, height);
     }

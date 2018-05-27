@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * entities at certain time intervals.
  */
 public class Timer {
-    private List<TimerObject> list;
+    private final List<TimerObject> list;
     private float elapsedTime;
 
     /**
@@ -43,6 +43,15 @@ public class Timer {
     }
 
     /**
+     * Gets the elapsed time from the timer.
+     * @return the time that has elapsed.
+     */
+    @SuppressWarnings("unused")
+    public float getElapsedTime() {
+        return elapsedTime;
+    }
+
+    /**
      * Removes this object from the timer.
      * @param object The object to remove.
      */
@@ -70,7 +79,7 @@ public class Timer {
          * @param repeatDelay The delay before spawning again.
          * @param action The code to execute when the time conditions are satisfied.
          */
-        public TimerObject(float startTime, float endTime, float repeatDelay, Runnable action) {
+        protected TimerObject(float startTime, float endTime, float repeatDelay, Runnable action) {
             this.count = 0;
             this.startTime = startTime;
             this.endTime = endTime;
@@ -83,7 +92,7 @@ public class Timer {
          * @param timer The timer that controls this object.
          * @return This object.
          */
-        public TimerObject setTimer(Timer timer) {
+        protected TimerObject setTimer(Timer timer) {
             this.timer = timer;
             return this;
         }
@@ -92,7 +101,7 @@ public class Timer {
          * Uses the elapsedTime to determine whether or not to call the action in this object.
          * @param elapsedTime The amount of time that has elapsed since this Object was created.
          */
-        public void apply(float elapsedTime) {
+        protected void apply(float elapsedTime) {
             if (elapsedTime > endTime) {
                 timer.removeObject(this);
                 return;

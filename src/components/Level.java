@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.function.Predicate;
+import java.util.function.BooleanSupplier;
 
 /**
  * Represents a Level...
@@ -30,21 +30,22 @@ import java.util.function.Predicate;
 public class Level {
     private final EntityManager manager;
     private final Timer timer;
-    private float elapsedTime;
-    private Predicate<Float> isLevelOver;
-
+    private BooleanSupplier isLevelOver;
     /**
      * Will be changed soon...
      */
     public Level(String path) {
         manager = new ArrayEntityManager();
         timer = new Timer();
-        elapsedTime = 0;
 
         readLevel(path);
     }
 
     private void readLevel(String path) {
+        final Map<String, Object> objects = new HashMap<>();
+        objects.put("__manager", manager);
+        objects.put("__timer", timer);
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             Map<String, Float> vars = initVars();
@@ -57,28 +58,28 @@ public class Level {
             reader.close();
             for (String statement : file.toString().replaceAll("/\\*.*?\\*/", "").split(";\\w*")) {
                 statement = replaceVars(statement, vars);
-                statement = replaceExpressions(statement, "{{", "}}");
+                statement = replaceExpressions(statement, "{{", "}}", objects);
                 if (statement.startsWith("!")) {
                     addVar(statement, vars);
                 }
                 if (statement.startsWith("+")) {
-                    addEntity(statement.substring(1));
+                    addEntity(statement.substring(1), objects);
                 }
                 if (statement.startsWith("-")) {
                     readLevel(String.format("levels/%s", statement.substring(1)));
                 }
                 if (statement.startsWith("~")) {
-                    addTimer(statement.substring(1));
+                    addTimer(statement.substring(1), objects);
                 }
                 if (statement.startsWith("*")) {
                     statement = statement.substring(1);
                     if (statement.startsWith("END ")) {
                         final String command = statement.substring(5, statement.length() - 1);
-                        isLevelOver = (elapsedTime) -> {
+                        isLevelOver = () -> {
                             boolean over = false;
                             try {
-                                over = Boolean.parseBoolean(evalExpression(command, "__elapsedTime", elapsedTime));
-                            } catch (ScriptException | ClassCastException e) {
+                                over = Boolean.parseBoolean(evalExpression(replaceJavaCalls(command, objects)));
+                            } catch (ScriptException | ClassCastException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                                 Gdx.app.error("Invalid expression", path, e);
                                 System.exit(1);
                             }
@@ -134,14 +135,45 @@ public class Level {
         return varReplaced.append(str).toString();
     }
 
-    private String replaceExpressions(String str, String startDelimiter, String endDelimiter) throws ScriptException {
+    private String replaceExpressions(String str, String startDelimiter, String endDelimiter, Map<String, Object> objects) throws ScriptException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         StringBuilder expReplaced = new StringBuilder();
         while (str.contains(startDelimiter)) {
             expReplaced.append(str, 0, str.indexOf(startDelimiter));
-            expReplaced.append(evalExpression(str.substring(str.indexOf(startDelimiter) + startDelimiter.length(), str.indexOf(endDelimiter))));
+            String code = str.substring(str.indexOf(startDelimiter) + startDelimiter.length(), str.indexOf(endDelimiter));
+            code = replaceJavaCalls(code, objects);
+            expReplaced.append(evalExpression(code));
             str = str.substring(str.indexOf(endDelimiter) + endDelimiter.length());
         }
         return expReplaced.append(str).toString();
+    }
+
+    private String replaceJavaCalls(String str, Map<String, Object> objects) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        StringBuilder output = new StringBuilder();
+        while (str.contains("@")) {
+            output.append(str, 0, str.indexOf("@"));
+            str = str.substring(str.indexOf("@"));
+            String objName = str.substring(1, str.indexOf("."));
+            String methodName = str.substring(str.indexOf(".") + 1, str.indexOf("("));
+            String argString = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+            Class<?> argTypes[] = new Class<?>[0];
+            Object[] args = new Object[0];
+            if (!argString.isEmpty()) {
+                String[] argStrings = argString.split(", *");
+                argTypes = new Class<?>[argStrings.length];
+                args = new Object[argStrings.length];
+                for (int i = 0; i < argStrings.length; i++) {
+                    String arg = argStrings[i];
+                    if (arg.contains("@")) {
+                        arg = replaceJavaCalls(arg, objects);
+                    }
+                    argTypes[i] = String.class;
+                    args[i] = arg;
+                }
+            }
+            output.append(callMethod(methodName, objects.get(objName), argTypes, args).toString());
+            str = str.substring(str.indexOf(")") + 1);
+        }
+        return output.append(str).toString();
     }
 
     private void addVar(String line, Map<String, Float> vars) {
@@ -156,12 +188,13 @@ public class Level {
         vars.put(name, Float.parseFloat(line.substring(i + 1)));
     }
 
-    private void addEntity(String command) throws ScriptException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        command = replaceExpressions(command, "{", "}");
-        Gdx.app.debug("Command", command);
+    private void addEntity(String command, Map<String, Object> objects) throws ScriptException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        command = replaceExpressions(command, "{", "}", objects);
+
         String[] argStrings = command.substring(command.indexOf(" ") + 1).split(", *");
         Class[] paramsTypes = new Class[argStrings.length];
         Object[] args = new Object[argStrings.length];
+        String name = null;
         for (int i = 0; i < argStrings.length; i++) {
             String str = argStrings[i];
             if (str.startsWith("[[")) {
@@ -172,31 +205,34 @@ public class Level {
                 args[i] = Float.parseFloat(str);
             }
         }
-        Class<? extends Entity> type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
-        manager.add(type.getConstructor(paramsTypes).newInstance(args));
+        Class<? extends Entity> type;
+        if (command.contains("@")) {
+            name = command.substring(command.indexOf("@") + 1, command.indexOf(" "));
+            type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf("@")))).asSubclass(Entity.class);
+        } else {
+            type = Class.forName(String.format("engine.entities.%s", command.substring(0, command.indexOf(" ")))).asSubclass(Entity.class);
+        }
+        Entity e = type.getConstructor(paramsTypes).newInstance(args);
+        manager.add(e);
+        if (name != null) {
+            objects.put(name, e);
+        }
     }
 
     private String evalExpression(String str) throws ScriptException {
-        return evalExpression(str, null, null);
-    }
-
-    private String evalExpression(String str, String varName, Float value) throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine js = mgr.getEngineByName("JavaScript");
-        if (varName != null && value != null) {
-            js.put(varName, value);
-        }
         return js.eval(str).toString();
     }
 
-    private void addTimer(String command) {
+    private void addTimer(String command, Map<String, Object> objects) {
         String[] timerArgs = command.split(" ");
         float startTime = Float.parseFloat(timerArgs[1]);
         float endTime = Float.parseFloat(timerArgs[3]);
         float repeatDelay = Float.parseFloat(timerArgs[5]);
         timer.addAction(startTime, endTime, repeatDelay, () -> {
             try {
-                addEntity(command.substring(command.indexOf(">") + 1));
+                addEntity(command.substring(command.indexOf(">") + 1), objects);
             } catch (ScriptException | ClassCastException e) {
                 Gdx.app.error("Invalid expression", command, e);
                 System.exit(1);
@@ -210,12 +246,15 @@ public class Level {
         });
     }
 
+    private Object callMethod(String name, Object obj, Class<?>[] argTypes, Object[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return obj.getClass().getMethod(name, argTypes).invoke(obj, args);
+    }
+
     /**
      * Method to update the level every frame. Should be called before render.
      * @param delta time step from when this was last called.
      */
     public void update(float delta) {
-        elapsedTime += delta;
         timer.tick(delta);
         manager.update(delta);
     }
@@ -235,7 +274,7 @@ public class Level {
      */
     public LevelState getLevelState() {
         return manager.isPlayerExpired() ? LevelState.LOST :
-                isLevelOver.test(elapsedTime) ? LevelState.WON :
+                isLevelOver.getAsBoolean() ? LevelState.WON :
                 LevelState.ONGOING;
     }
 

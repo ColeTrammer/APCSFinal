@@ -51,6 +51,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * @param velY   y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
+    @SuppressWarnings("WeakerAccess")
     public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
         super(x, y, width, height, velX, velY);
         this.expandDirection = expandDirection;

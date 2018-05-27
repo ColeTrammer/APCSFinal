@@ -16,6 +16,7 @@ import engine.entities.templates.AcceleratingRectangleEntity;
  * it's motion is controlled by user input, and it has the
  * highest amount of unique interactions with other Entities.
  */
+@SuppressWarnings("unused")
 public class Player extends AcceleratingRectangleEntity implements Afflictable {
     private final float xSpeed;
     private final float ySpeed;
