@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.entities.Entity;
-import engine.entities.Player;
 import engine.utils.ArrayEntityManager;
 import engine.utils.Direction;
 import engine.utils.EntityManager;
@@ -22,7 +21,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.function.Predicate;
 
 /**
@@ -212,8 +210,6 @@ public class Level {
         if (varName != null && value != null) {
             js.put(varName, value);
         }
-        Iterator<Entity> players = manager.getByType(Player.class);
-        players.forEachRemaining((e) -> js.put("__playerY", ((Player) e).getY()));
         return js.eval(str).toString();
     }
 

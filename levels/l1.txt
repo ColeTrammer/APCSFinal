@@ -17,4 +17,4 @@
 ~From {{$SPAWN_RATE / 2}} To $END Every $SPAWN_RATE >Laser {{0 + 0.01}}, {$WORLD_HEIGHT * (Math.random() * (($WORLD_HEIGHT * $FRACTION_CLOSED - $LASER_HEIGHT) / $WORLD_HEIGHT) + $FRACTION_CLOSED)}, $LASER_WIDTH, $LASER_HEIGHT, {{$PLAYER_SPEED}}, 0
 
 /* MISC */
-*END {__elapsedTime > $END + (($WORLD_WIDTH + $LASER_WIDTH) / $PLAYER_SPEED)}
+*END {true || __elapsedTime > $END + (($WORLD_WIDTH + $LASER_WIDTH) / $PLAYER_SPEED)}
