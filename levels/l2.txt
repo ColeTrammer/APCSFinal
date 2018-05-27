@@ -2,7 +2,7 @@
 !LASER_WIDTH = 50;
 !LASER_HEIGHT = 5;
 !FRACTION_CLOSED = {{1 / 5}};
-!SPAWN_RATE = 0.3;
+!SPAWN_RATE = 0.15;
 !HEIGHT_INC = {{$PLAYER_JUMP_HEIGHT - $PLAYER_HEIGHT}};
 
 /* PERSISTENT */
@@ -17,8 +17,10 @@
 +OneWayWall {{1 / 5 * $WORLD_WIDTH}}, {{($WORLD_HEIGHT * $FRACTION_CLOSED) + (4 * $HEIGHT_INC)}}, {{1 / 5 * $WORLD_WIDTH}}, 10, [[DOWN]];
 
 /* TIMER */
-~From 0.0 To {{Number.POSITIVE_INFINITY}} Every $SPAWN_RATE >Laser {{$WORLD_WIDTH - 0.01}}, {Math.random() * (2 * $PLAYER_JUMP_HEIGHT) - $PLAYER_JUMP_HEIGHT + @player.getY()}, $LASER_WIDTH, $LASER_HEIGHT, {{-$PLAYER_SPEED}}, 0;
-~From {{$SPAWN_RATE / 2}} To {{Number.POSITIVE_INFINITY}} Every $SPAWN_RATE >Laser 0, {Math.random() * (2 * $PLAYER_JUMP_HEIGHT) - $PLAYER_JUMP_HEIGHT + @player.getY() }, $LASER_WIDTH, $LASER_HEIGHT, $PLAYER_SPEED, 0;
+~From 0.0 To {{Number.POSITIVE_INFINITY}} Every $SPAWN_RATE >Laser {
+    Math.random() < 0.5 ?
+        "{{$WORLD_WIDTH - 0.01}}, " + (Math.random() * (2 * $PLAYER_JUMP_HEIGHT) - $PLAYER_JUMP_HEIGHT + @player.getY()) + ", $LASER_WIDTH, $LASER_HEIGHT, {{-$PLAYER_SPEED}}, 0" :
+        "0, " + (Math.random() * (2 * $PLAYER_JUMP_HEIGHT) - $PLAYER_JUMP_HEIGHT + @player.getY()) + ", $LASER_WIDTH, $LASER_HEIGHT, $PLAYER_SPEED, 0"};
 
 /* MISC */
 *END {@player.getY() >= $WORLD_HEIGHT - $PLAYER_HEIGHT};
