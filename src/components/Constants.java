@@ -15,7 +15,7 @@ public final class Constants {
     public static final int     FPS           = 60;
     public static final float   MAX_DELTA     = 0.2f;
 
-    public static final int     NUM_LEVELS    = 2;
+    public static final int     NUM_LEVELS    = 3;
 
     public static final float   MENU_WORLD_WIDTH  = SCREEN_WIDTH;
     public static final float   MENU_WORLD_HEIGHT = SCREEN_HEIGHT;

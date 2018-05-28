@@ -31,15 +31,15 @@ public final class Collisions {
     public static void collided(Entity e1, Entity e2) {
         if (e1 instanceof Movable && e2 instanceof Impassable ||
                 e2 instanceof Movable && e1 instanceof Impassable) {
-            Movable movable = (Movable) (e1 instanceof Movable ? e1 : e2);
-            Impassable impassable = (Impassable) (e1 instanceof Impassable ? e1 : e2);
+            Movable movable = (Movable) (e1 instanceof Movable && e2 instanceof Impassable ? e1 : e2);
+            Impassable impassable = (Impassable) (e1 instanceof Movable && e2 instanceof Impassable ? e2 : e1);
             impassable.expel(movable);
         }
 
         if (e1 instanceof Afflictable && e2 instanceof Afflicter ||
                 e2 instanceof Afflictable && e1 instanceof Afflicter) {
-            Afflictable afflictable = (Afflictable) (e1 instanceof Afflictable ? e1 : e2);
-            Afflicter afflicter = (Afflicter) (e1 instanceof Afflicter ? e1 : e2);
+            Afflictable afflictable = (Afflictable) (e1 instanceof Afflictable && e2 instanceof Afflicter ? e1 : e2);
+            Afflicter afflicter = (Afflicter) (e1 instanceof Afflictable && e2 instanceof Afflicter ? e2 : e1);
             afflicter.giveDamage(afflictable);
         }
     }

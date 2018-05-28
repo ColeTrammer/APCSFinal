@@ -42,13 +42,12 @@ public class Level {
     }
 
     private void readLevel(String path) {
-        final Map<String, Object> objects = new HashMap<>();
-        objects.put("__manager", manager);
-        objects.put("__timer", timer);
-
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
-            Map<String, Float> vars = initVars();
+            final Map<String, Float> vars = initVars();
+            final Map<String, Object> objects = new HashMap<>();
+            objects.put("__manager", manager);
+            objects.put("__timer", timer);
             StringBuilder file = new StringBuilder();
             String line = reader.readLine();
             while (line != null) {
