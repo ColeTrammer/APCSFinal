@@ -36,7 +36,7 @@ public class GameScreen extends InputAdapter implements Screen {
 
     public GameScreen(TheGame game) {
         this.game = game;
-        this.level = new Level(String.format("levels/l%d.level", ++levelIndex));
+        this.level = new Level(String.format("levels/l%d.js", ++levelIndex));
    }
     
     @Override
@@ -74,7 +74,7 @@ public class GameScreen extends InputAdapter implements Screen {
         } else if (level.getLevelState() == Level.LevelState.WON) {
             levelIndex++;
             if (levelIndex <= Constants.NUM_LEVELS) {
-                level = new Level(String.format("levels/l%d.level", levelIndex));
+                level = new Level(String.format("levels/l%d.js", levelIndex));
             }
         }
 

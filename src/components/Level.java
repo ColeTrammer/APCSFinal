@@ -13,10 +13,7 @@ import engine.utils.Timer;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -42,6 +39,34 @@ public class Level {
     }
 
     private void readLevel(String path) {
+        Reader reader = null;
+        try {
+            reader = new FileReader(path);
+        } catch (FileNotFoundException e) {
+            Gdx.app.error("File Not Found", path, e);
+            System.exit(1);
+        }
+        ScriptEngine js = new ScriptEngineManager().getEngineByName("nashorn");
+        js.put("level", this);
+        js.put("manager", manager);
+        js.put("timer", timer);
+        Field[] constants = Constants.class.getDeclaredFields();
+        for (Field f : constants) {
+            if (Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()) && f.getType() == float.class) {
+                try {
+                    js.put(f.getName(), f.getFloat(null));
+                } catch (IllegalAccessException e) {
+                    Gdx.app.error("Constants field broken", f.getName(), e);
+                }
+            }
+        }
+        try {
+            js.eval(reader);
+        } catch (ScriptException e) {
+            Gdx.app.error("Invalid Script", path, e);
+            System.exit(1);
+        }
+        /*
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             final Map<String, Float> vars = initVars();
@@ -55,7 +80,7 @@ public class Level {
                 line = reader.readLine();
             }
             reader.close();
-            for (String statement : file.toString().replaceAll("/\\*.*?\\*/", "").split(";\\w*")) {
+            for (String statement : file.toString().replaceAll("/\\*.*?\\*/ /*", "").split(";\\w*")) {
                 statement = replaceVars(statement, vars);
                 statement = replaceExpressions(statement, "{{", "}}", objects);
                 if (statement.startsWith("!")) {
@@ -103,6 +128,7 @@ public class Level {
             Gdx.app.error("Invalid entity parameters", path, e);
             System.exit(1);
         }
+        */
     }
 
     private Map<String, Float> initVars() throws IllegalAccessException {
@@ -220,7 +246,7 @@ public class Level {
 
     private String evalExpression(String str) throws ScriptException {
         ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine js = mgr.getEngineByName("JavaScript");
+        ScriptEngine js = mgr.getEngineByName("nashorn");
         return js.eval(str).toString();
     }
 
@@ -247,6 +273,10 @@ public class Level {
 
     private Object callMethod(String name, Object obj, Class<?>[] argTypes, Object[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         return obj.getClass().getMethod(name, argTypes).invoke(obj, args);
+    }
+
+    public void setIsLevelOver(BooleanSupplier isLevelOver) {
+        this.isLevelOver = isLevelOver;
     }
 
     /**
