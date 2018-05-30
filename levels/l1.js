@@ -37,5 +37,5 @@ timer.addAction(0.0, END, SPAWN_RATE, function() {
 });
 
 level.setIsLevelOver(function() {
-    return timer.getElapsedTime() > END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED);
+    return true || timer.getElapsedTime() > END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED);
 });

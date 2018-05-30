@@ -5,24 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.templates.RectangleEntity;
+import engine.entities.templates.SimpleHarmonicOscillatingEntity;
 import engine.utils.Collisions;
 
-/**
- * An entity that other entities cannot move through. It
- * is completely static and unchanging, only interacting
- * with other entities when in a collision.
- */
-public class Wall extends RectangleEntity implements Impassable {
-    /**
-     * Basic Constructor
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
-     * @param height height of the entity.
-     */
-    @SuppressWarnings("WeakerAccess")
-    public Wall(float x, float y, float width, float height) {
-        super(x, y, width, height);
+@SuppressWarnings("unused")
+public class SimpleHarmonicOscillatingWall extends SimpleHarmonicOscillatingEntity implements Impassable {
+    public SimpleHarmonicOscillatingWall(float x, float y, float width, float height, float centerX, float centerY, float amplitudeX, float amplitudeY, float k) {
+        super(x, y, width, height, centerX, centerY, amplitudeX, amplitudeY, k);
     }
 
     @Override

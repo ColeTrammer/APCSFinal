@@ -64,7 +64,14 @@ public class GameScreen extends InputAdapter implements Screen {
         ignoring render calls when the delta is too large is advisable.
         */
         if (delta > Constants.MAX_DELTA) {
-            return;
+            int coefficent = 2;
+            while (delta / coefficent > Constants.MAX_DELTA) {
+                coefficent++;
+            }
+            delta /= coefficent;
+            for (int j = 0; j < coefficent - 1; j++) {
+                level.update(delta);
+            }
         }
         /* UPDATE */
         level.update(delta);

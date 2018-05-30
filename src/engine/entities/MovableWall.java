@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.templates.MovableRectangleEntity;
+import engine.entities.templates.RectangleEntity;
 import engine.utils.Collisions;
 
 @SuppressWarnings("unused")
@@ -62,8 +63,8 @@ public class MovableWall extends MovableRectangleEntity implements Impassable {
      */
     @Override
     public void expel(Movable movable) {
-        if (movable instanceof MovableRectangleEntity) {
-            movable.moveOutOf(Collisions.expelDistance((MovableRectangleEntity) movable, this));
+        if (movable instanceof RectangleEntity) {
+            movable.moveOutOf(Collisions.expelDistance((RectangleEntity) movable, this));
         }
     }
 }

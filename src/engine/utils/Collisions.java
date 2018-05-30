@@ -1,12 +1,12 @@
 package engine.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import engine.entities.Entity;
 import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.Afflicter;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
-import engine.entities.templates.MovableRectangleEntity;
 import engine.entities.templates.RectangleEntity;
 
 /**
@@ -33,6 +33,8 @@ public final class Collisions {
                 e2 instanceof Movable && e1 instanceof Impassable) {
             Movable movable = (Movable) (e1 instanceof Movable && e2 instanceof Impassable ? e1 : e2);
             Impassable impassable = (Impassable) (e1 instanceof Movable && e2 instanceof Impassable ? e2 : e1);
+            Gdx.app.log("Collision", String.format("Movable %s & Impassable %s", movable.toString(), impassable.toString()));
+            Gdx.app.log("Delta", String.format("%f", Gdx.graphics.getDeltaTime()));
             impassable.expel(movable);
         }
 
@@ -56,8 +58,7 @@ public final class Collisions {
      * to no longer be colliding with the rectangleEntity. Components of the
      * Vector2 will be Float.MAX_VALUE if motion should certainly not occur in that direction.
      */
-    private static Vector2 distanceToMoveOutOf(MovableRectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
-        Vector2 velocity  = movableRectangleEntity.getVelocity();
+    private static Vector2 distanceToMoveOutOf(RectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
         Vector2 res = new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
 
         /*
@@ -67,16 +68,24 @@ public final class Collisions {
         edge was to the right of the wall's left edge, update the distance
         all the same.
         */
-        if (velocity.x < 0 && movableRectangleEntity.getX() < rectangleEntity.getX() + rectangleEntity.getWidth()) {
+        if (movableRectangleEntity.getX() < rectangleEntity.getX() + rectangleEntity.getWidth()) {
             res.x = movableRectangleEntity.getX() - (rectangleEntity.getX() + rectangleEntity.getWidth());
-        } else if (velocity.x > 0 && movableRectangleEntity.getX() + movableRectangleEntity.getWidth() > rectangleEntity.getX()) {
-            res.x = movableRectangleEntity.getX() - (rectangleEntity.getX() - movableRectangleEntity.getWidth());
+        }
+        if (movableRectangleEntity.getX() + movableRectangleEntity.getWidth() > rectangleEntity.getX()) {
+            float displacement = movableRectangleEntity.getX() - (rectangleEntity.getX() - movableRectangleEntity.getWidth());
+            if (Math.abs(displacement) < Math.abs(res.x)) {
+                res.x = displacement;
+            }
         }
         // does the same as above except with in the y-direction.
-        if (velocity.y < 0 && movableRectangleEntity.getY() < rectangleEntity.getY() + rectangleEntity.getHeight()) {
+        if (movableRectangleEntity.getY() < rectangleEntity.getY() + rectangleEntity.getHeight()) {
             res.y = movableRectangleEntity.getY() - (rectangleEntity.getY() + rectangleEntity.getHeight());
-        } else if (velocity.y > 0 && movableRectangleEntity.getY() + movableRectangleEntity.getHeight() > rectangleEntity.getY()) {
-            res.y = movableRectangleEntity.getY() - (rectangleEntity.getY() - movableRectangleEntity.getHeight());
+        }
+        if (movableRectangleEntity.getY() + movableRectangleEntity.getHeight() > rectangleEntity.getY()) {
+            float displacement = movableRectangleEntity.getY() - (rectangleEntity.getY() - movableRectangleEntity.getHeight());
+            if (Math.abs(displacement) < Math.abs(res.y)) {
+                res.y = displacement;
+            }
         }
 
         return res;
@@ -89,7 +98,7 @@ public final class Collisions {
      * @param overlapping MovableRectangleEntity that needs to move.
      * @param impassable RectangleEntity that is being moved out of.
      */
-    public static Vector2 expelDistance(MovableRectangleEntity overlapping, RectangleEntity impassable) {
+    public static Vector2 expelDistance(RectangleEntity overlapping, RectangleEntity impassable) {
         Vector2 distanceToMove = distanceToMoveOutOf(overlapping, impassable);
 
         /*

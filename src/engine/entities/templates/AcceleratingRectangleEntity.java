@@ -33,11 +33,11 @@ public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity
     }
 
     //public Vector2 getAcceleration() { return acceleration; }
-    //public float getAccelerationX() { return acceleration.x; }
-    //public float getAccelerationY() { return acceleration.y; }
+    public float getAccelerationX() { return acceleration.x; }
+    public float getAccelerationY() { return acceleration.y; }
 
     //public void setAcceleration(Vector2 acceleration) { this.acceleration = acceleration; }
-    //public void setAcceleration(float x, float y) { acceleration.set(x, y); }
+    public void setAcceleration(float x, float y) { acceleration.set(x, y); }
     //public void setAccelerationX(float x) { acceleration.set(x, acceleration.y); }
     //public void setAccelerationY(float y) { acceleration.set(acceleration.x, y); }
 

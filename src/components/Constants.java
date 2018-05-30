@@ -13,7 +13,7 @@ public final class Constants {
     public static final int     SCREEN_HEIGHT = 800;
     public static final boolean RESIZABLE     = false;
     public static final int     FPS           = 60;
-    public static final float   MAX_DELTA     = 0.2f;
+    public static final float   MAX_DELTA     = 0.02f;
 
     public static final int     NUM_LEVELS    = 3;
 
@@ -37,7 +37,7 @@ public final class Constants {
     public static final float PLAYER_SPEED       = 6 * FPS;
     public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 5f;
 
-    public static final float BORDER_WALL_THICKNESS = 20f;
+    public static final float BORDER_WALL_THICKNESS = 800f;
 
     /*
     public static final float LASER_POSITION_OFFSET = 0.01f;
