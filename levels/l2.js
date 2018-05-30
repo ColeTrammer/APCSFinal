@@ -20,7 +20,7 @@ manager.spawn(new InvincibleLaser(0, C.WORLD_WIDTH * FRACTION_CLOSED / 2 + 2 * C
 load("levels/_outer_wall.js");
 
 manager.spawn(new Wall(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
-manager.spawn(new SimpleHarmonicOscillatingOneWayWall(1 /  4 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 1 * HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 1 * HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));
+manager.spawn(new SimpleHarmonicOscillatingOneWayWall(1 /  4 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED +     HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED +     HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));
 manager.spawn(new SimpleHarmonicOscillatingOneWayWall(4 /  7 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 2 * HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 2 * HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));
 manager.spawn(new SimpleHarmonicOscillatingOneWayWall(8 / 21 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 3 * HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 3 * HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));
 manager.spawn(new SimpleHarmonicOscillatingOneWayWall(1 /  5 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 4 * HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 4 * HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));

@@ -33,8 +33,7 @@ public final class Collisions {
                 e2 instanceof Movable && e1 instanceof Impassable) {
             Movable movable = (Movable) (e1 instanceof Movable && e2 instanceof Impassable ? e1 : e2);
             Impassable impassable = (Impassable) (e1 instanceof Movable && e2 instanceof Impassable ? e2 : e1);
-            Gdx.app.log("Collision", String.format("Movable %s & Impassable %s", movable.toString(), impassable.toString()));
-            Gdx.app.log("Delta", String.format("%f", Gdx.graphics.getDeltaTime()));
+            // Gdx.app.log("Collision", String.format("Movable %s & Impassable %s", movable.toString(), impassable.toString()));
             impassable.expel(movable);
         }
 
@@ -42,6 +41,7 @@ public final class Collisions {
                 e2 instanceof Afflictable && e1 instanceof Afflicter) {
             Afflictable afflictable = (Afflictable) (e1 instanceof Afflictable && e2 instanceof Afflicter ? e1 : e2);
             Afflicter afflicter = (Afflicter) (e1 instanceof Afflictable && e2 instanceof Afflicter ? e2 : e1);
+            // Gdx.app.log("Collision", String.format("Afflictable %s & Afflicter %s", afflictable.toString(), afflicter.toString()));
             afflicter.giveDamage(afflictable);
         }
     }

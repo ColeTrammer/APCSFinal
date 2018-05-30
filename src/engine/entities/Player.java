@@ -75,7 +75,6 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
 
     @Override
     public void moveOutOf(Vector2 displacement) {
-        Gdx.app.log("Player moved", String.format("(%f, %f)", displacement.x, displacement.y));
         super.moveOutOf(displacement);
         if (displacement.y > 0) {
             setVelocityY(0);

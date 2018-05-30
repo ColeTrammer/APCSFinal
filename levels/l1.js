@@ -26,7 +26,7 @@ manager.spawn(new Wall(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
 manager.spawn(new Wall(0, C.WORLD_HEIGHT * (1 - FRACTION_CLOSED), C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
 
 timer.addAction(0.3, END, 1, function() {
-    manager.spawn(new Pulse(0, C.WORLD_HEIGHT * FRACTION_CLOSED + (C.PLAYER_HEIGHT / 2), C.WORLD_WIDTH, LASER_HEIGHT * 2, 0.5, 0.1, Direction.RIGHT));
+    manager.spawn(new Pulse(0, C.WORLD_HEIGHT * FRACTION_CLOSED + (C.PLAYER_HEIGHT / 2), C.WORLD_WIDTH, LASER_HEIGHT * 2, 0.5, 0.1, Direction.UP));
 });
 timer.addAction(0.0, END, SPAWN_RATE, function() {
     if (Math.random() < 0.5) {

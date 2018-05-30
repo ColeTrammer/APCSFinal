@@ -39,10 +39,10 @@ public class Pulse extends RectangleEntity implements Afflicter {
         this.direction = direction;
         this.elapsedTime = 0;
         this.canGiveDamage = false;
-        if (direction.isVertical()) {
+        if (direction.isHorizontal()) {
             setWidth(minDimension);
             targetDimension = width;
-        } else if (direction.isHorizontal()) {
+        } else if (direction.isVertical()) {
             setHeight(minDimension);
             targetDimension = height;
         } else {
@@ -55,10 +55,10 @@ public class Pulse extends RectangleEntity implements Afflicter {
         elapsedTime += delta;
         if (elapsedTime < delay) {
             float increment = (delta / delay) * ((targetDimension - minDimension) / 2);
-            if (direction.isVertical()) {
+            if (direction.isHorizontal()) {
                 addWidth(increment * 2);
                 subX(increment);
-            } else if (direction.isHorizontal()) {
+            } else if (direction.isVertical()) {
                 addHeight(increment * 2);
                 subY(increment);
             }
