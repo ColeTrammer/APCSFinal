@@ -34,5 +34,5 @@ timer.addAction(0, Number.POSITIVE_INFINITY, SPAWN_RATE, function() {
 });
 
 level.setIsLevelOver(function() {
-    return true || player.getY() >= C.WORLD_HEIGHT - C.PLAYER_HEIGHT;
+    return player.getY() >= C.WORLD_HEIGHT - C.PLAYER_HEIGHT;
 });

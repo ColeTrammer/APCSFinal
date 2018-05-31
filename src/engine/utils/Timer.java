@@ -27,6 +27,7 @@ public class Timer {
      * @param repeatDelay The delay before spawning again.
      * @param action The code to execute when the time conditions are satisfied.
      */
+    @SuppressWarnings("unused")
     public void addAction(float startTime, float endTime, float repeatDelay, Runnable action) {
         list.add(new TimerObject(startTime, endTime, repeatDelay, action).setTimer(this));
     }
