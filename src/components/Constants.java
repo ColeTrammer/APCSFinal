@@ -15,8 +15,6 @@ public final class Constants {
     public static final int     FPS           = 60;
     public static final float   MAX_DELTA     = 0.02f;
 
-    public static final int     NUM_LEVELS    = 4;
-
     public static final float   MENU_WORLD_WIDTH  = SCREEN_WIDTH;
     public static final float   MENU_WORLD_HEIGHT = SCREEN_HEIGHT;
     public static final Vector2 MENU_CENTER       = new Vector2(MENU_WORLD_WIDTH / 2, MENU_WORLD_HEIGHT / 2);

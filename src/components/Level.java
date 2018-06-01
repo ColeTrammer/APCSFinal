@@ -10,7 +10,6 @@ import engine.utils.Timer;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.*;
 import java.util.function.BooleanSupplier;
 
@@ -45,7 +44,7 @@ public class Level {
         js.put("timer", timer);
         try {
             js.eval(reader);
-        } catch (ScriptException e) {
+        } catch (Exception e) {
             Gdx.app.error("Invalid Level", path, e);
             System.exit(1);
         }

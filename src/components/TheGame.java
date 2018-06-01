@@ -29,7 +29,7 @@ public class TheGame extends Game {
      * Resets the game state.
      */
     public void reset() {
-        gameScreen = new GameScreen(this);
+        gameScreen.reset();
     }
 
     /**
