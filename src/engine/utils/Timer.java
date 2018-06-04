@@ -22,10 +22,11 @@ public class Timer {
 
     /**
      * Adds the actions with the specified time information.
-     * @param startTime The time to begin spawning things.
-     * @param endTime The time to end spawning things.
+     *
+     * @param startTime   The time to begin spawning things.
+     * @param endTime     The time to end spawning things.
      * @param repeatDelay The delay before spawning again.
-     * @param action The code to execute when the time conditions are satisfied.
+     * @param action      The code to execute when the time conditions are satisfied.
      */
     @SuppressWarnings("unused")
     public void addAction(float startTime, float endTime, float repeatDelay, Runnable action) {
@@ -34,6 +35,7 @@ public class Timer {
 
     /**
      * Ticks the timer and applies the actions if warranted.
+     *
      * @param delta The time since this method was last called.
      */
     public void tick(float delta) {
@@ -45,6 +47,7 @@ public class Timer {
 
     /**
      * Gets the elapsed time from the timer.
+     *
      * @return the time that has elapsed.
      */
     @SuppressWarnings("unused")
@@ -54,6 +57,7 @@ public class Timer {
 
     /**
      * Removes this object from the timer.
+     *
      * @param object The object to remove.
      */
     private void removeObject(TimerObject object) {
@@ -66,19 +70,20 @@ public class Timer {
      * repeatedly.
      */
     private class TimerObject {
-        private       int      count;
-        private final float    startTime;
-        private final float    endTime;
-        private final float    repeatDelay;
+        private int count;
+        private final float startTime;
+        private final float endTime;
+        private final float repeatDelay;
         private final Runnable action;
-        private       Timer    timer;
+        private Timer timer;
 
         /**
          * Creates a TimerObject with the specified conditions.
-         * @param startTime The time to begin spawning things.
-         * @param endTime The time to end spawning things.
+         *
+         * @param startTime   The time to begin spawning things.
+         * @param endTime     The time to end spawning things.
          * @param repeatDelay The delay before spawning again.
-         * @param action The code to execute when the time conditions are satisfied.
+         * @param action      The code to execute when the time conditions are satisfied.
          */
         protected TimerObject(float startTime, float endTime, float repeatDelay, Runnable action) {
             this.count = 0;
@@ -90,6 +95,7 @@ public class Timer {
 
         /**
          * Sets the timer. Chains itself by returning "this".
+         *
          * @param timer The timer that controls this object.
          * @return This object.
          */
@@ -100,6 +106,7 @@ public class Timer {
 
         /**
          * Uses the elapsedTime to determine whether or not to call the action in this object.
+         *
          * @param elapsedTime The amount of time that has elapsed since this Object was created.
          */
         protected void apply(float elapsedTime) {

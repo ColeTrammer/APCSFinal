@@ -15,9 +15,10 @@ import engine.utils.Collisions;
 public class Wall extends RectangleEntity implements Impassable {
     /**
      * Basic Constructor
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
+     *
+     * @param x      x-coordinate of the entity's position.
+     * @param y      y-coordinate of the entity's position.
+     * @param width  width of the entity.
      * @param height height of the entity.
      */
     @SuppressWarnings("WeakerAccess")

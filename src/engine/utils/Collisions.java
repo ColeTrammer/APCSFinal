@@ -24,6 +24,7 @@ public final class Collisions {
      * Handles the collision between any two entities.
      * Must be called if two entities overlap.
      * The order of the parameters is irrelevant.
+     *
      * @param e1 The first object in the collision.
      * @param e2 The second object in the collision.
      */
@@ -50,8 +51,9 @@ public final class Collisions {
      * be overlapping the rectangleEntity. If the object had zero velocity is some direction,
      * the distance returned will be Float.MAX_VALUE to signify that motion in that direction
      * should not occur.
+     *
      * @param movableRectangleEntity MovableRectangleEntity that is overlapping the rectangleEntity.
-     * @param rectangleEntity RectangleEntity that the movableRectangleEntity is in.
+     * @param rectangleEntity        RectangleEntity that the movableRectangleEntity is in.
      * @return Vector2 with x and y values corresponding to the
      * distance the movableRectangleEntity must move in that direction
      * to no longer be colliding with the rectangleEntity. Components of the
@@ -94,8 +96,9 @@ public final class Collisions {
      * Moves the overlapping entity such that it
      * will now sit right next to the other rectangleEntity,
      * such that there is no distance between the two.
+     *
      * @param overlapping MovableRectangleEntity that needs to move.
-     * @param impassable RectangleEntity that is being moved out of.
+     * @param impassable  RectangleEntity that is being moved out of.
      */
     public static Vector2 expelDistance(RectangleEntity overlapping, RectangleEntity impassable) {
         Vector2 distanceToMove = distanceToMoveOutOf(overlapping, impassable);
@@ -111,5 +114,6 @@ public final class Collisions {
         }
     }
 
-    private Collisions() {}
+    private Collisions() {
+    }
 }

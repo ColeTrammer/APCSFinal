@@ -10,6 +10,7 @@ public interface Impassable extends Entity {
     /**
      * Moves the overlapping entity out of
      * the impassable one.
+     *
      * @param movable The entity to expel.
      */
     void expel(Movable movable);

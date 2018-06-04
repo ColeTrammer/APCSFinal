@@ -14,6 +14,7 @@ public interface EntityManager extends EntityObserver {
     /**
      * Calls the update method of each and every entity,
      * and checks for collisions between any two entities.
+     *
      * @param delta time step from when this was last called.
      */
     void update(float delta);
@@ -22,20 +23,23 @@ public interface EntityManager extends EntityObserver {
      * Handles rendering of all entities, and takes into account
      * the possibility of a group of entities that require different
      * objects to be rendered.
+     *
      * @param renderer ShapeRenderer to be used to render entities that require it.
-     * @param batch SpriteBatch to be used to render entities that require it.
+     * @param batch    SpriteBatch to be used to render entities that require it.
      */
     void render(ShapeRenderer renderer, SpriteBatch batch);
 
     /**
      * Tells the manager to update and render
      * the entity every frame.
+     *
      * @param entity The entity to add to the manager's list
      */
     void add(Entity entity);
 
     /**
      * determines whether or not the Player is expired.
+     *
      * @return true if the player is expired, false otherwise.
      */
     boolean isPlayerExpired();

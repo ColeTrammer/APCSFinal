@@ -28,11 +28,15 @@ public class SpawnTest extends AbstractEntity {
     }
 
     @Override
-    public void render(Object renderTool) {}
+    public void render(Object renderTool) {
+    }
 
     @Override
-    public RenderTool getRenderTool() { return RenderTool.SPRITE_BATCH; }
+    public RenderTool getRenderTool() {
+        return RenderTool.SPRITE_BATCH;
+    }
 
     @Override
-    public void checkCollision(Entity other) {}
+    public void checkCollision(Entity other) {
+    }
 }

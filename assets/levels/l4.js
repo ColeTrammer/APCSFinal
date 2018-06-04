@@ -11,7 +11,7 @@ manager.spawn(player);
 manager.spawn(new InvincibleLaser(0, C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, 20, 0, 0, Direction.NONE));
 // manager.spawn(new SimpleHarmonicOscillatingOneWayWall(C.WORLD_WIDTH / 2 - 200, C.WORLD_HEIGHT / 6 - 10, 400, 20, C.WORLD_WIDTH / 2, C.WORLD_HEIGHT / 6, 200, 0, 40, Direction.DOWN))
 
-load("levels/_outer_wall.js");
+load("assets/levels/_outer_wall.js");
 
 level.setIsLevelOver(function() {
     return player.getX() > 400;

@@ -9,6 +9,7 @@ import engine.entities.Entity;
 public interface Afflicter extends Entity {
     /**
      * Damages the entity passed in.
+     *
      * @param afflictable The Entity to damage.
      */
     void giveDamage(Afflictable afflictable);

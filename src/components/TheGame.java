@@ -49,7 +49,7 @@ public class TheGame extends Game {
     /**
      * Shows the EndScreen
      */
-    public void showEndScreen () {
+    public void showEndScreen() {
         setScreen(endScreen);
     }
 }

@@ -17,9 +17,10 @@ public abstract class RectangleEntity extends AbstractEntity {
 
     /**
      * Basic Constructor
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
+     *
+     * @param x      x-coordinate of the entity's position.
+     * @param y      y-coordinate of the entity's position.
+     * @param width  width of the entity.
      * @param height height of the entity.
      */
     protected RectangleEntity(float x, float y, float width, float height) {
@@ -65,6 +66,7 @@ public abstract class RectangleEntity extends AbstractEntity {
     /**
      * Calls Collisions.collided(this, other) if this
      * rectangle overlaps with the other's rectangle.
+     *
      * @param other The entity this one is being checked against.
      */
     private void checkCollisionInternal(RectangleEntity other) {
@@ -74,24 +76,62 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     //public Rectangle getRect() { return rect; }
-    public float getX() { return rect.getX(); }
-    public float getY() { return rect.getY(); }
-    public float getWidth()  { return rect.getWidth();  }
-    public float getHeight() { return rect.getHeight(); }
+    public float getX() {
+        return rect.getX();
+    }
+
+    public float getY() {
+        return rect.getY();
+    }
+
+    public float getWidth() {
+        return rect.getWidth();
+    }
+
+    public float getHeight() {
+        return rect.getHeight();
+    }
 
     //public void setRect(Rectangle rect) { this.rect = rect; }
     //public void setX(float x) { rect.setX(x); }
     //public void setY(float y) { rect.setY(y); }
-    protected void setWidth(float width)  { rect.setWidth (width);  }
-    protected void setHeight(float height) { rect.setHeight(height); }
+    protected void setWidth(float width) {
+        rect.setWidth(width);
+    }
 
-    protected void addX(float x) { rect.setX(rect.getX() + x); }
-    protected void addY(float y) { rect.setY(rect.getY() + y); }
-    protected void addWidth(float width)  { rect.setWidth (rect.getWidth()  + width);  }
-    protected void addHeight(float height) { rect.setHeight(rect.getHeight() + height); }
+    protected void setHeight(float height) {
+        rect.setHeight(height);
+    }
 
-    protected void subX(float x) { rect.setX(rect.getX() - x); }
-    protected void subY(float y) { rect.setY(rect.getY() - y); }
-    protected void subWidth(float width)  { rect.setWidth (rect.getWidth()  - width);  }
-    protected void subHeight(float height) { rect.setHeight(rect.getHeight() - height); }
+    protected void addX(float x) {
+        rect.setX(rect.getX() + x);
+    }
+
+    protected void addY(float y) {
+        rect.setY(rect.getY() + y);
+    }
+
+    protected void addWidth(float width) {
+        rect.setWidth(rect.getWidth() + width);
+    }
+
+    protected void addHeight(float height) {
+        rect.setHeight(rect.getHeight() + height);
+    }
+
+    protected void subX(float x) {
+        rect.setX(rect.getX() - x);
+    }
+
+    protected void subY(float y) {
+        rect.setY(rect.getY() - y);
+    }
+
+    protected void subWidth(float width) {
+        rect.setWidth(rect.getWidth() - width);
+    }
+
+    protected void subHeight(float height) {
+        rect.setHeight(rect.getHeight() - height);
+    }
 }

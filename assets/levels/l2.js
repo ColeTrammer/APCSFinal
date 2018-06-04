@@ -17,7 +17,7 @@ manager.spawn(player);
 // manager.spawn(new InvincibleLaser(0, WORLD_HEIGHT * FRACTION_CLOSED / 2, WORLD_WIDTH, 10, 0, 70, Direction.NONE));
 manager.spawn(new InvincibleLaser(0, C.WORLD_WIDTH * FRACTION_CLOSED / 2 + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, 10, 0, 70, Direction.NONE));
 
-load("levels/_outer_wall.js");
+load("assets/levels/_outer_wall.js");
 
 manager.spawn(new Wall(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
 manager.spawn(new SimpleHarmonicOscillatingOneWayWall(1 /  4 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED +     HEIGHT_INC - 5, 1 / 5 * C.WORLD_WIDTH, 10, 1 /  2 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED +     HEIGHT_INC, 1 / 5 * C.WORLD_WIDTH, 0, 5, Direction.DOWN));

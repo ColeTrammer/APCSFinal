@@ -16,8 +16,7 @@ var player = new Player(50, 0, C.PLAYER_WIDTH, C.PLAYER_HEIGHT, C.PLAYER_SPEED, 
 manager.spawn(player);
 manager.spawn(new Wall(0, 0, 50, C.WORLD_HEIGHT));
 
-load("levels/_outer_wall.js");
-manager.spawn(new Wall(1 / 6 * C.WORLD_WIDTH, 0, 20, C.WORLD_HEIGHT * 3 / 5));
+load("assets/levels/_outer_wall.js");manager.spawn(new Wall(1 / 6 * C.WORLD_WIDTH, 0, 20, C.WORLD_HEIGHT * 3 / 5));
 manager.spawn(new Wall(2 / 6 * C.WORLD_WIDTH, C.WORLD_HEIGHT * 2 / 5, 20, C.WORLD_HEIGHT * 3 / 5));
 manager.spawn(new Wall(C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth(), C.WORLD_HEIGHT * 2 / 5 - 20, C.WORLD_WIDTH * 2 / 6 - (C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth()) + 20, 20)) ;
 manager.spawn(new Wall(C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth(), player.getHeight(), 20, C.WORLD_HEIGHT * 2 / 5 - 20 - (player.getHeight())));

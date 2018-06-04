@@ -10,6 +10,7 @@ public enum Direction {
 
     /**
      * Determines whether or not the direction is horizontal.
+     *
      * @return true if the Direction is horizontal; false otherwise.
      */
     public boolean isHorizontal() {
@@ -18,6 +19,7 @@ public enum Direction {
 
     /**
      * Determines whether or not the direction is vertical.
+     *
      * @return true if the Direction is vertical; false otherwise.
      */
     public boolean isVertical() {

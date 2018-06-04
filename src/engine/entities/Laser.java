@@ -22,6 +22,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
     /**
      * Constructs a laser that expands in the direction that
      * requires the most expansion.
+     *
      * @param x      x-coordinate of the entity's position.
      * @param y      y-coordinate of the entity's position.
      * @param width  width of the entity.
@@ -32,7 +33,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
     public Laser(float x, float y, float width, float height, float velX, float velY) {
         this(x, y, width, height, velX, velY, width >= height ?
                 (velX > 0 ? Direction.RIGHT : Direction.LEFT) :
-                (velY > 0 ? Direction.UP    : Direction.DOWN));
+                (velY > 0 ? Direction.UP : Direction.DOWN));
     }
 
     /**
@@ -43,12 +44,13 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * specified. The expansion direction must have a
      * corresponding non-zero velocity. Does not expand if
      * passed in NONE.
-     * @param x      x-coordinate of the entity's position.
-     * @param y      y-coordinate of the entity's position.
-     * @param width  width of the entity.
-     * @param height height of the entity.
-     * @param velX   x-component of the entity's velocity.
-     * @param velY   y-component of the entity's velocity.
+     *
+     * @param x               x-coordinate of the entity's position.
+     * @param y               y-coordinate of the entity's position.
+     * @param width           width of the entity.
+     * @param height          height of the entity.
+     * @param velX            x-component of the entity's velocity.
+     * @param velY            y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
     @SuppressWarnings("WeakerAccess")
@@ -86,6 +88,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * in accordance with the velocity in that direction. Once
      * expansion is no longer needed, updates the direction to
      * NONE.
+     *
      * @param delta time step from when this was last called.
      */
     private void expand(float delta) {
@@ -96,7 +99,7 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
                 } else {
                     addWidth(Math.abs(getVelocityX()) * delta);
                     subX(Math.abs(getVelocityX()) * delta);
-            }
+                }
             } else {
                 expandDirection = Direction.NONE;
             }

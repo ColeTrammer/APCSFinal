@@ -25,13 +25,14 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
      * Constructs the Player with the given initial position,
      * dimensions, speed of motion, jump height, and force of
      * gravity.
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
-     * @param height height of the entity.
-     * @param xSpeed Speed of the player's horizontal motion.
+     *
+     * @param x          x-coordinate of the entity's position.
+     * @param y          y-coordinate of the entity's position.
+     * @param width      width of the entity.
+     * @param height     height of the entity.
+     * @param xSpeed     Speed of the player's horizontal motion.
      * @param jumpHeight Max height of the player's jump.
-     * @param gravity Strength of gravity acting on the player.
+     * @param gravity    Strength of gravity acting on the player.
      */
     public Player(float x, float y, float width, float height, float xSpeed, float jumpHeight, float gravity) {
         super(x, y, width, height, 0, 0, 0, -gravity);
@@ -46,7 +47,7 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
         setVelocityX(0);
 
         // changes velocity based on keyboard input.
-        if (Gdx.input.isKeyPressed(Keys.LEFT)  || Gdx.input.isKeyPressed(Keys.A)) {
+        if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A)) {
             subVelocityX(xSpeed);
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D)) {

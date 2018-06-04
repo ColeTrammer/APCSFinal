@@ -11,5 +11,6 @@ public class InvincibleLaser extends Laser {
     }
 
     @Override
-    public void moveOutOf(Vector2 displacement) {}
+    public void moveOutOf(Vector2 displacement) {
+    }
 }

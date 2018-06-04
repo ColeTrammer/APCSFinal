@@ -86,7 +86,7 @@ public class ArrayEntityManager implements EntityManager {
             // render the entity based on whether or not it needs the ShapeRenderer
             if (renderTool == Entity.RenderTool.SHAPE_RENDERER) {
                 entity.render(renderer);
-            } else  {
+            } else {
                 entity.render(batch);
             }
         }
@@ -135,6 +135,7 @@ public class ArrayEntityManager implements EntityManager {
      * by first removing it's own observation of
      * the Entity, and then removing the entity
      * itself from the list of entities.
+     *
      * @param entity The entity to expire.
      */
     @Override
@@ -148,6 +149,7 @@ public class ArrayEntityManager implements EntityManager {
      * it to staging. Needs to be a separate array
      * so that adding spawning entities cannot
      * interfere with the update loop.
+     *
      * @param entity The entity to be spawned.
      */
     @Override

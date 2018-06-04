@@ -18,5 +18,6 @@ public class EntityBlocker extends Wall {
     }
 
     @Override
-    public void render(Object renderTool) {}
+    public void render(Object renderTool) {
+    }
 }

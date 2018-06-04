@@ -46,7 +46,7 @@ public class GameScreen extends InputAdapter implements Screen {
         this.game = game;
         this.levels = new ArrayList<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("levels/level_map.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("assets/levels/level_map.txt"));
             String line = reader.readLine();
             while (line != null) {
                 if (line.startsWith("!")) {
@@ -58,7 +58,7 @@ public class GameScreen extends InputAdapter implements Screen {
                     String[] args = line.split("\\s+");
                     if (Boolean.parseBoolean(args[2])) {
                         int i = Integer.parseInt(args[0]) - 1;
-                        levels.set(i, String.format("levels/%s", args[1]));
+                        levels.set(i, String.format("assets/levels/%s", args[1]));
                     }
                 }
                 line = reader.readLine();

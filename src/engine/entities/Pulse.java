@@ -24,12 +24,13 @@ public class Pulse extends RectangleEntity implements Afflicter {
     /**
      * Constructs the pulse with the given time constraints.
      * Automatically removes itself when its duration is over.
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
-     * @param height height of the entity.
-     * @param delay time before the pulse becomes active.
-     * @param duration time the pulse is active.
+     *
+     * @param x         x-coordinate of the entity's position.
+     * @param y         y-coordinate of the entity's position.
+     * @param width     width of the entity.
+     * @param height    height of the entity.
+     * @param delay     time before the pulse becomes active.
+     * @param duration  time the pulse is active.
      * @param direction direction for the pulse to expand in.
      */
     public Pulse(float x, float y, float width, float height, float delay, float duration, Direction direction) {

@@ -12,6 +12,7 @@ public interface Entity {
      * Method's purpose it to update any relevant state in the entity.
      * Meant to be called before every render, and allows
      * for entities to move or change over time.
+     *
      * @param delta time step from when this was last called.
      */
     void update(float delta);
@@ -20,6 +21,7 @@ public interface Entity {
      * Method's purpose is to draw the entity on the screen.
      * Meant to be called every frame, and allows
      * for entities to show be viewed by humans.
+     *
      * @param rendererTool Object with which the entity will use to render itself.
      */
     void render(Object rendererTool);
@@ -27,6 +29,7 @@ public interface Entity {
     /**
      * Method's purpose it to allow entities to either be drawn with a
      * ShapeRenderer or SpriteBatch. Must be respected when calling render.
+     *
      * @return SHAPE_RENDERER if the Entity must be rendered with a ShapeRenderer
      * SPRITE_BATCH if the Entity must be rendered with a SpriteBatch
      */
@@ -46,6 +49,7 @@ public interface Entity {
      * Currently, what to do when a collision occurs is governed by the
      * Collisions class. Calls Collisions.collided(this, other) if
      * this and other overlap with each other.
+     *
      * @param other The entity this one is being checked against.
      */
     void checkCollision(Entity other);
@@ -53,8 +57,9 @@ public interface Entity {
     /**
      * Method's purpose is to allow an EntityObserver
      * to get notified when the entity expires.
+     *
      * @param observer EntityObserver to add to the list of observers
-     *          to notify when the entity expires.
+     *                 to notify when the entity expires.
      */
     void addObserver(EntityObserver observer);
 
@@ -62,8 +67,9 @@ public interface Entity {
      * Method's purpose is to allow an EntityObserver
      * to cleanse itself from it's responsibilities to
      * the entity class by ignoring the Entity's expiration.
+     *
      * @param observer EntityObserver to remove from the list of observers
-     *          to notify when the entity expires.
+     *                 to notify when the entity expires.
      */
     void removeObserver(EntityObserver observer);
 
@@ -83,6 +89,7 @@ public interface Entity {
      * to tell all of it's observers that it
      * has spawned a new Entity and to add
      * this new Entity to it's list of entities.
+     *
      * @param entity The entity to be spawned.
      */
     @SuppressWarnings("unused")

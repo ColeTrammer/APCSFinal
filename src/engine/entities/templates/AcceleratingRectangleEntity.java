@@ -12,14 +12,15 @@ public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity
 
     /**
      * Basic Constructor
-     * @param x x-coordinate of the entity's position.
-     * @param y y-coordinate of the entity's position.
-     * @param width width of the entity.
+     *
+     * @param x      x-coordinate of the entity's position.
+     * @param y      y-coordinate of the entity's position.
+     * @param width  width of the entity.
      * @param height height of the entity.
-     * @param velX x-component of the entity's velocity.
-     * @param velY y-component of the entity's velocity.
-     * @param accX x-component of the entity's acceleration.
-     * @param accY y-component of the entity's acceleration.
+     * @param velX   x-component of the entity's velocity.
+     * @param velY   y-component of the entity's velocity.
+     * @param accX   x-component of the entity's acceleration.
+     * @param accY   y-component of the entity's acceleration.
      */
     protected AcceleratingRectangleEntity(float x, float y, float width, float height, float velX, float velY, float accX, float accY) {
         super(x, y, width, height, velX, velY);
@@ -33,11 +34,18 @@ public abstract class AcceleratingRectangleEntity extends MovableRectangleEntity
     }
 
     //public Vector2 getAcceleration() { return acceleration; }
-    public float getAccelerationX() { return acceleration.x; }
-    public float getAccelerationY() { return acceleration.y; }
+    public float getAccelerationX() {
+        return acceleration.x;
+    }
+
+    public float getAccelerationY() {
+        return acceleration.y;
+    }
 
     //public void setAcceleration(Vector2 acceleration) { this.acceleration = acceleration; }
-    public void setAcceleration(float x, float y) { acceleration.set(x, y); }
+    public void setAcceleration(float x, float y) {
+        acceleration.set(x, y);
+    }
     //public void setAccelerationX(float x) { acceleration.set(x, acceleration.y); }
     //public void setAccelerationY(float y) { acceleration.set(acceleration.x, y); }
 

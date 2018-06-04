@@ -80,7 +80,7 @@ public class Level {
     public LevelState getLevelState() {
         return manager.isPlayerExpired() ? LevelState.LOST :
                 isLevelOver.getAsBoolean() ? LevelState.WON :
-                LevelState.ONGOING;
+                        LevelState.ONGOING;
     }
 
     public enum LevelState {
