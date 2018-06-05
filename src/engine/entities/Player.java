@@ -59,7 +59,7 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
         that it will actually equal zero due to acceleration. Therefore, it will stay in
         as a FEATURE.
         */
-        if (Gdx.input.isKeyPressed(Keys.SPACE) && getVelocityY() == 0) {
+        if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocityY() == 0) {
             setVelocityY(ySpeed);
         }
 
@@ -79,6 +79,8 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
         super.moveOutOf(displacement);
         if (displacement.y > 0) {
             setVelocityY(0);
+        } else if (displacement.y < 0) {
+            setVelocityY(getAccelerationY() * getDeltaTime());
         }
     }
 

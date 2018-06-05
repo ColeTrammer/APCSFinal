@@ -32,6 +32,7 @@ public abstract class RectangleEntity extends AbstractEntity {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
     }
 
     @Override

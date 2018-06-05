@@ -64,7 +64,13 @@ public class MovableWall extends MovableRectangleEntity implements Impassable {
     @Override
     public void expel(Movable movable) {
         if (movable instanceof RectangleEntity) {
-            movable.moveOutOf(Collisions.expelDistance((RectangleEntity) movable, this));
+            Vector2 displacement = Collisions.expelDistance((RectangleEntity) movable, this);
+            if (displacement.x == 0 && getVelocityX() != 0) {
+                displacement.x = getVelocityX() * getDeltaTime();
+            } else if (displacement.y == 0 && getVelocityY() != 0) {
+                displacement.y = getVelocityY() * getDeltaTime();
+            }
+            movable.moveOutOf(displacement);
         }
     }
 }

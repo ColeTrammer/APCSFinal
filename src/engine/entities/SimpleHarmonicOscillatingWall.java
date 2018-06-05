@@ -2,6 +2,7 @@ package engine.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.templates.RectangleEntity;
@@ -24,7 +25,13 @@ public class SimpleHarmonicOscillatingWall extends SimpleHarmonicOscillatingEnti
     @Override
     public void expel(Movable movable) {
         if (movable instanceof RectangleEntity) {
-            movable.moveOutOf(Collisions.expelDistance((RectangleEntity) movable, this));
+            Vector2 displacement = Collisions.expelDistance((RectangleEntity) movable, this);
+            if (displacement.x == 0 && getVelocityX() != 0) {
+                displacement.x = getVelocityX() * getDeltaTime();
+            } else if (displacement.y == 0 && getVelocityY() != 0) {
+                displacement.y = getVelocityY() * getDeltaTime();
+            }
+            movable.moveOutOf(displacement);
         }
     }
 }

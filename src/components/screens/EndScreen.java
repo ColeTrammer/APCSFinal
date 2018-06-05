@@ -85,6 +85,13 @@ public class EndScreen extends InputAdapter implements Screen {
     }
 
     @Override
+    public boolean keyDown(int keycode) {
+        game.reset();
+        game.showGameScreen();
+        return true;
+    }
+
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         game.reset();
         game.showGameScreen();

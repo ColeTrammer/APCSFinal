@@ -87,6 +87,12 @@ public class MenuScreen extends InputAdapter implements Screen {
     }
 
     @Override
+    public boolean keyDown(int keycode) {
+        game.showGameScreen();
+        return true;
+    }
+
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         game.showGameScreen();
         return true;

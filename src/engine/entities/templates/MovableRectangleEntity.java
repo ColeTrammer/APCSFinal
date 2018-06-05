@@ -31,6 +31,7 @@ public abstract class MovableRectangleEntity extends RectangleEntity implements 
     public void update(float delta) {
         addX(velocity.x * delta);
         addY(velocity.y * delta);
+        super.update(delta);
     }
 
     @Override

@@ -13,6 +13,7 @@ import engine.utils.EntityObserver;
  */
 public abstract class AbstractEntity implements Entity {
     private final Array<EntityObserver> observers;
+    private float delta;
 
     protected AbstractEntity() {
         observers = new Array<>();
@@ -29,6 +30,11 @@ public abstract class AbstractEntity implements Entity {
     }
 
     @Override
+    public void update(float delta) {
+        this.delta = delta;
+    }
+
+    @Override
     public void expire() {
         for (EntityObserver observer : observers) {
             observer.expire(this);
@@ -41,4 +47,6 @@ public abstract class AbstractEntity implements Entity {
             observer.spawn(entity);
         }
     }
+
+    protected float getDeltaTime() { return delta; }
 }

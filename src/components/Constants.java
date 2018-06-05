@@ -45,8 +45,8 @@ public final class Constants {
     public static final float LASER_SPAWN_INTERVAL  = 100f; // in milliseconds
     */
 
-    public static final String MENU_MESSAGE = "Click to play!";
-    public static final String GAME_OVER_MESSAGE = "You died! Click to play again!";
+    public static final String MENU_MESSAGE = "Press any key to play!";
+    public static final String GAME_OVER_MESSAGE = "You died! Press any key to play again!";
     public static final String GAME_TITLE = "Game";
 
     private Constants() {
