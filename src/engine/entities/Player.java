@@ -77,7 +77,7 @@ public class Player extends AcceleratingRectangleEntity implements Afflictable {
     @Override
     public void moveOutOf(Vector2 displacement) {
         super.moveOutOf(displacement);
-        if (displacement.y > 0) {
+        if (displacement.y > 0 && getVelocityY() < 0) {
             setVelocityY(0);
         } else if (displacement.y < 0) {
             setVelocityY(getAccelerationY() * getDeltaTime());

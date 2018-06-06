@@ -11,6 +11,7 @@ var Pulse = Java.type("engine.entities.Pulse");
 var Laser = Java.type("engine.entities.Laser");
 var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("components.Constants");
+var Text = Java.type("engine.entities.Text");
 
 var LASER_WIDTH = 50;
 var LASER_HEIGHT = 5;
@@ -25,6 +26,9 @@ load("assets/levels/_outer_wall.js");
 manager.spawn(new Wall(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
 manager.spawn(new Wall(0, C.WORLD_HEIGHT * (1 - FRACTION_CLOSED), C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED));
 
+var timeText = new Text("Survive until the timer runs out: " + Math.round(END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED)), font, 50, 4 / 5 * C.WORLD_HEIGHT);
+manager.spawn(timeText);
+
 timer.addAction(0.3, END, 1, function() {
     manager.spawn(new Pulse(0, C.WORLD_HEIGHT * FRACTION_CLOSED + (C.PLAYER_HEIGHT / 2), C.WORLD_WIDTH, LASER_HEIGHT * 2, 0.5, 0.1, Direction.UP));
 });
@@ -34,6 +38,9 @@ timer.addAction(0.0, END, SPAWN_RATE, function() {
     } else {
         manager.spawn(new Laser(0.01, C.WORLD_HEIGHT * (Math.random() * ((C.WORLD_HEIGHT * FRACTION_CLOSED - LASER_HEIGHT) / C.WORLD_HEIGHT) + FRACTION_CLOSED), LASER_WIDTH, LASER_HEIGHT, C.PLAYER_SPEED, 0));
     }
+});
+timer.addAction(1.0, END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED), 1, function() {
+    timeText.setText("Survive until the timer runs out: " + Math.round(END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED) - timer.getElapsedTime()));
 });
 
 level.setIsLevelOver(function() {

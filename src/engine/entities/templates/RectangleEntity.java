@@ -1,7 +1,7 @@
 package engine.entities.templates;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
+import engine.entities.components.Rectangle;
 import engine.utils.Collisions;
 import engine.entities.Entity;
 
@@ -18,16 +18,12 @@ public abstract class RectangleEntity extends AbstractEntity {
     /**
      * Basic Constructor
      *
-     * @param x      x-coordinate of the entity's position.
-     * @param y      y-coordinate of the entity's position.
-     * @param width  width of the entity.
-     * @param height height of the entity.
      */
-    protected RectangleEntity(float x, float y, float width, float height) {
-        if (width < 0 || height < 0) {
+    protected RectangleEntity(Rectangle rect) {
+        if (rect.getWidth() < 0 || rect.getHeight() < 0) {
             throw new IllegalArgumentException("Width and height parameters must be positive.");
         }
-        rect = new Rectangle(x, y, width, height);
+        this.rect = rect;
     }
 
     @Override
@@ -71,18 +67,19 @@ public abstract class RectangleEntity extends AbstractEntity {
      * @param other The entity this one is being checked against.
      */
     private void checkCollisionInternal(RectangleEntity other) {
-        if (this.rect.overlaps(other.rect)) {
+        if (this.rect.overlapsWith(other.rect)) {
             Collisions.collided(this, other);
         }
     }
 
-    //public Rectangle getRect() { return rect; }
+    public Rectangle getRect() { return rect; }
+
     public float getX() {
-        return rect.getX();
+        return rect.getX() - rect.getWidth() / 2;
     }
 
     public float getY() {
-        return rect.getY();
+        return rect.getY() - rect.getHeight() / 2;
     }
 
     public float getWidth() {
@@ -93,9 +90,6 @@ public abstract class RectangleEntity extends AbstractEntity {
         return rect.getHeight();
     }
 
-    //public void setRect(Rectangle rect) { this.rect = rect; }
-    //public void setX(float x) { rect.setX(x); }
-    //public void setY(float y) { rect.setY(y); }
     protected void setWidth(float width) {
         rect.setWidth(width);
     }

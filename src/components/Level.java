@@ -1,6 +1,7 @@
 package components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -42,6 +43,7 @@ public class Level {
         js.put("level", this);
         js.put("manager", manager);
         js.put("timer", timer);
+        js.put("font", new BitmapFont());
         try {
             js.eval(reader);
         } catch (Exception e) {
