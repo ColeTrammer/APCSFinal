@@ -2,8 +2,8 @@ package launchers;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl.*;
-import components.TheGame;
-import components.Constants;
+import game.TheGame;
+import game.Constants;
 
 /**
  * Class that launches the game. This class is platform dependent

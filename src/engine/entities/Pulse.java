@@ -3,6 +3,7 @@ package engine.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.Afflicter;
+import engine.entities.components.Rectangle;
 import engine.entities.templates.RectangleEntity;
 import engine.utils.Direction;
 
@@ -25,27 +26,23 @@ public class Pulse extends RectangleEntity implements Afflicter {
      * Constructs the pulse with the given time constraints.
      * Automatically removes itself when its duration is over.
      *
-     * @param x         x-coordinate of the entity's position.
-     * @param y         y-coordinate of the entity's position.
-     * @param width     width of the entity.
-     * @param height    height of the entity.
      * @param delay     time before the pulse becomes active.
      * @param duration  time the pulse is active.
      * @param direction direction for the pulse to expand in.
      */
-    public Pulse(float x, float y, float width, float height, float delay, float duration, Direction direction) {
-        super(x, y, width, height);
+    public Pulse(Rectangle rect, float delay, float duration, Direction direction) {
+        super(rect);
         this.delay = delay;
         this.duration = duration;
         this.direction = direction;
         this.elapsedTime = 0;
         this.canGiveDamage = false;
         if (direction.isHorizontal()) {
+            targetDimension = rect.getWidth();
             setWidth(minDimension);
-            targetDimension = width;
         } else if (direction.isVertical()) {
+            targetDimension = rect.getHeight();
             setHeight(minDimension);
-            targetDimension = height;
         } else {
             targetDimension = 0;
         }

@@ -2,7 +2,7 @@ var EntityManager = Java.type("engine.utils.EntityManager");
 manager = manager || new EntityManager();
 var Timer = Java.type("engine.utils.Timer");
 timer = timer || new Timer();
-var Level = Java.type("components.Level");
+var Level = Java.type("game.Level");
 level = level || new Level(__FILE__);
 
 var Player = Java.type("engine.entities.Player");
@@ -10,7 +10,7 @@ var Wall = Java.type("engine.entities.Wall");
 var Pulse = Java.type("engine.entities.Pulse");
 var Laser = Java.type("engine.entities.Laser");
 var Direction = Java.type("engine.utils.Direction");
-var C = Java.type("components.Constants");
+var C = Java.type("game.Constants");
 var Text = Java.type("engine.entities.Text");
 
 var LASER_WIDTH = 50;

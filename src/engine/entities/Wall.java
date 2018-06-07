@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
+import engine.entities.components.MovementComponent;
+import engine.entities.components.Rectangle;
+import engine.entities.templates.MovableRectangleEntity;
 import engine.entities.templates.RectangleEntity;
 import engine.utils.Collisions;
 
@@ -12,18 +15,14 @@ import engine.utils.Collisions;
  * is completely static and unchanging, only interacting
  * with other entities when in a collision.
  */
-public class Wall extends RectangleEntity implements Impassable {
+public class Wall extends MovableRectangleEntity implements Impassable {
     /**
      * Basic Constructor
      *
-     * @param x      x-coordinate of the entity's position.
-     * @param y      y-coordinate of the entity's position.
-     * @param width  width of the entity.
-     * @param height height of the entity.
      */
     @SuppressWarnings("WeakerAccess")
-    public Wall(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public Wall(Rectangle rect, MovementComponent movementComponent) {
+        super(rect, movementComponent);
     }
 
     @Override

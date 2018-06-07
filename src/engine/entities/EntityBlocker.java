@@ -1,12 +1,15 @@
 package engine.entities;
 
 import engine.entities.behaviors.Movable;
+import engine.entities.components.MovementComponent;
+import engine.entities.components.Rectangle;
 
+@SuppressWarnings("unused")
 public class EntityBlocker extends Wall {
     private final Class<? extends Entity> cls;
 
-    public EntityBlocker(float x, float y, float width, float height, Class<? extends Entity> cls) {
-        super(x, y, width, height);
+    public EntityBlocker(Rectangle rect, MovementComponent movementComponent, Class<? extends Entity> cls) {
+        super(rect, movementComponent);
         this.cls = cls;
     }
 

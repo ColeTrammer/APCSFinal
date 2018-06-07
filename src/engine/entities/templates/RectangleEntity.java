@@ -72,8 +72,6 @@ public abstract class RectangleEntity extends AbstractEntity {
         }
     }
 
-    public Rectangle getRect() { return rect; }
-
     public float getX() {
         return rect.getX() - rect.getWidth() / 2;
     }
@@ -108,10 +106,12 @@ public abstract class RectangleEntity extends AbstractEntity {
 
     protected void addWidth(float width) {
         rect.setWidth(rect.getWidth() + width);
+        addX(width / 2);
     }
 
     protected void addHeight(float height) {
         rect.setHeight(rect.getHeight() + height);
+        addY(height / 2);
     }
 
     protected void subX(float x) {
@@ -124,9 +124,11 @@ public abstract class RectangleEntity extends AbstractEntity {
 
     protected void subWidth(float width) {
         rect.setWidth(rect.getWidth() - width);
+        subX(width / 2);
     }
 
     protected void subHeight(float height) {
         rect.setHeight(rect.getHeight() - height);
+        subY(height / 2);
     }
 }

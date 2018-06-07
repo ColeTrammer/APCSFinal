@@ -1,6 +1,8 @@
 package engine.entities;
 
 import engine.entities.behaviors.Movable;
+import engine.entities.components.MovementComponent;
+import engine.entities.components.Rectangle;
 import engine.utils.Direction;
 
 /**
@@ -13,14 +15,10 @@ public class OneWayWall extends Wall {
     /**
      * Constructs a wall that allows motion in one direction.
      *
-     * @param x      x-coordinate of the entity's position.
-     * @param y      y-coordinate of the entity's position.
-     * @param width  width of the entity.
-     * @param height height of the entity.
      * @param allow  the direction that should be allowed.
      */
-    public OneWayWall(float x, float y, float width, float height, Direction allow) {
-        super(x, y, width, height);
+    public OneWayWall(Rectangle rect, MovementComponent movementComponent, Direction allow) {
+        super(rect, movementComponent);
         this.allow = allow;
     }
 

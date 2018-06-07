@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.Afflicter;
+import engine.entities.components.MovementComponent;
+import engine.entities.components.Rectangle;
 import engine.entities.templates.MovableRectangleEntity;
 import engine.utils.Direction;
 
@@ -20,23 +22,6 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
     private Direction expandDirection;
 
     /**
-     * Constructs a laser that expands in the direction that
-     * requires the most expansion.
-     *
-     * @param x      x-coordinate of the entity's position.
-     * @param y      y-coordinate of the entity's position.
-     * @param width  width of the entity.
-     * @param height height of the entity.
-     * @param velX   x-component of the entity's velocity. Must be non-zero if width >= height.
-     * @param velY   y-component of the entity's velocity. Must be non-zero if height > width.
-     */
-    public Laser(float x, float y, float width, float height, float velX, float velY) {
-        this(x, y, width, height, velX, velY, width >= height ?
-                (velX > 0 ? Direction.RIGHT : Direction.LEFT) :
-                (velY > 0 ? Direction.UP : Direction.DOWN));
-    }
-
-    /**
      * Creates a laser with specified bounds and velocity,
      * that starts with 0 length in the expansion direction,
      * and increases that dimension by the velocity in the
@@ -45,27 +30,21 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
      * corresponding non-zero velocity. Does not expand if
      * passed in NONE.
      *
-     * @param x               x-coordinate of the entity's position.
-     * @param y               y-coordinate of the entity's position.
-     * @param width           width of the entity.
-     * @param height          height of the entity.
-     * @param velX            x-component of the entity's velocity.
-     * @param velY            y-component of the entity's velocity.
      * @param expandDirection the direction to expand in. If NONE, no expansion occurs.
      */
-    @SuppressWarnings("WeakerAccess")
-    public Laser(float x, float y, float width, float height, float velX, float velY, Direction expandDirection) {
-        super(x, y, width, height, velX, velY);
+    @SuppressWarnings("unused")
+    public Laser(Rectangle rect, MovementComponent movementComponent, Direction expandDirection) {
+        super(rect, movementComponent);
         this.expandDirection = expandDirection;
-        if (expandDirection.isHorizontal() && velX == 0 || expandDirection.isVertical() && velY == 0) {
+        if (expandDirection.isHorizontal() && getVelocity().x == 0 || expandDirection.isVertical() && getVelocity().y == 0) {
             throw new IllegalArgumentException(String.format("A laser cannot expand in the %s direction and have 0 %s velocity.", expandDirection.name(), expandDirection.name()));
         }
         if (expandDirection.isHorizontal()) {
+            targetLength = rect.getWidth();
             setWidth(0);
-            targetLength = width;
         } else if (expandDirection.isVertical()) {
+            targetLength = rect.getHeight();
             setHeight(0);
-            targetLength = height;
         }
     }
 
@@ -95,10 +74,10 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
         if (expandDirection.isHorizontal()) {
             if (getWidth() < targetLength) {
                 if (expandDirection == Direction.RIGHT) {
-                    addWidth(Math.abs(getVelocityX()) * delta);
+                    addWidth(Math.abs(getVelocity().x) * delta);
                 } else {
-                    addWidth(Math.abs(getVelocityX()) * delta);
-                    subX(Math.abs(getVelocityX()) * delta);
+                    addWidth(Math.abs(getVelocity().x) * delta);
+                    subX(Math.abs(getVelocity().x) * delta);
                 }
             } else {
                 expandDirection = Direction.NONE;
@@ -106,10 +85,10 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
         } else if (expandDirection.isVertical()) {
             if (getHeight() < targetLength) {
                 if (expandDirection == Direction.UP) {
-                    addHeight(Math.abs(getVelocityY()) * delta);
+                    addHeight(Math.abs(getVelocity().y) * delta);
                 } else {
-                    addHeight(Math.abs(getVelocityY()) * delta);
-                    subY(Math.abs(getVelocityY()) * delta);
+                    addHeight(Math.abs(getVelocity().y) * delta);
+                    subY(Math.abs(getVelocity().y) * delta);
                 }
             } else {
                 expandDirection = Direction.NONE;
@@ -126,15 +105,15 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
 
     @Override
     public void moveOutOf(Vector2 displacement) {
-        if (getVelocityX() > 0) {
+        if (getVelocity().x > 0) {
             subWidth(Math.abs(displacement.x));
-        } else if (getVelocityX() < 0) {
+        } else if (getVelocity().x < 0) {
             subWidth(Math.abs(displacement.x));
             super.moveOutOf(displacement);
         }
-        if (getVelocityY() > 0) {
+        if (getVelocity().y > 0) {
             subHeight(Math.abs(displacement.y));
-        } else if (getVelocityY() < 0) {
+        } else if (getVelocity().y < 0) {
             subHeight(Math.abs(displacement.y));
             super.moveOutOf(displacement);
         }

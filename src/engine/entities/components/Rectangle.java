@@ -7,8 +7,8 @@ public class Rectangle implements PositionComponent {
     private float height;
 
     public Rectangle(float x, float y, float width, float height) {
-        this.x = x;
-        this.y = y;
+        this.x = x + width / 2;
+        this.y = y + height / 2;
         this.width = width;
         this.height = height;
     }

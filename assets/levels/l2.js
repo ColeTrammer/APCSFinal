@@ -4,7 +4,7 @@ var InvincibleLaser = Java.type("engine.entities.InvincibleLaser");
 var Wall = Java.type("engine.entities.Wall");
 var Laser = Java.type("engine.entities.Laser");
 var Direction = Java.type("engine.utils.Direction");
-var C = Java.type("components.Constants");
+var C = Java.type("game.Constants");
 
 var LASER_WIDTH = 50;
 var LASER_HEIGHT = 5;
