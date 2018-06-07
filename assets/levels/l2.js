@@ -29,7 +29,6 @@ var player = new Player(
     new Rectangle(C.WORLD_WIDTH / 2, C.WORLD_HEIGHT * FRACTION_CLOSED, C.PLAYER_WIDTH, C.PLAYER_HEIGHT),
     C.PLAYER_SPEED, C.PLAYER_JUMP_HEIGHT, C.GRAVITY);
 manager.spawn(player);
-// manager.spawn(new InvincibleLaser(0, WORLD_HEIGHT * FRACTION_CLOSED / 2, WORLD_WIDTH, 10, 0, 70, Direction.NONE));
 var iLRect = new Rectangle(0, C.WORLD_WIDTH * FRACTION_CLOSED / 2 + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, 10);
 manager.spawn(new InvincibleLaser(
     iLRect,
