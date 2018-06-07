@@ -24,6 +24,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
     private final float ySpeed;
     private boolean canJump;
     private boolean jumping;
+    private boolean ducking;
 
     /**
      * Constructs the Player with the given initial position,
@@ -72,6 +73,19 @@ public class Player extends MovableRectangleEntity implements Afflictable {
             }
         }
 
+        if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) {
+            if (!ducking) {
+                ducking = true;
+                setHeight(getHeight() / 2);
+            }
+        } else if (ducking) {
+            ducking = false;
+            setHeight(getHeight() * 2);
+        }
+
+        if (ducking) {
+            getVelocity().x *= 3f / 4f;
+        }
         // applies the acceleration to the velocity to the position.
         super.update(delta);
     }
