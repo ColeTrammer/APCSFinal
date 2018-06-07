@@ -21,6 +21,7 @@ public abstract class MovableRectangleEntity extends RectangleEntity implements 
     protected MovableRectangleEntity(Rectangle rect, MovementComponent movementComponent) {
         super(rect);
         this.movementComponent = movementComponent;
+        movementComponent.setPositionComponent(rect);
     }
 
     @Override

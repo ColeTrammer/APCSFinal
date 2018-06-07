@@ -22,6 +22,8 @@ import engine.entities.templates.MovableRectangleEntity;
 public class Player extends MovableRectangleEntity implements Afflictable {
     private final float xSpeed;
     private final float ySpeed;
+    private boolean canJump;
+    private boolean jumping;
 
     /**
      * Constructs the Player with the given initial position,
@@ -33,7 +35,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
      * @param gravity    Strength of gravity acting on the player.
      */
     public Player(Rectangle rect, float xSpeed, float jumpHeight, float gravity) {
-        super(rect, new Acceleration(rect, 0, 0, 0, -gravity));
+        super(rect, new Acceleration(0, 0, 0, -gravity));
         this.xSpeed = xSpeed;
         // basic kinematics equation (v^2 = v_0^2 + 2 * a * x) with v_0 = 0
         this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
@@ -57,8 +59,17 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         that it will actually equal zero due to acceleration. Therefore, it will stay in
         as a FEATURE.
         */
-        if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocity().y == 0) {
-            getVelocity().y += ySpeed;
+        if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocity().y >= 0) {
+            jumping = true;
+            if (canJump) {
+                canJump = false;
+                getVelocity().y += ySpeed;
+            }
+        } else if (jumping) {
+            jumping = false;
+            if (getVelocity().y > ySpeed * 6 / 15) {
+                getVelocity().y = ySpeed * 6 / 15;
+            }
         }
 
         // applies the acceleration to the velocity to the position.
@@ -77,6 +88,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         super.moveOutOf(displacement);
         if (displacement.y > 0 && getVelocity().y < 0) {
             getVelocity().y = 0;
+            canJump = true;
         } else if (displacement.y < 0 && getVelocity().y > 0) {
             getVelocity().y *= -1;
         }

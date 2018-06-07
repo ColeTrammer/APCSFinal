@@ -11,7 +11,6 @@ var Player = Java.type("engine.entities.Player");
 var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("game.Constants");
 var Wall = Java.type("engine.entities.Wall");
-var Stationary = Java.type("engine.entities.components.Stationary");
 var Rectangle = Java.type("engine.entities.components.Rectangle");
 
 var FRACTION_CLOSED = 0;
@@ -22,8 +21,7 @@ var player = new Player(
 manager.spawn(player);
 for (var i = 0; i < C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20) - 1; i++) {
     manager.spawn(new Wall(
-        new Rectangle(i % 2 === 0 ? 0 : 1 / 5 * C.WORLD_WIDTH, (i + 1) * (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20), 4 / 5 * C.WORLD_WIDTH, 20),
-        new Stationary()));
+        new Rectangle(i % 2 === 0 ? 0 : 1 / 5 * C.WORLD_WIDTH, (i + 1) * (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20), 4 / 5 * C.WORLD_WIDTH, 20)));
 }
 
 load("assets/levels/_outer_wall.js");

@@ -7,6 +7,7 @@ import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.components.MovementComponent;
 import engine.entities.components.Rectangle;
+import engine.entities.components.Stationary;
 import engine.entities.templates.MovableRectangleEntity;
 import engine.entities.templates.RectangleEntity;
 import engine.utils.Collisions;
@@ -17,6 +18,11 @@ import engine.utils.Collisions;
  * with other entities when in a collision.
  */
 public class Wall extends MovableRectangleEntity implements Impassable {
+    @SuppressWarnings("unused")
+    public Wall(Rectangle rect) {
+        this(rect, new Stationary());
+    }
+
     /**
      * Basic Constructor
      *

@@ -7,6 +7,7 @@ import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.Afflicter;
 import engine.entities.components.MovementComponent;
 import engine.entities.components.Rectangle;
+import engine.entities.components.Stationary;
 import engine.entities.templates.MovableRectangleEntity;
 import engine.utils.Direction;
 
@@ -20,6 +21,11 @@ import engine.utils.Direction;
 public class Laser extends MovableRectangleEntity implements Afflicter {
     private float targetLength;
     private Direction expandDirection;
+
+    @SuppressWarnings("unused")
+    public Laser(Rectangle rect, Direction expandDirection) {
+        this(rect, new Stationary(), expandDirection);
+    }
 
     /**
      * Creates a laser with specified bounds and velocity,
