@@ -1,9 +1,11 @@
-var EntityManager = Java.type("engine.utils.EntityManager");
-manager = manager || new EntityManager();
+var ArrayEntityManager = Java.type("engine.utils.ArrayEntityManager");
+manager = manager || new ArrayEntityManager();
 var Timer = Java.type("engine.utils.Timer");
 timer = timer || new Timer();
 var Level = Java.type("game.Level");
 level = level || new Level(__FILE__);
+var BitmapFont = Java.type("com.badlogic.gdx.graphics.g2d.BitmapFont");
+font = font || new BitmapFont();
 
 var Player = Java.type("engine.entities.Player");
 var Wall = Java.type("engine.entities.Wall");
@@ -16,11 +18,7 @@ var Rectangle = Java.type("engine.entities.components.Rectangle");
 var Stationary = Java.type("engine.entities.components.Stationary");
 var Velocity = Java.type("engine.entities.components.Velocity");
 
-var LASER_WIDTH = 50;
-var LASER_HEIGHT = 5;
 var FRACTION_CLOSED = 1 / 5;
-var SPAWN_RATE = 0.5;
-var END = 15;
 
 var player = new Player(
     new Rectangle(0, C.WORLD_HEIGHT * FRACTION_CLOSED, C.PLAYER_WIDTH, C.PLAYER_HEIGHT),

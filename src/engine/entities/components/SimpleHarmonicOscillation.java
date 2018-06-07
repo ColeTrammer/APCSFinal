@@ -15,7 +15,7 @@ public class SimpleHarmonicOscillation extends Acceleration {
 
     @Override
     public void move(float delta) {
-        getAcceleration().set(k * (center.x - getPositionComponent().getX()), k * (center.y - getPositionComponent().getY() / 2));
+        getAcceleration().set(k * (center.x - getPositionComponent().getX()), k * (center.y - getPositionComponent().getY()));
         super.move(delta);
     }
 }

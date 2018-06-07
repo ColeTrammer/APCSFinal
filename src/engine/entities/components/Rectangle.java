@@ -59,7 +59,7 @@ public class Rectangle implements PositionComponent {
     }
 
     private boolean overlapsWithInternal(Rectangle other) {
-        return new com.badlogic.gdx.math.Rectangle(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height).overlaps(
-                new com.badlogic.gdx.math.Rectangle(other.x - other.width / 2, other.y - other.height / 2, other.width, other.height));
+        return Math.abs(this.x - other.x) < (this.width + other.width) / 2 &&
+                Math.abs(this.y - other.y) < (this.height + other.height) / 2;
     }
 }

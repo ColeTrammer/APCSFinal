@@ -65,6 +65,7 @@ public class Pulse extends RectangleEntity implements Afflicter {
         } else {
             expire();
         }
+        super.update(delta);
     }
 
     @Override

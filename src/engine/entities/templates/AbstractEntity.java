@@ -31,7 +31,7 @@ public abstract class AbstractEntity implements Entity {
 
     @Override
     public void update(float delta) {
-        this.delta = delta;
+        setDeltaTime(delta);
     }
 
     @Override
@@ -49,4 +49,5 @@ public abstract class AbstractEntity implements Entity {
     }
 
     protected float getDeltaTime() { return delta; }
+    protected void setDeltaTime(float delta) { this.delta = delta; }
 }

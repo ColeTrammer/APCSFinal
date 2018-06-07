@@ -17,18 +17,12 @@ public abstract class RectangleEntity extends AbstractEntity {
 
     /**
      * Basic Constructor
-     *
      */
     protected RectangleEntity(Rectangle rect) {
         if (rect.getWidth() < 0 || rect.getHeight() < 0) {
             throw new IllegalArgumentException("Width and height parameters must be positive.");
         }
         this.rect = rect;
-    }
-
-    @Override
-    public void update(float delta) {
-        super.update(delta);
     }
 
     @Override
@@ -89,10 +83,12 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     protected void setWidth(float width) {
+        addX((width - rect.getWidth()) / 2);
         rect.setWidth(width);
     }
 
     protected void setHeight(float height) {
+        addY((height - rect.getHeight()) / 2);
         rect.setHeight(height);
     }
 
@@ -105,13 +101,11 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     protected void addWidth(float width) {
-        rect.setWidth(rect.getWidth() + width);
-        addX(width / 2);
+        setWidth(getWidth() + width);
     }
 
     protected void addHeight(float height) {
-        rect.setHeight(rect.getHeight() + height);
-        addY(height / 2);
+        setHeight(getHeight() + height);
     }
 
     protected void subX(float x) {
@@ -123,12 +117,10 @@ public abstract class RectangleEntity extends AbstractEntity {
     }
 
     protected void subWidth(float width) {
-        rect.setWidth(rect.getWidth() - width);
-        subX(width / 2);
+        setWidth(getWidth() - width);
     }
 
     protected void subHeight(float height) {
-        rect.setHeight(rect.getHeight() - height);
-        subY(height / 2);
+        setHeight(getHeight() - height);
     }
 }

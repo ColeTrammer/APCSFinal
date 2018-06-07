@@ -77,8 +77,8 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         super.moveOutOf(displacement);
         if (displacement.y > 0 && getVelocity().y < 0) {
             getVelocity().y = 0;
-        } else if (displacement.y < 0) {
-            getVelocity().y = -0.00001f;
+        } else if (displacement.y < 0 && getVelocity().y > 0) {
+            getVelocity().y *= -1;
         }
     }
 

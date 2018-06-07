@@ -47,19 +47,19 @@ public final class Collisions {
     }
 
     /**
-     * Determines the distance needed for an movableRectangleEntity to no longer
-     * be overlapping the rectangleEntity. If the object had zero velocity is some direction,
+     * Determines the distance needed for an rectangleEntity1 to no longer
+     * be overlapping the rectangleEntity2. If the object had zero velocity is some direction,
      * the distance returned will be Float.MAX_VALUE to signify that motion in that direction
      * should not occur.
      *
-     * @param movableRectangleEntity MovableRectangleEntity that is overlapping the rectangleEntity.
-     * @param rectangleEntity        RectangleEntity that the movableRectangleEntity is in.
+     * @param rectangleEntity1 MovableRectangleEntity that is overlapping the rectangleEntity2.
+     * @param rectangleEntity2        RectangleEntity that the rectangleEntity1 is in.
      * @return Vector2 with x and y values corresponding to the
-     * distance the movableRectangleEntity must move in that direction
-     * to no longer be colliding with the rectangleEntity. Components of the
+     * distance the rectangleEntity1 must move in that direction
+     * to no longer be colliding with the rectangleEntity2. Components of the
      * Vector2 will be Float.MAX_VALUE if motion should certainly not occur in that direction.
      */
-    private static Vector2 distanceToMoveOutOf(RectangleEntity movableRectangleEntity, RectangleEntity rectangleEntity) {
+    private static Vector2 distanceToMoveOutOf(RectangleEntity rectangleEntity1, RectangleEntity rectangleEntity2) {
         Vector2 res = new Vector2(Float.MAX_VALUE, Float.MAX_VALUE);
 
         /*
@@ -69,21 +69,21 @@ public final class Collisions {
         edge was to the right of the wall's left edge, update the distance
         all the same.
         */
-        if (movableRectangleEntity.getX() < rectangleEntity.getX() + rectangleEntity.getWidth()) {
-            res.x = movableRectangleEntity.getX() - (rectangleEntity.getX() + rectangleEntity.getWidth());
+        if (rectangleEntity1.getX() < rectangleEntity2.getX() + rectangleEntity2.getWidth()) {
+            res.x = rectangleEntity1.getX() - (rectangleEntity2.getX() + rectangleEntity2.getWidth());
         }
-        if (movableRectangleEntity.getX() + movableRectangleEntity.getWidth() > rectangleEntity.getX()) {
-            float displacement = movableRectangleEntity.getX() - (rectangleEntity.getX() - movableRectangleEntity.getWidth());
+        if (rectangleEntity1.getX() + rectangleEntity1.getWidth() > rectangleEntity2.getX()) {
+            float displacement = rectangleEntity1.getX() - (rectangleEntity2.getX() - rectangleEntity1.getWidth());
             if (Math.abs(displacement) < Math.abs(res.x)) {
                 res.x = displacement;
             }
         }
         // does the same as above except with in the y-direction.
-        if (movableRectangleEntity.getY() < rectangleEntity.getY() + rectangleEntity.getHeight()) {
-            res.y = movableRectangleEntity.getY() - (rectangleEntity.getY() + rectangleEntity.getHeight());
+        if (rectangleEntity1.getY() < rectangleEntity2.getY() + rectangleEntity2.getHeight()) {
+            res.y = rectangleEntity1.getY() - (rectangleEntity2.getY() + rectangleEntity2.getHeight());
         }
-        if (movableRectangleEntity.getY() + movableRectangleEntity.getHeight() > rectangleEntity.getY()) {
-            float displacement = movableRectangleEntity.getY() - (rectangleEntity.getY() - movableRectangleEntity.getHeight());
+        if (rectangleEntity1.getY() + rectangleEntity1.getHeight() > rectangleEntity2.getY()) {
+            float displacement = rectangleEntity1.getY() - (rectangleEntity2.getY() - rectangleEntity1.getHeight());
             if (Math.abs(displacement) < Math.abs(res.y)) {
                 res.y = displacement;
             }

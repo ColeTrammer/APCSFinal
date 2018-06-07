@@ -2,6 +2,7 @@ package engine.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
 import engine.entities.components.MovementComponent;
@@ -35,7 +36,11 @@ public class Wall extends MovableRectangleEntity implements Impassable {
     @Override
     public void expel(Movable movable) {
         if (movable instanceof RectangleEntity) {
-            movable.moveOutOf(Collisions.expelDistance((RectangleEntity) movable, this));
+            Vector2 displacement = Collisions.expelDistance((RectangleEntity) movable, this);
+            if (displacement.x == 0 && getVelocity().x != 0) {
+                displacement.x = getVelocity().x * getDeltaTime();
+            }
+            movable.moveOutOf(displacement);
         }
     }
 }

@@ -59,6 +59,8 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
                 expire();
             }
             super.update(delta);
+        } else {
+            setDeltaTime(delta);
         }
     }
 
