@@ -22,7 +22,7 @@ import engine.entities.templates.MovableRectangleEntity;
 public class Player extends MovableRectangleEntity implements Afflictable {
     private final float xSpeed;
     private final float ySpeed;
-    private boolean canJump;
+    private boolean hitWall;
     private boolean jumping;
     private boolean ducking;
 
@@ -62,8 +62,8 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         */
         if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocity().y >= 0) {
             jumping = true;
-            if (canJump) {
-                canJump = false;
+            if (hitWall) {
+                hitWall = false;
                 getVelocity().y += ySpeed;
             }
         } else if (jumping) {
@@ -83,8 +83,8 @@ public class Player extends MovableRectangleEntity implements Afflictable {
             setHeight(getHeight() * 2);
         }
 
-        if (ducking) {
-            getVelocity().x *= 3f / 4f;
+        if (ducking && canJump()) {
+            getVelocity().x *= 2f / 4f;
         }
         // applies the acceleration to the velocity to the position.
         super.update(delta);
@@ -102,7 +102,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         super.moveOutOf(displacement);
         if (displacement.y > 0 && getVelocity().y < 0) {
             getVelocity().y = 0;
-            canJump = true;
+            hitWall = true;
         } else if (displacement.y < 0 && getVelocity().y > 0) {
             getVelocity().y *= -1;
         }
@@ -112,4 +112,9 @@ public class Player extends MovableRectangleEntity implements Afflictable {
     public void receiveDamage() {
         expire();
     }
+
+    private boolean canJump() {
+        return getVelocity().y >= 0 && hitWall;
+    }
+
 }
