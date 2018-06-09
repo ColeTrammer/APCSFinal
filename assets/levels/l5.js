@@ -7,6 +7,7 @@ level = level || new Level(__FILE__);
 var BitmapFont = Java.type("com.badlogic.gdx.graphics.g2d.BitmapFont");
 font = font || new BitmapFont();
 
+var Gdx = Java.type("com.badlogic.gdx.Gdx");
 var Player = Java.type("engine.entities.Player");
 var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("game.Constants");
@@ -25,7 +26,8 @@ manager.spawn(new OneWayWall(
     new SimpleHarmonicOscillation(C.WORLD_WIDTH / 2, C.WORLD_HEIGHT / 6, 200, 0, 6),
     Direction.DOWN));
 
-load("assets/levels/_outer_wall.js");
+// noinspection JSUnresolvedFunction
+load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), name: "_outer_wall.js" });
 
 level.setIsLevelOver(function() {
     return true;

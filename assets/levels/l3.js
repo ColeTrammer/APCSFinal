@@ -7,6 +7,7 @@ level = level || new Level(__FILE__);
 var BitmapFont = Java.type("com.badlogic.gdx.graphics.g2d.BitmapFont");
 font = font || new BitmapFont();
 
+var Gdx = Java.type("com.badlogic.gdx.Gdx");
 var Player = Java.type("engine.entities.Player");
 var InvincibleLaser = Java.type("engine.entities.InvincibleLaser");
 var Direction = Java.type("engine.utils.Direction");
@@ -34,7 +35,8 @@ manager.spawn(player);
 manager.spawn(new Wall(
     new Rectangle(0, 0, 50, C.WORLD_HEIGHT)));
 
-load("assets/levels/_outer_wall.js");
+// noinspection JSUnresolvedFunction
+load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), name: "_outer_wall.js" });
 manager.spawn(new Wall(
     new Rectangle(1 / 6 * C.WORLD_WIDTH, 0, 20, C.WORLD_HEIGHT * 3 / 5)));
 manager.spawn(new Wall(

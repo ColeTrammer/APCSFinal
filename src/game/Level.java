@@ -34,13 +34,7 @@ public class Level {
     }
 
     private void readLevel(String path) {
-        Reader reader = null;
-        try {
-            reader = new FileReader(path);
-        } catch (FileNotFoundException e) {
-            Gdx.app.error("File Not Found", path, e);
-            System.exit(1);
-        }
+        Reader reader = Gdx.files.internal(path).reader();
         ScriptEngine js = new ScriptEngineManager().getEngineByName("nashorn");
         js.put("level", this);
         js.put("manager", manager);

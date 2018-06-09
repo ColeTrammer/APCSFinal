@@ -7,6 +7,7 @@ level = level || new Level(__FILE__);
 var BitmapFont = Java.type("com.badlogic.gdx.graphics.g2d.BitmapFont");
 font = font || new BitmapFont();
 
+var Gdx = Java.type("com.badlogic.gdx.Gdx");
 var Player = Java.type("engine.entities.Player");
 var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("game.Constants");
@@ -45,7 +46,8 @@ for (var i = 0; i < C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 2
         new Rectangle(i % 2 === 0 ? 0 : 1 / 5 * C.WORLD_WIDTH, (i + 1) * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20), 4 / 5 * C.WORLD_WIDTH, 20)));
 }
 
-load("assets/levels/_outer_wall.js");
+// noinspection JSUnresolvedFunction
+load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), name: "_outer_wall.js" });
 
 timer.addAction(0.1, Number.POSITIVE_INFINITY, 0.25, function() {
     var lRect;

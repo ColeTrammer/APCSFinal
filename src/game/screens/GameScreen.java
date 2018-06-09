@@ -15,10 +15,7 @@ import game.Constants;
 import game.Level;
 import game.TheGame;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +43,7 @@ public class GameScreen extends InputAdapter implements Screen {
         this.game = game;
         this.levels = new ArrayList<>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("assets/levels/level_map.txt"));
+            BufferedReader reader = Gdx.files.internal("assets/levels/level_map.txt").reader(8192);
             String line = reader.readLine();
             while (line != null) {
                 if (line.startsWith("!")) {

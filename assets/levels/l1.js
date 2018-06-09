@@ -7,6 +7,7 @@ level = level || new Level(__FILE__);
 var BitmapFont = Java.type("com.badlogic.gdx.graphics.g2d.BitmapFont");
 font = font || new BitmapFont();
 
+var Gdx = Java.type("com.badlogic.gdx.Gdx");
 var Player = Java.type("engine.entities.Player");
 var Wall = Java.type("engine.entities.Wall");
 var Pulse = Java.type("engine.entities.Pulse");
@@ -27,7 +28,8 @@ manager.spawn(new Player(
     new Rectangle(C.WORLD_WIDTH / 2, C.WORLD_HEIGHT * FRACTION_CLOSED, C.PLAYER_WIDTH, C.PLAYER_HEIGHT),
     C.PLAYER_SPEED, C.PLAYER_JUMP_HEIGHT, C.GRAVITY));
 
-load("assets/levels/_outer_wall.js");
+// noinspection JSUnresolvedFunction
+load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), name: "_outer_wall.js" });
 
 manager.spawn(new Wall(
     new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED)));
