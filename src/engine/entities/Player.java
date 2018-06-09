@@ -22,6 +22,9 @@ import engine.entities.templates.MovableRectangleEntity;
 public class Player extends MovableRectangleEntity implements Afflictable {
     private final float xSpeed;
     private final float ySpeed;
+    private boolean hitWall;
+    private boolean jumping;
+    private boolean ducking;
 
     /**
      * Constructs the Player with the given initial position,
@@ -33,7 +36,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
      * @param gravity    Strength of gravity acting on the player.
      */
     public Player(Rectangle rect, float xSpeed, float jumpHeight, float gravity) {
-        super(rect, new Acceleration(rect, 0, 0, 0, -gravity));
+        super(rect, new Acceleration(0, 0, 0, -gravity));
         this.xSpeed = xSpeed;
         // basic kinematics equation (v^2 = v_0^2 + 2 * a * x) with v_0 = 0
         this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
@@ -57,10 +60,32 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         that it will actually equal zero due to acceleration. Therefore, it will stay in
         as a FEATURE.
         */
-        if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocity().y == 0) {
-            getVelocity().y += ySpeed;
+        if ((Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) && getVelocity().y >= 0) {
+            jumping = true;
+            if (hitWall) {
+                hitWall = false;
+                getVelocity().y += ySpeed;
+            }
+        } else if (jumping) {
+            jumping = false;
+            if (getVelocity().y > ySpeed * 6 / 15) {
+                getVelocity().y = ySpeed * 6 / 15;
+            }
         }
 
+        if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) {
+            if (!ducking) {
+                ducking = true;
+                setHeight(getHeight() / 2);
+            }
+        } else if (ducking) {
+            ducking = false;
+            setHeight(getHeight() * 2);
+        }
+
+        if (ducking && canJump()) {
+            getVelocity().x *= 2f / 4f;
+        }
         // applies the acceleration to the velocity to the position.
         super.update(delta);
     }
@@ -77,6 +102,7 @@ public class Player extends MovableRectangleEntity implements Afflictable {
         super.moveOutOf(displacement);
         if (displacement.y > 0 && getVelocity().y < 0) {
             getVelocity().y = 0;
+            hitWall = true;
         } else if (displacement.y < 0 && getVelocity().y > 0) {
             getVelocity().y *= -1;
         }
@@ -86,4 +112,9 @@ public class Player extends MovableRectangleEntity implements Afflictable {
     public void receiveDamage() {
         expire();
     }
+
+    private boolean canJump() {
+        return getVelocity().y >= 0 && hitWall;
+    }
+
 }

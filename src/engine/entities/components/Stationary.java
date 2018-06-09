@@ -6,10 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Stationary extends AbstractMovementComponent {
     private static final Vector2 v = new Vector2(0,0);
 
-    public Stationary() {
-        super(null);
-    }
-
     @Override
     public void move(float delta) {}
 

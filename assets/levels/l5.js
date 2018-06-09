@@ -22,7 +22,7 @@ manager.spawn(new Player(
 var w1Rect = new Rectangle(C.WORLD_WIDTH / 2 - 200, C.WORLD_HEIGHT / 6 - 10, 400, 20);
 manager.spawn(new OneWayWall(
     w1Rect,
-    new SimpleHarmonicOscillation(w1Rect, C.WORLD_WIDTH / 2, C.WORLD_HEIGHT / 6, 200, 0, 6),
+    new SimpleHarmonicOscillation(C.WORLD_WIDTH / 2, C.WORLD_HEIGHT / 6, 200, 0, 6),
     Direction.DOWN));
 
 load("assets/levels/_outer_wall.js");

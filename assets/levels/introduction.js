@@ -15,7 +15,6 @@ var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("game.Constants");
 var Text = Java.type("engine.entities.Text");
 var Rectangle = Java.type("engine.entities.components.Rectangle");
-var Stationary = Java.type("engine.entities.components.Stationary");
 var Velocity = Java.type("engine.entities.components.Velocity");
 
 var FRACTION_CLOSED = 1 / 5;
@@ -28,11 +27,9 @@ manager.spawn(player);
 load("assets/levels/_outer_wall.js");
 
 manager.spawn(new Wall(
-    new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED),
-    new Stationary()));
+    new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED)));
 manager.spawn(new Wall(
-    new Rectangle(0, 1 / 5 * C.WORLD_HEIGHT + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, C.WORLD_HEIGHT),
-    new Stationary()));
+    new Rectangle(0, 1 / 5 * C.WORLD_HEIGHT + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, C.WORLD_HEIGHT)));
 
 manager.spawn(new Text("Go right! Avoid the lasers and stuff!", font, 50, 700));
 
@@ -40,7 +37,7 @@ timer.addAction(0, Number.POSITIVE_INFINITY, 1.632, function() {
     var lRect = new Rectangle(C.WORLD_WIDTH - 0.01, FRACTION_CLOSED * C.WORLD_HEIGHT + 20, 50, 5);
     manager.spawn(new Laser(
         lRect,
-        new Velocity(lRect, -C.PLAYER_SPEED, 0),
+        new Velocity(-C.PLAYER_SPEED, 0),
         Direction.LEFT));
 });
 

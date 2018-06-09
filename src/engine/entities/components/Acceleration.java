@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Acceleration extends Velocity {
     private final Vector2 acceleration;
 
-    public Acceleration(PositionComponent positionComponent, float vx, float vy, float ax, float ay) {
-        super(positionComponent, vx, vy);
+    public Acceleration(float vx, float vy, float ax, float ay) {
+        super(vx, vy);
         this.acceleration = new Vector2(ax, ay);
     }
 

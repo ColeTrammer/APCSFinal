@@ -14,7 +14,6 @@ var Laser = Java.type("engine.entities.Laser");
 var Direction = Java.type("engine.utils.Direction");
 var C = Java.type("game.Constants");
 var Text = Java.type("engine.entities.Text");
-var Stationary = Java.type("engine.entities.components.Stationary");
 var Velocity = Java.type("engine.entities.components.Velocity");
 var Rectangle = Java.type("engine.entities.components.Rectangle");
 
@@ -31,11 +30,9 @@ manager.spawn(new Player(
 load("assets/levels/_outer_wall.js");
 
 manager.spawn(new Wall(
-    new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED),
-    new Stationary()));
+    new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED)));
 manager.spawn(new Wall(
-    new Rectangle(0, C.WORLD_HEIGHT * (1 - FRACTION_CLOSED), C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED),
-    new Stationary()));
+    new Rectangle(0, C.WORLD_HEIGHT * (1 - FRACTION_CLOSED), C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED)));
 
 var timeText = new Text("Survive until the timer runs out: " + Math.round(END + ((C.WORLD_WIDTH + LASER_WIDTH) / C.PLAYER_SPEED)), font, 50, 4 / 5 * C.WORLD_HEIGHT);
 manager.spawn(timeText);
@@ -51,13 +48,13 @@ timer.addAction(0.0, END, SPAWN_RATE, function() {
         lRect = new Rectangle(C.WORLD_WIDTH - 0.01, C.WORLD_HEIGHT * (Math.random() * ((C.WORLD_HEIGHT * FRACTION_CLOSED - LASER_HEIGHT) / C.WORLD_HEIGHT) + FRACTION_CLOSED), LASER_WIDTH, LASER_HEIGHT);
         manager.spawn(new Laser(
             lRect,
-            new Velocity(lRect, -C.PLAYER_SPEED, 0),
+            new Velocity(-C.PLAYER_SPEED, 0),
             Direction.LEFT));
     } else {
         lRect = new Rectangle(0.01, C.WORLD_HEIGHT * (Math.random() * ((C.WORLD_HEIGHT * FRACTION_CLOSED - LASER_HEIGHT) / C.WORLD_HEIGHT) + FRACTION_CLOSED), LASER_WIDTH, LASER_HEIGHT);
         manager.spawn(new Laser(
             lRect,
-            new Velocity(lRect, C.PLAYER_SPEED, 0),
+            new Velocity(C.PLAYER_SPEED, 0),
             Direction.RIGHT));
     }
 });
