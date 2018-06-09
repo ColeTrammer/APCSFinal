@@ -1,8 +1,9 @@
 package engine.entities.components;
 
 public abstract class AbstractMovementComponent implements MovementComponent {
-    private PositionComponent positionComponent;
+    private final PositionComponent positionComponent;
 
+    @SuppressWarnings("WeakerAccess")
     public AbstractMovementComponent(PositionComponent positionComponent) {
         this.positionComponent = positionComponent;
     }

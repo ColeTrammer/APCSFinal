@@ -3,8 +3,9 @@ package engine.entities.components;
 import com.badlogic.gdx.math.Vector2;
 
 public class Velocity extends AbstractMovementComponent {
-    private Vector2 velocity;
+    private final Vector2 velocity;
 
+    @SuppressWarnings("WeakerAccess")
     public Velocity(PositionComponent positionComponent, float vx, float vy) {
         super(positionComponent);
         this.velocity = new Vector2(vx, vy);

@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 @SuppressWarnings("unused")
 public class SimpleHarmonicOscillation extends Acceleration {
-    private Vector2 center;
-    private float k;
+    private final Vector2 center;
+    private final float k;
 
     public SimpleHarmonicOscillation(PositionComponent positionComponent, float centerX, float centerY, float amplitudeX, float amplitudeY, float k) {
         super(positionComponent, (float) Math.sqrt(k * Math.max(0, Math.pow(amplitudeX, 2) - Math.pow(centerX - positionComponent.getX(), 2))), (float) Math.sqrt(k * Math.max(0, Math.pow(amplitudeY, 2) - Math.pow(centerY - positionComponent.getY(), 2))), 0, 0);

@@ -98,8 +98,7 @@ public class ArrayEntityManager implements EntityManager {
         }
     }
 
-    @Override
-    public void add(Entity entity) {
+    private void add(Entity entity) {
         // subscribes to the entity to know when it expires
         entity.addObserver(this);
         /*

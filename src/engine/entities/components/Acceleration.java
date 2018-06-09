@@ -3,7 +3,7 @@ package engine.entities.components;
 import com.badlogic.gdx.math.Vector2;
 
 public class Acceleration extends Velocity {
-    private Vector2 acceleration;
+    private final Vector2 acceleration;
 
     public Acceleration(PositionComponent positionComponent, float vx, float vy, float ax, float ay) {
         super(positionComponent, vx, vy);

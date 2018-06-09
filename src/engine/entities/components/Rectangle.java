@@ -6,6 +6,7 @@ public class Rectangle implements PositionComponent {
     private float width;
     private float height;
 
+    @SuppressWarnings("unused")
     public Rectangle(float x, float y, float width, float height) {
         this.x = x + width / 2;
         this.y = y + height / 2;

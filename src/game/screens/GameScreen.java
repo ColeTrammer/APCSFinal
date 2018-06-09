@@ -39,7 +39,7 @@ public class GameScreen extends InputAdapter implements Screen {
     private SpriteBatch hudBatch;
     private BitmapFont font;
 
-    private List<String> levels;
+    private final List<String> levels;
     private int levelIndex;
 
     public GameScreen(TheGame game) {
