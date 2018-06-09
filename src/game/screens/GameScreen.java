@@ -64,17 +64,17 @@ public class GameScreen extends InputAdapter implements Screen {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            Gdx.app.error("File map not found", System.getProperty("user.dir") + "/levels/level_map.txt", e);
+            Gdx.app.error("File map not found", System.getProperty("user.dir") + "\\assets\\levels\\level_map.txt", e);
         } catch (IOException | NumberFormatException | IndexOutOfBoundsException e) {
-            Gdx.app.error("Invalid or inaccessible file map", System.getProperty("user.dir") + "/levels/level_map.txt", e);
+            Gdx.app.error("Invalid or inaccessible file map", System.getProperty("user.dir") + "\\assets\\levels\\level_map.txt", e);
         }
 
         while (levelIndex < levels.size() && levels.get(levelIndex) == null) levelIndex++;
-        this.level = new Level(levels.get(levelIndex));
+        this.level = new Level(levels.get(levelIndex), font);
     }
 
     public void reset() {
-        this.level = new Level(levels.get(levelIndex));
+        this.level = new Level(levels.get(levelIndex), font);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class GameScreen extends InputAdapter implements Screen {
             levelIndex++;
             while (levelIndex < levels.size() && levels.get(levelIndex) == null) levelIndex++;
             if (levelIndex < levels.size()) {
-                level = new Level(levels.get(levelIndex));
+                level = new Level(levels.get(levelIndex), font);
             }
         }
 
@@ -175,6 +175,24 @@ public class GameScreen extends InputAdapter implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        level.keyDown(keycode);
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        level.keyUp(keycode);
+        return true;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        level.keyTyped(character);
+        return true;
     }
 
     @Override

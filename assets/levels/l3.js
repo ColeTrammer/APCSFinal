@@ -42,15 +42,15 @@ manager.spawn(new Wall(
 manager.spawn(new Wall(
     new Rectangle(C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth(), C.WORLD_HEIGHT * 2 / 5 - 20, C.WORLD_WIDTH * 2 / 6 - (C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth()) + 20, 20)));
 manager.spawn(new Wall(
-    new Rectangle(C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth(), player.getHeight(), 20, C.WORLD_HEIGHT * 2 / 5 - 20 - (player.getHeight()))));
+    new Rectangle(C.WORLD_WIDTH * 1 / 6 + 20 + 2 * player.getWidth(), C.PLAYER_HEIGHT, 20, C.WORLD_HEIGHT * 2 / 5 - 20 - (C.PLAYER_HEIGHT))));
 var w1Rect = new Rectangle(1 / 6 * C.WORLD_WIDTH - C.PLAYER_WIDTH, C.WORLD_HEIGHT * 3 / 5 - C.PLAYER_HEIGHT, C.PLAYER_WIDTH, C.PLAYER_HEIGHT);
 manager.spawn(new Wall(
     w1Rect,
     new SimpleHarmonicOscillation(1 / 6 * C.WORLD_WIDTH - C.PLAYER_WIDTH / 2, C.WORLD_HEIGHT / 2, 0, C.WORLD_HEIGHT / 2 - 2 * C.PLAYER_HEIGHT, k)));
-var w2Rect = new Rectangle(2 / 6 * C.WORLD_WIDTH + 20, C.PLAYER_JUMP_HEIGHT - player.getHeight(), 100, 20);
+var w2Rect = new Rectangle(2 / 6 * C.WORLD_WIDTH + 20, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT, 100, 20);
 manager.spawn(new OneWayWall(
     w2Rect,
-    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, C.PLAYER_JUMP_HEIGHT - player.getHeight() + 10, (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, 0, 0.91375),
+    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT + 10, (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, 0, 0.91375),
     Direction.DOWN));
 
 timer.addAction(T - 0.5, T, 0, function() {
@@ -60,7 +60,7 @@ timer.addAction(T - 0.5, T, 0, function() {
 });
 
 timer.addAction(0.25, Number.POSITIVE_INFINITY, 0.75, function() {
-    var l1Rect = new Rectangle(C.WORLD_WIDTH - 0.01, Math.random() * (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20) + player.getHeight(), 30, 5);
+    var l1Rect = new Rectangle(C.WORLD_WIDTH - 0.01, Math.random() * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20) + C.PLAYER_HEIGHT, 30, 5);
     manager.spawn(new Laser(
         l1Rect,
         new Velocity(-150, 0),

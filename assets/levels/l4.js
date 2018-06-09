@@ -34,19 +34,22 @@ manager.spawn(new InvincibleLaser(
 ));
 
 var player = new Player(
-    new Rectangle(3 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED, C.PLAYER_WIDTH, C.PLAYER_HEIGHT),
+    new Rectangle(3 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED + 20, C.PLAYER_WIDTH, C.PLAYER_HEIGHT),
     C.PLAYER_SPEED, C.PLAYER_JUMP_HEIGHT, C.GRAVITY);
 manager.spawn(player);
-for (var i = 0; i < C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20) - 1; i++) {
+manager.spawn(new Wall(
+    new Rectangle(0, 0, C.WORLD_WIDTH, 20)
+));
+for (var i = 0; i < C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20) - 1; i++) {
     manager.spawn(new Wall(
-        new Rectangle(i % 2 === 0 ? 0 : 1 / 5 * C.WORLD_WIDTH, (i + 1) * (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20), 4 / 5 * C.WORLD_WIDTH, 20)));
+        new Rectangle(i % 2 === 0 ? 0 : 1 / 5 * C.WORLD_WIDTH, (i + 1) * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20), 4 / 5 * C.WORLD_WIDTH, 20)));
 }
 
 load("assets/levels/_outer_wall.js");
 
-timer.addAction(0.0, Number.POSITIVE_INFINITY, 0.4, function() {
+timer.addAction(0.1, Number.POSITIVE_INFINITY, 0.25, function() {
     var lRect;
-    var h = Math.floor(Math.random() * (C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20) - 1)) * (C.PLAYER_JUMP_HEIGHT - player.getHeight() - 20) + 30;
+    var h = Math.floor(Math.random() * (C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20))) * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20) + 25;
     if (Math.random() < 0.5) {
         lRect = new Rectangle(C.WORLD_WIDTH - 0.01, h, LASER_WIDTH, LASER_HEIGHT);
         manager.spawn(new Laser(
@@ -63,5 +66,5 @@ timer.addAction(0.0, Number.POSITIVE_INFINITY, 0.4, function() {
 });
 
 level.setIsLevelOver(function() {
-    return player.getY() + player.getHeight() >= C.WORLD_HEIGHT;
+    return player.getY() + C.PLAYER_HEIGHT >= C.WORLD_HEIGHT;
 });

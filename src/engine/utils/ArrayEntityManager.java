@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 import engine.entities.Entity;
 import engine.entities.Player;
+import engine.entities.behaviors.InputReceiver;
 
 /**
  * Simplest implementation of EntityManager. Utilizes
@@ -17,6 +18,7 @@ import engine.entities.Player;
 public class ArrayEntityManager implements EntityManager {
     private final Array<Entity> entities;
     private final Array<Entity> staging;
+    private final Array<InputReceiver> receivers;
 
     /**
      * Constructs the ArrayEntityManager to be empty.
@@ -24,6 +26,7 @@ public class ArrayEntityManager implements EntityManager {
     public ArrayEntityManager() {
         entities = new Array<>();
         staging = new Array<>();
+        receivers = new Array<>();
     }
 
     @Override
@@ -111,6 +114,10 @@ public class ArrayEntityManager implements EntityManager {
         } else {
             entities.add(entity);
         }
+
+        if (entity instanceof InputReceiver) {
+            receivers.add((InputReceiver) entity);
+        }
     }
 
     @Override
@@ -154,5 +161,26 @@ public class ArrayEntityManager implements EntityManager {
     @Override
     public void spawn(Entity entity) {
         staging.add(entity);
+    }
+
+    @Override
+    public void keyDown(int keycode) {
+        for (InputReceiver receiver : receivers) {
+            receiver.keyDown(keycode);
+        }
+    }
+
+    @Override
+    public void keyUp(int keycode) {
+        for (InputReceiver receiver : receivers) {
+            receiver.keyUp(keycode);
+        }
+    }
+
+    @Override
+    public void keyTyped(char character) {
+        for (InputReceiver receiver : receivers) {
+            receiver.keyTyped(character);
+        }
     }
 }

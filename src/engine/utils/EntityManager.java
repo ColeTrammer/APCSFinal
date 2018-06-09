@@ -34,4 +34,8 @@ public interface EntityManager extends EntityObserver {
      * @return true if the player is expired, false otherwise.
      */
     boolean isPlayerExpired();
+
+    void keyDown(int keycode);
+    void keyUp(int keycode);
+    void keyTyped(char character);
 }

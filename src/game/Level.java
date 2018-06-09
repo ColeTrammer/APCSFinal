@@ -20,13 +20,15 @@ import java.util.function.BooleanSupplier;
 public class Level {
     private final EntityManager manager;
     private final Timer timer;
+    private BitmapFont font;
     private BooleanSupplier isLevelOver;
     /**
      * Will be changed soon...
      */
-    public Level(String path) {
-        manager = new ArrayEntityManager();
-        timer = new Timer();
+    public Level(String path, BitmapFont font) {
+        this.manager = new ArrayEntityManager();
+        this.timer = new Timer();
+        this.font = font;
 
         readLevel(path);
     }
@@ -43,7 +45,7 @@ public class Level {
         js.put("level", this);
         js.put("manager", manager);
         js.put("timer", timer);
-        js.put("font", new BitmapFont());
+        js.put("font", font);
         try {
             js.eval(reader);
         } catch (Exception e) {
@@ -87,5 +89,17 @@ public class Level {
 
     public enum LevelState {
         ONGOING, WON, LOST
+    }
+
+    public void keyDown(int keycode) {
+        manager.keyDown(keycode);
+    }
+
+    public void keyUp(int keycode) {
+        manager.keyUp(keycode);
+    }
+
+    public void keyTyped(char character) {
+        manager.keyTyped(character);
     }
 }
