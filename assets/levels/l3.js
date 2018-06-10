@@ -52,17 +52,17 @@ manager.spawn(new Wall(
 var w2Rect = new Rectangle(2 / 6 * C.WORLD_WIDTH + 20, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT, 100, 20);
 manager.spawn(new OneWayWall(
     w2Rect,
-    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT + 10, (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, 0, 0.91375),
+    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT + 10, (C.WORLD_WIDTH - 50 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, 0, 0.91375),
     Direction.DOWN));
 
-timer.addAction(T - 0.5, T, 0, function() {
+timer.addAction(T - 0.49, T, 0, function() {
     manager.spawn(new Pulse(
         new Rectangle(0, 3 / 5 * C.WORLD_HEIGHT + 5, C.WORLD_WIDTH, 13),
-        0.5, 0.08, Direction.UP));
+        0.5, 0.01, Direction.UP));
 });
 
 timer.addAction(0.25, Number.POSITIVE_INFINITY, 0.75, function() {
-    var l1Rect = new Rectangle(C.WORLD_WIDTH - 0.01, Math.random() * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20) + C.PLAYER_HEIGHT, 30, 5);
+    var l1Rect = new Rectangle(C.WORLD_WIDTH - 0.01, Math.random() * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 30) + C.PLAYER_HEIGHT, 30, 5);
     manager.spawn(new Laser(
         l1Rect,
         new Velocity(-150, 0),

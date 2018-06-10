@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Gdx;
@@ -39,6 +40,8 @@ public class GameScreen extends InputAdapter implements Screen {
     private final List<String> levels;
     private int levelIndex;
 
+    private boolean slowmode;
+
     public GameScreen(TheGame game) {
         this.game = game;
         this.levels = new ArrayList<>();
@@ -66,6 +69,9 @@ public class GameScreen extends InputAdapter implements Screen {
             Gdx.app.error("Invalid or inaccessible file map", System.getProperty("user.dir") + "\\assets\\levels\\level_map.txt", e);
         }
 
+        font = new BitmapFont();
+        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
         while (levelIndex < levels.size() && levels.get(levelIndex) == null) levelIndex++;
         this.level = new Level(levels.get(levelIndex), font);
     }
@@ -83,14 +89,14 @@ public class GameScreen extends InputAdapter implements Screen {
         hudViewport = new ScreenViewport();
         hudBatch = new SpriteBatch();
 
-        font = new BitmapFont();
-        font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render(float delta) {
+        if (slowmode) {
+            delta /= 10;
+        }
         /*
         Delta becoming to large is currently very problematic,
         as it causes the collision detection algorithm to break down.
@@ -138,7 +144,7 @@ public class GameScreen extends InputAdapter implements Screen {
         hudBatch.begin();
 
         if (levelIndex >= levels.size()) {
-            font.draw(hudBatch, "You Won!", 20, Constants.WORLD_HEIGHT - 30);
+            font.draw(hudBatch, "You Won!", 20, Constants.WORLD_HEIGHT - 20);
         }
 
         hudBatch.end();
@@ -166,16 +172,18 @@ public class GameScreen extends InputAdapter implements Screen {
         renderer.dispose();
         batch.dispose();
         hudBatch.dispose();
-        font.dispose();
     }
 
     @Override
     public void dispose() {
-
+        font.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.Y) {
+            slowmode = !slowmode;
+        }
         level.keyDown(keycode);
         return true;
     }

@@ -24,13 +24,13 @@ var LASER_HEIGHT = 5;
 
 manager.spawn(new InvincibleLaser(
     new Rectangle(C.WORLD_WIDTH - 20, 0, 20, C.WORLD_HEIGHT),
-    new SimpleHarmonicOscillation(3 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT / 2, 1 / 4 * C.WORLD_WIDTH, 0, 2.312),
+    new SimpleHarmonicOscillation(3 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT / 2, 1 / 4 * C.WORLD_WIDTH, 0, 2.213612),
     Direction.NONE
 ));
 
 manager.spawn(new InvincibleLaser(
     new Rectangle(1 / 2 * C.WORLD_WIDTH, 0, 20, C.WORLD_HEIGHT),
-    new SimpleHarmonicOscillation(1 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT / 2, 1 / 4 * C.WORLD_WIDTH, 0, 2.312),
+    new SimpleHarmonicOscillation(1 / 4 * C.WORLD_WIDTH, C.WORLD_HEIGHT / 2, 1 / 4 * C.WORLD_WIDTH, 0, 2.213612),
     Direction.NONE
 ));
 
@@ -49,7 +49,7 @@ for (var i = 0; i < C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 2
 // noinspection JSUnresolvedFunction
 load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), name: "_outer_wall.js" });
 
-timer.addAction(0.1, Number.POSITIVE_INFINITY, 0.25, function() {
+timer.addAction(0.1, Number.POSITIVE_INFINITY, 0.2, function() {
     var lRect;
     var h = Math.floor(Math.random() * (C.WORLD_HEIGHT / (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20))) * (C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT - 20) + 25;
     if (Math.random() < 0.5) {
