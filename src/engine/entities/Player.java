@@ -2,6 +2,9 @@ package engine.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
+
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Afflictable;
 import engine.entities.behaviors.InputReceiver;
@@ -24,7 +27,6 @@ public class Player extends MovableRectangleEntity implements Afflictable, Input
     private boolean hitWall;
     private boolean jumping;
     private boolean ducking;
-    private boolean firstUpdate;
     private Map<Integer, Boolean> keysPressed;
 
     /**
@@ -41,15 +43,11 @@ public class Player extends MovableRectangleEntity implements Afflictable, Input
         this.xSpeed = xSpeed;
         // basic kinematics equation (v^2 = v_0^2 + 2 * a * x) with v_0 = 0
         this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
-        firstUpdate = true;
+        initKeysPressed();
     }
 
     @Override
     public void update(float delta) {
-        if (firstUpdate) {
-            firstUpdate = false;
-            initKeysPressed();
-        }
         // resets x-velocity to zero each frame.
         getVelocity().x = 0;
 
@@ -97,8 +95,10 @@ public class Player extends MovableRectangleEntity implements Afflictable, Input
     }
 
     @Override
-    protected String getTag() {
-        return "player";
+    public void render(Object rendererTool) {
+        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
+        renderer.setColor(Color.BLUE);
+        super.render(renderer);
     }
 
     @Override

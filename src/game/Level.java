@@ -20,7 +20,7 @@ import java.util.function.BooleanSupplier;
 public class Level {
     private final EntityManager manager;
     private final Timer timer;
-    private final BitmapFont font;
+    private BitmapFont font;
     private BooleanSupplier isLevelOver;
     /**
      * Will be changed soon...

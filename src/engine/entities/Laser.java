@@ -70,18 +70,6 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
         }
     }
 
-    @Override
-    public void render(Object rendererTool) {
-        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
-        renderer.setColor(Color.RED);
-        renderer.rect(getX(), getY(), getWidth(), getHeight());
-    }
-
-    @Override
-    public RenderTool getRenderTool() {
-        return RenderTool.SHAPE_RENDERER;
-    }
-
     /**
      * Expands the laser in the direction of expansion
      * in accordance with the velocity in that direction. Once
@@ -114,6 +102,13 @@ public class Laser extends MovableRectangleEntity implements Afflicter {
                 expandDirection = Direction.NONE;
             }
         }
+    }
+
+    @Override
+    public void render(Object rendererTool) {
+        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
+        renderer.setColor(Color.RED);
+        super.render(renderer);
     }
 
     @Override
