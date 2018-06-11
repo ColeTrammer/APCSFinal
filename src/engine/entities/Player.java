@@ -27,6 +27,7 @@ public class Player extends MovableRectangleEntity implements Afflictable, Input
     private boolean hitWall;
     private boolean jumping;
     private boolean ducking;
+    private boolean firstUpdate;
     private Map<Integer, Boolean> keysPressed;
 
     /**
@@ -43,11 +44,15 @@ public class Player extends MovableRectangleEntity implements Afflictable, Input
         this.xSpeed = xSpeed;
         // basic kinematics equation (v^2 = v_0^2 + 2 * a * x) with v_0 = 0
         this.ySpeed = (float) Math.sqrt(2 * gravity * jumpHeight);
-        initKeysPressed();
+        firstUpdate = true;
     }
 
     @Override
     public void update(float delta) {
+        if (firstUpdate) {
+            initKeysPressed();
+            firstUpdate = false;
+        }
         // resets x-velocity to zero each frame.
         getVelocity().x = 0;
 

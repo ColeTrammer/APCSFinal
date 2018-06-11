@@ -52,7 +52,7 @@ manager.spawn(new Wall(
 var w2Rect = new Rectangle(2 / 6 * C.WORLD_WIDTH + 20, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT, 100, 20);
 manager.spawn(new OneWayWall(
     w2Rect,
-    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT + 10, (C.WORLD_WIDTH - 50 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2, 0, 0.91375),
+    new SimpleHarmonicOscillation(2 / 6 * C.WORLD_WIDTH - 20 + (C.WORLD_WIDTH - 100 - (2 / 6 * C.WORLD_WIDTH - 20)) / 2 + 25, C.PLAYER_JUMP_HEIGHT - C.PLAYER_HEIGHT + 10, (C.WORLD_WIDTH - (2 / 6 * C.WORLD_WIDTH - 20)) / 2 - 70, 0, 0.91375),
     Direction.DOWN));
 
 timer.addAction(T - 0.49, T, 0, function() {
