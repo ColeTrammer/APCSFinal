@@ -1,9 +1,10 @@
 package engine.entities.templates;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.entities.components.Rectangle;
 import engine.utils.Collisions;
 import engine.entities.Entity;
+import engine.utils.TextureLoader;
 
 /**
  * The RectangleEntity class provides a standard implementation
@@ -14,6 +15,7 @@ import engine.entities.Entity;
  */
 public abstract class RectangleEntity extends AbstractEntity {
     private final Rectangle rect;
+    private final TextureLoader textureLoader;
 
     /**
      * Basic Constructor
@@ -23,17 +25,22 @@ public abstract class RectangleEntity extends AbstractEntity {
             throw new IllegalArgumentException("Width and height parameters must be positive.");
         }
         this.rect = rect;
+        this.textureLoader = TextureLoader.getInstance();
     }
 
     @Override
     public void render(Object rendererTool) {
-        ShapeRenderer renderer = (ShapeRenderer) rendererTool;
-        renderer.rect(getX(), getY(), getWidth(), getHeight());
+        SpriteBatch batch = (SpriteBatch) rendererTool;
+        batch.draw(textureLoader.getTexture(getTag(), getWidth(), getHeight()), getX(), getY(), getWidth(), getHeight());
+    }
+
+    protected String getTag() {
+        return null;
     }
 
     @Override
     public RenderTool getRenderTool() {
-        return RenderTool.SHAPE_RENDERER;
+        return RenderTool.SPRITE_BATCH;
     }
 
     @Override

@@ -13,6 +13,7 @@ public class EntityBlocker extends Wall {
         this(rect, new Stationary(), cls);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public EntityBlocker(Rectangle rect, MovementComponent movementComponent, Class<? extends Entity> cls) {
         super(rect, movementComponent);
         this.cls = cls;

@@ -35,7 +35,7 @@ public final class Constants {
     public static final float PLAYER_SPEED = 6 * FPS;
     public static final float PLAYER_JUMP_HEIGHT = WORLD_HEIGHT / 5f;
 
-    public static final float BORDER_WALL_THICKNESS = 800f;
+    public static final float BORDER_WALL_THICKNESS = 20f;
 
     /*
     public static final float LASER_POSITION_OFFSET = 0.01f;

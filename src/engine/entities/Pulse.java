@@ -73,7 +73,12 @@ public class Pulse extends RectangleEntity implements Afflicter {
         ShapeRenderer renderer = (ShapeRenderer) renderTool;
         float relativeTime = Math.min(elapsedTime, delay);
         renderer.setColor(relativeTime / delay, 1 - relativeTime / delay, relativeTime / delay, 1);
-        super.render(renderer);
+        renderer.rect(getX(), getY(), getWidth(), getHeight());
+    }
+
+    @Override
+    public RenderTool getRenderTool() {
+        return RenderTool.SHAPE_RENDERER;
     }
 
     @Override
