@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 @SuppressWarnings("unused")
 public class SimpleHarmonicOscillation extends Acceleration {
-    private Vector2 center;
-    private Vector2 amplitude;
-    private float k;
+    private final Vector2 center;
+    private final Vector2 amplitude;
+    private final float k;
 
     public SimpleHarmonicOscillation(float centerX, float centerY, float amplitudeX, float amplitudeY, float k) {
         super(0, 0, 0, 0);

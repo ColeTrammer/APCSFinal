@@ -14,11 +14,6 @@ public class TextField extends Text implements InputReceiver {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
-    }
-
-    @Override
     public void keyDown(int keycode) {
 
     }

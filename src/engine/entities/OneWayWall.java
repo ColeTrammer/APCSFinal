@@ -1,5 +1,8 @@
 package engine.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.entities.behaviors.Movable;
 import engine.entities.components.MovementComponent;
 import engine.entities.components.Rectangle;

@@ -31,7 +31,7 @@ load({ script: Gdx.files.internal("assets/levels/_outer_wall.js").readString(), 
 manager.spawn(new Wall(
     new Rectangle(0, 0, C.WORLD_WIDTH, C.WORLD_HEIGHT * FRACTION_CLOSED)));
 manager.spawn(new Wall(
-    new Rectangle(0, 1 / 5 * C.WORLD_HEIGHT + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, C.WORLD_HEIGHT)));
+    new Rectangle(0, 1 / 5 * C.WORLD_HEIGHT + 2 * C.PLAYER_JUMP_HEIGHT, C.WORLD_WIDTH, C.WORLD_HEIGHT - (1 / 5 * C.WORLD_HEIGHT + 2 * C.PLAYER_JUMP_HEIGHT))));
 
 manager.spawn(new Text("Go right! Avoid the lasers and stuff!", font, 50, 700));
 

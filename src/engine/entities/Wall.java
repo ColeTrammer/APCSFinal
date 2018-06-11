@@ -1,7 +1,5 @@
 package engine.entities;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import engine.entities.behaviors.Impassable;
 import engine.entities.behaviors.Movable;
@@ -33,10 +31,8 @@ public class Wall extends MovableRectangleEntity implements Impassable {
     }
 
     @Override
-    public void render(Object renderTool) {
-        ShapeRenderer renderer = (ShapeRenderer) renderTool;
-        renderer.setColor(Color.BLACK);
-        super.render(renderer);
+    protected String getTag() {
+        return "wall";
     }
 
     @Override
